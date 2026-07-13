@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Your AI store is live · Zentra{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}" />
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+<link rel="stylesheet" href="{% static 'css/builder.css' %}" />
+{% endblock %}
+
+{% block body %}
+<main class="auth-page">
+  <div class="auth-glow auth-glow--primary" aria-hidden="true"></div>
+  <div class="auth-glow auth-glow--purple" aria-hidden="true"></div>
+  <div class="auth-inner">
+    <a href="{% url 'dashboard:home' %}" class="auth-logo" aria-label="Zentra">
+      <img src="{% static 'images/logo-mark.png' %}?v=3" alt="" width="48" height="48" />
+    </a>
+
+    <p class="auth-eyebrow">Success</p>
+    <h1>Your AI store is live</h1>
+    <p class="subtitle">{{ success_lede }}</p>
+
+    <div class="build-success-actions">
+      <a class="zentra-btn zentra-btn--primary" href="{% url 'dashboard:product_finder' %}">
+        Find Trending Products
+      </a>
+      {% if store_url %}
+      <a class="zentra-btn zentra-btn--secondary" href="{{ store_url }}" target="_blank" rel="noopener noreferrer">
+        Start selling now
+      </a>
+      {% endif %}
+    </div>
+
+    <nav class="auth-legal" aria-label="Navigation">
+      <a href="{% url 'dashboard:home' %}" class="auth-back">
+        Back to dashboard
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+      </a>
+    </nav>
+  </div>
+</main>
+{% endblock %}

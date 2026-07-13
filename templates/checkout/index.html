@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Checkout · Zentra{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}" />
+{% endblock %}
+
+{% block body %}
+<div class="checkout">
+  <div class="checkout-shell">
+    <header class="checkout-top">
+      <a href="{% url 'home:index' %}" class="checkout-brand" aria-label="Zentra home">
+        <img src="{% static 'images/logo.png' %}?v=3" alt="Zentra" width="130" height="36" />
+      </a>
+      <div class="trust-badges" aria-label="Ratings">
+        <div class="trust-badge">
+          <strong>Trustpilot</strong>
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <span>4.7</span>
+        </div>
+        <div class="trust-badge">
+          <strong>App Store</strong>
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <span>5.0</span>
+        </div>
+        <div class="trust-badge">
+          <strong>Shopify</strong>
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <span>5.0</span>
+        </div>
+      </div>
+    </header>
+
+    {% if done %}
+      <div class="checkout-done">
+        <p class="ok">
+          <span class="material-symbols-outlined">check_circle</span>
+          Order placed
+        </p>
+        {% if account_created %}
+          <p class="muted">
+            Your Zentra account was created with <strong>{{ user.email }}</strong>.
+            You’re signed in — continue to your dashboard.
+          </p>
+        {% else %}
+          <p class="muted">Thanks — this is a UI preview. Real payment processing connects later.</p>
+        {% endif %}
+        <a class="checkout-cta" href="{% url 'dashboard:home' %}">Go to dashboard</a>
+      </div>
+    {% else %}
+      <div class="checkout-panel">
+        <section class="checkout-pay" aria-labelledby="payment-heading">
+          <h1 id="payment-heading">Enter your payment information</h1>
+
+          <form method="post" class="checkout-form" id="checkout-form" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <p class="form-error">{{ form.non_field_errors|striptags }}</p>
+            {% endif %}
+
+            <label class="label" for="id_email">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}<p class="form-error">{{ form.email.errors|striptags }}</p>{% endif %}
+
+            <label class="label" for="id_cardholder">Name on Card</label>
+            {{ form.cardholder }}
+            {% if form.cardholder.errors %}<p class="form-error">{{ form.cardholder.errors|striptags }}</p>{% endif %}
+
+            <label class="label" for="id_card_number">Card number</label>
+            <div class="field-card">
+              {{ form.card_number }}
+              <div class="card-brands" aria-hidden="true">
+                <span class="visa">VISA</span>
+                <span class="mc">MC</span>
+                <span class="amex">AMEX</span>
+                <span class="disc">DISC</span>
+              </div>
+            </div>
+            {% if form.card_number.errors %}<p class="form-error">{{ form.card_number.errors|striptags }}</p>{% endif %}
+
+            <div class="field-row">
+              <div>
+                <label class="label" for="id_expiry">Expiration date</label>
+                {{ form.expiry }}
+                {% if form.expiry.errors %}<p class="form-error">{{ form.expiry.errors|striptags }}</p>{% endif %}
+              </div>
+              <div>
+                <label class="label" for="id_cvc">Security code</label>
+                <div class="field-cvc">
+                  {{ form.cvc }}
+                  <span class="material-symbols-outlined" aria-hidden="true">credit_card</span>
+                </div>
+                {% if form.cvc.errors %}<p class="form-error">{{ form.cvc.errors|striptags }}</p>{% endif %}
+              </div>
+            </div>
+
+            <label class="label" for="id_country">Country</label>
+            {{ form.country }}
+            {% if form.country.errors %}<p class="form-error">{{ form.country.errors|striptags }}</p>{% endif %}
+
+            {% if not user.is_authenticated %}
+              <label class="label" for="id_password">Account password</label>
+              {{ form.password }}
+              <p class="field-hint">We’ll create your Zentra account with this email if you don’t have one yet.</p>
+              {% if form.password.errors %}<p class="form-error">{{ form.password.errors|striptags }}</p>{% endif %}
+            {% else %}
+              {{ form.password }}
+              <p class="field-hint">Signed in as <strong>{{ user.email|default:user.username }}</strong> — your order will be linked to this account.</p>
+            {% endif %}
+
+            <label class="agree-check">
+              {{ form.agree_terms }}
+              <span>
+                I agree to Zentra’s
+                <a href="#">Terms of Service</a>
+                and
+                <a href="#">Privacy Policy</a>
+              </span>
+            </label>
+            {% if form.agree_terms.errors %}<p class="form-error">{{ form.agree_terms.errors|striptags }}</p>{% endif %}
+            <p class="field-hint" id="agree-hint">Check the box above to enable Place My Order.</p>
+          </form>
+
+          <p class="pay-legal">
+            By providing your card information, you allow Zentra to charge your card
+            for future payments in accordance with their terms.
+          </p>
+        </section>
+
+        <aside class="checkout-summary" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">Order Summary</h2>
+
+          <div class="summary-visual" aria-hidden="true">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj9GjIIaHENpFoI7fceEUl2-UiB0Z4Ce6Tg2IhwF8lziwkbZt9iDa726jgPUlnwddfAkUMxC2bO2EMa6F8Mb3LW93Our4P53xLxHSssi_RyKlrWPVzgBqOf_wV-QH6F8fS8fUZ-xS59bvPkXeQW3NZgC9GuwEjSHwBXrws-5-1BJ1fpAsWWZNes9Dr5yKU7m6eaNSXLczIkga1Qe8d7fDdDu2tY4jDNZzHz5au2r6roXKVBiI1dBWpRIFC-2UpimnkuFiiU3t2Wu9z"
+              alt=""
+              width="640"
+              height="400"
+            />
+          </div>
+
+          <p class="summary-product-name">Zentra Plus</p>
+
+          <ul class="summary-features">
+            <li>
+              <span class="feature-icon feature-icon--emerald material-symbols-outlined" aria-hidden="true">redeem</span>
+              $100 Order Credits
+            </li>
+            <li>
+              <span class="feature-icon feature-icon--purple material-symbols-outlined" aria-hidden="true">calendar_month</span>
+              Free 5-day live webinar series
+            </li>
+            <li>
+              <span class="feature-icon feature-icon--blue material-symbols-outlined" aria-hidden="true">storefront</span>
+              AI-built store + niche product packs
+            </li>
+            <li>
+              <span class="feature-icon feature-icon--pink material-symbols-outlined" aria-hidden="true">auto_awesome</span>
+              AI Agent access
+            </li>
+            <li>
+              <span class="feature-icon feature-icon--emerald material-symbols-outlined" aria-hidden="true">videocam</span>
+              525 AI UGC video &amp; image credits
+            </li>
+            <li>
+              <span class="feature-icon feature-icon--purple material-symbols-outlined" aria-hidden="true">trending_up</span>
+              Winning niches &amp; trending products
+            </li>
+          </ul>
+
+          <div class="pricing-block">
+            <div class="pricing-row">
+              <span>Regular Price</span>
+              <span class="strike">$549/year</span>
+            </div>
+            <p class="pricing-discount">−65% off annual plan</p>
+            <div class="pricing-total">
+              <span>Total due today</span>
+              <strong>$192</strong>
+            </div>
+
+            <button type="submit" form="checkout-form" class="checkout-cta" id="place-order-btn" disabled>
+              Place My Order
+            </button>
+
+            <p class="summary-reassure">
+              <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
+              Downgrade or cancel anytime
+            </p>
+
+            <div class="summary-mini-trust" aria-hidden="true">
+              <div class="trust-badge">
+                <strong>Trustpilot</strong>
+                <span class="stars">★★★★★</span>
+              </div>
+              <div class="trust-badge">
+                <strong>App Store</strong>
+                <span class="stars">★★★★★</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    {% endif %}
+
+    <p class="checkout-foot">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="mailto:hello@zentra.com">Support</a>
+    </p>
+  </div>
+</div>
+{% if not done %}
+<script>
+(function () {
+  var form = document.getElementById("checkout-form");
+  var agree = document.getElementById("id_agree_terms");
+  var btn = document.getElementById("place-order-btn");
+  var hint = document.getElementById("agree-hint");
+  if (!form || !agree || !btn) return;
+
+  function sync() {
+    var ok = agree.checked;
+    btn.disabled = !ok;
+    btn.setAttribute("aria-disabled", ok ? "false" : "true");
+    if (hint) hint.hidden = ok;
+  }
+
+  agree.addEventListener("change", sync);
+  form.addEventListener("submit", function (e) {
+    if (!agree.checked) {
+      e.preventDefault();
+      agree.focus();
+      sync();
+    }
+  });
+  sync();
+})();
+</script>
+{% endif %}
+{% endblock %}

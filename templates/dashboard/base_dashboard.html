@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% block dash_title %}Dashboard{% endblock %} · Zentra{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+{% block dash_extra_css %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+{% csrf_token %}
+<div class="dash">
+  <aside class="dash-sidebar" id="dash-sidebar" aria-label="Workspace">
+    <a href="{% url 'home:index' %}" class="dash-sidebar__brand" aria-label="Zentra home">
+      <img
+        class="dash-sidebar__logo"
+        src="{% static 'images/logo.png' %}?v=3"
+        alt="Zentra"
+        width="140"
+        height="40"
+      />
+    </a>
+
+    <nav class="dash-sidebar__nav" aria-label="Primary">
+      <a
+        class="dash-nav-item {% if nav_active == 'overview' %}is-active{% endif %}"
+        href="{% url 'dashboard:home' %}"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">dashboard</span>
+        Overview
+      </a>
+      <a
+        class="dash-nav-item {% if nav_active == 'builder' %}is-active{% endif %}"
+        href="{% url 'dashboard:builder' %}"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
+        AI Store Builder
+      </a>
+      <a
+        class="dash-nav-item {% if nav_active == 'product_finder' %}is-active{% endif %}"
+        href="{% url 'dashboard:product_finder' %}"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">travel_explore</span>
+        Product Finder
+      </a>
+      <a
+        class="dash-nav-item {% if nav_active == 'imports' %}is-active{% endif %}"
+        href="{% url 'dashboard:imports' %}"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">download</span>
+        My Imports
+      </a>
+      <a
+        class="dash-nav-item {% if nav_active == 'stores' %}is-active{% endif %}"
+        href="{% url 'dashboard:stores' %}"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">storefront</span>
+        My Stores
+      </a>
+    </nav>
+
+    <div class="dash-sidebar__foot">
+      <a
+        class="dash-nav-item {% if nav_active == 'settings' %}is-active{% endif %}"
+        href="{% url 'dashboard:settings' %}"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">settings</span>
+        Settings
+      </a>
+      <form method="post" action="{% url 'accounts:logout' %}" class="dash-sidebar__logout">
+        {% csrf_token %}
+        <button type="submit" class="dash-nav-item dash-nav-item--btn">
+          <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+          Log out
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <div class="dash-backdrop" id="dash-backdrop" hidden></div>
+
+  <div class="dash-body">
+    <header class="dash-header">
+      <button
+        type="button"
+        class="dash-header__menu"
+        id="dash-menu"
+        aria-label="Open menu"
+        aria-controls="dash-sidebar"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+      </button>
+
+      <div class="dash-header__title">
+        {% block dash_header_title %}{% endblock %}
+      </div>
+
+      <div class="dash-header__actions">
+        {% if plan_label %}
+          <span class="dash-plan-badge {% if is_free_plan %}dash-plan-badge--free{% else %}dash-plan-badge--pro{% endif %}">
+            {{ plan_label }}
+          </span>
+        {% endif %}
+        {% if user.is_staff %}
+          <a class="dash-header__admin" href="/admin/">Admin</a>
+        {% endif %}
+        <div
+          class="dash-avatar"
+          title="{{ user.first_name|default:user.email|default:user.username }}"
+        >
+          {{ user.first_name|default:user.email|default:user.username|slice:":1"|upper }}
+        </div>
+      </div>
+    </header>
+
+    <main class="dash-main">
+      {% if messages %}
+        <ul class="dash-messages">
+          {% for message in messages %}
+            <li class="dash-messages__item">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% block dash_content %}{% endblock %}
+    </main>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var menu = document.getElementById("dash-menu");
+    var sidebar = document.getElementById("dash-sidebar");
+    var backdrop = document.getElementById("dash-backdrop");
+    if (!menu || !sidebar) return;
+
+    function setOpen(open) {
+      document.body.classList.toggle("dash-nav-open", open);
+      if (backdrop) backdrop.hidden = !open;
+      menu.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    }
+
+    menu.addEventListener("click", function () {
+      setOpen(!document.body.classList.contains("dash-nav-open"));
+    });
+    if (backdrop) {
+      backdrop.addEventListener("click", function () {
+        setOpen(false);
+      });
+    }
+  })();
+</script>
+{% block dash_extra_js %}{% endblock %}
+{% endblock %}

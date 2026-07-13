@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page not found · Zentra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Sora:wght@600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/status.css' %}" />
+    <link rel="icon" href="{% static 'images/favicon.ico' %}?v=3" sizes="any" />
+  </head>
+  <body>
+    <main class="status-page">
+      <div class="status-glow status-glow--primary" aria-hidden="true"></div>
+      <div class="status-glow status-glow--purple" aria-hidden="true"></div>
+      <div class="status-inner">
+        <a href="/" class="status-logo" aria-label="Zentra">
+          <img src="{% static 'images/logo-mark.png' %}?v=3" alt="" width="48" height="48" />
+        </a>
+        <div class="status-card">
+          <p class="status-code" aria-hidden="true">404</p>
+          <div class="status-icon" aria-hidden="true">
+            <span class="material-symbols-outlined">explore</span>
+          </div>
+          <h1>This page took a wrong turn</h1>
+          <p class="status-body">
+            We couldn't find what you're looking for. It may have been moved,
+            or the link might be outdated.
+          </p>
+          <div class="status-actions">
+            <a class="zentra-btn zentra-btn--primary" href="/dashboard/">
+              Back to Dashboard →
+            </a>
+            <a class="zentra-btn zentra-btn--secondary" href="mailto:hello@zentra.com">
+              Contact support
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

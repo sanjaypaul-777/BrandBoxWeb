@@ -1,0 +1,20 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block dash_title %}Upgrade{% endblock %}
+{% block dash_header_title %}<h1 class="dash-page-heading">Upgrade</h1>{% endblock %}
+
+{% block dash_content %}
+<section class="ov-card ov-card--upgrade-page">
+  {% if is_free_plan %}
+    {% include "dashboard/_pro_upgrade.html" with compact=False %}
+  {% else %}
+    <div class="pro-upgrade">
+      <div class="pro-upgrade__copy">
+        <p class="pro-upgrade__eyebrow">You’re on Pro</p>
+        <h2 class="pro-upgrade__title">Thanks for going Pro</h2>
+        <p class="pro-upgrade__lead">Your account already has Pro features unlocked.</p>
+      </div>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

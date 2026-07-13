@@ -1,0 +1,150 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block dash_extra_css %}
+<link rel="stylesheet" href="{% static 'css/catalog.css' %}" />
+{% endblock %}
+
+{% block dash_title %}My Imports{% endblock %}
+{% block dash_header_title %}<h1 class="dash-page-heading">My Imports</h1>{% endblock %}
+
+{% block dash_content %}
+<section
+  class="catalog"
+  data-my-imports
+  data-shop="{{ shop }}"
+  data-csrf="{{ csrf_token }}"
+  data-api-base="{% url 'dashboard:api_imports_create' %}"
+  data-toast-variants='{{ toast_variants_json|safe }}'
+>
+  <aside class="imp-intro" aria-label="About My Imports">
+    <h2>Your saved products, ready to go live.</h2>
+    <p>
+      Import from Product Finder into this queue (stored in your webapp).
+      Push uses the Shopify app to go live — and Node tracks delete / in-store status.
+    </p>
+  </aside>
+
+  <div class="imp-toast-slot">
+    <div class="imp-toast imp-toast--success" data-imp-toast role="status" hidden>
+      <p class="imp-toast__msg" data-imp-toast-msg></p>
+      <button type="button" class="imp-toast__dismiss" data-imp-toast-dismiss aria-label="Dismiss">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+      </button>
+    </div>
+  </div>
+
+  {% if api_error %}
+  <div class="cat-empty" role="alert">
+    <h2>Couldn’t load imports</h2>
+    <p>{{ api_error }}</p>
+  </div>
+  {% elif show_empty %}
+  <div class="cat-empty" role="status">
+    <h2>Nothing here yet</h2>
+    <p>
+      <a href="{% url 'dashboard:product_finder' %}">Browse Winning Products to start importing →</a>
+    </p>
+  </div>
+  {% else %}
+  <div class="imp-list-head">
+    <div class="imp-list-head__left">
+      <p class="cat-toolbar__meta">{{ imports|length }} saved</p>
+      <div class="cat-view-toggle" data-imp-view-toggle role="group" aria-label="Import layout">
+        <button type="button" data-view="grid" aria-pressed="false">
+          <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+          Grid
+        </button>
+        <button type="button" data-view="list" aria-pressed="true">
+          <span class="material-symbols-outlined" aria-hidden="true">view_list</span>
+          List
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="imp-list" data-imp-list data-view="list">
+    {% for item in imports %}
+    <article
+      class="imp-row{% if item.status == 'in_store' %} is-published{% endif %}{% if item.status == 'removed_from_store' %} is-removed{% endif %}"
+      data-imp-row
+      data-import-id="{{ item.id }}"
+      data-status="{{ item.status }}"
+      style="--cat-hue: {{ item.image_hue }}"
+    >
+      <div class="imp-row__thumb{% if item.image_url %} has-image{% endif %}" aria-hidden="true">
+        {% if item.image_url %}
+        <img src="{{ item.image_url }}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+        {% endif %}
+      </div>
+
+      <div class="imp-row__content">
+        <div data-imp-view>
+          <h3 class="imp-row__title">{{ item.title }}</h3>
+          <p class="imp-row__meta">{{ item.niche }} · {{ item.country }}{% if item.status == "in_store" %} · Live{% elif item.status == "removed_from_store" %} · Removed from store{% endif %}</p>
+            <div class="imp-row__prices">
+            <span>Cost <strong data-imp-cost-label>{{ item.cost_label }}</strong></span>
+            <span>Sell <strong data-imp-sell-label>{{ item.sell_label }}</strong></span>
+            <span data-imp-compare-wrap{% if not item.compare_at_label %} hidden{% endif %}>
+              Compare at <strong data-imp-compare-label>{% if item.compare_at_label %}{{ item.compare_at_label }}{% endif %}</strong>
+            </span>
+          </div>
+        </div>
+
+        <form class="imp-edit" data-imp-form hidden>
+          <div class="imp-edit__fields">
+            <div class="cat-field">
+              <label for="imp-title-{{ item.id }}">Title</label>
+              <input id="imp-title-{{ item.id }}" name="title" type="text" value="{{ item.title }}" data-imp-title />
+            </div>
+            <div class="cat-field">
+              <label for="imp-sell-{{ item.id }}">Sell price</label>
+              <input id="imp-sell-{{ item.id }}" name="sell" type="text" value="{{ item.sell }}" inputmode="decimal" data-imp-sell />
+            </div>
+            <div class="cat-field">
+              <label for="imp-compare-{{ item.id }}">Compare at (optional)</label>
+              <input
+                id="imp-compare-{{ item.id }}"
+                name="compareAt"
+                type="text"
+                value="{% if item.compare_at %}{{ item.compare_at }}{% endif %}"
+                inputmode="decimal"
+                placeholder="—"
+                data-imp-compare
+              />
+            </div>
+          </div>
+          <div class="imp-edit__actions">
+            <button type="button" class="cat-btn cat-btn--primary cat-btn--sm" data-imp-save>Save</button>
+            <button type="button" class="cat-btn cat-btn--secondary cat-btn--sm" data-imp-cancel>Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="imp-row__actions" data-imp-actions>
+        <div class="imp-row__tools">
+          <button type="button" class="cat-btn cat-btn--text imp-tool" data-imp-edit>
+            <span class="material-symbols-outlined" aria-hidden="true">edit</span>
+            Edit
+          </button>
+          <button type="button" class="cat-btn cat-btn--text imp-tool" data-imp-remove>
+            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+            Remove
+          </button>
+        </div>
+        {% if item.status == "in_store" %}
+        <span class="cat-badge cat-badge--live">In store</span>
+        {% else %}
+        <button type="button" class="cat-btn cat-btn--primary cat-btn--sm" data-imp-push>Push</button>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block dash_extra_js %}
+<script src="{% static 'js/my-imports.js' %}" defer></script>
+{% endblock %}

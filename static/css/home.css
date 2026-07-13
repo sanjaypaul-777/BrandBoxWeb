@@ -1,0 +1,366 @@
+/**
+ * Homepage Stitch utilities — colors come from base.css tokens.
+ */
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.zentra-glass {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--hairline);
+}
+
+.zentra-glow-primary {
+  filter: blur(100px);
+  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+  opacity: 0.15;
+}
+
+.zentra-glow-purple {
+  filter: blur(100px);
+  background: radial-gradient(circle, var(--vibrant-purple) 0%, transparent 70%);
+  opacity: 0.15;
+}
+
+.zentra-text-gradient {
+  background: linear-gradient(to right, var(--accent-pink), var(--vibrant-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hero typed accent — fixed width so typewriter doesn't shift layout */
+.zentra-hero__accent {
+  color: #4edea3;
+}
+
+.zentra-hero__countdown-time {
+  color: #ff00e5;
+  font-weight: 700;
+  text-transform: none;
+}
+
+.zentra-hero__typed {
+  display: inline-block;
+  position: relative;
+  vertical-align: baseline;
+  overflow: visible;
+  padding: 0.12em 0.4em 0.2em 0.04em;
+  margin: -0.12em -0.4em -0.2em -0.04em;
+  line-height: 1.25;
+  min-height: 1.3em;
+}
+
+.zentra-hero__typed-ghost {
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  font-style: italic;
+  font-weight: inherit;
+  line-height: 1.25;
+  padding-right: 0.28em;
+}
+
+.zentra-hero__typed-text {
+  position: absolute;
+  left: 0.04em;
+  top: 0.12em;
+  width: max-content;
+  max-width: none;
+  white-space: nowrap;
+  padding: 0.06em 0.28em 0.12em 0;
+  background: linear-gradient(105deg, #ff00e5 0%, #4edea3 100%);
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-style: italic;
+  font-weight: inherit;
+  line-height: 1.25;
+  overflow: visible;
+  text-align: left;
+}
+
+/* Hero CTAs — primary / secondary; gradient border on hover only */
+.zentra-btn {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 52px;
+  width: fit-content;
+  padding: 0 2rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  box-sizing: border-box;
+  isolation: isolate;
+}
+
+.zentra-btn--primary {
+  color: var(--on-primary);
+  background: var(--primary-container);
+  border: 3px solid transparent;
+}
+
+/* Same ghost/outline look everywhere (matches View Demo) */
+.zentra-btn--secondary {
+  color: var(--on-surface);
+  background: transparent;
+  border: 3px solid var(--outline-variant);
+}
+
+.zentra-btn--primary,
+.zentra-btn--primary:hover,
+.zentra-btn--primary:focus,
+.zentra-btn--primary:active,
+.zentra-btn--primary:visited {
+  color: var(--on-primary);
+  background: var(--primary-container);
+  text-decoration: none;
+}
+
+.zentra-btn--secondary,
+.zentra-btn--secondary:hover,
+.zentra-btn--secondary:focus,
+.zentra-btn--secondary:active,
+.zentra-btn--secondary:visited {
+  color: var(--on-surface);
+  background: transparent;
+  text-decoration: none;
+}
+
+.zentra-btn--secondary:hover {
+  border-color: transparent;
+}
+
+/* Primary: solid fill + outer gradient ring */
+.zentra-btn--primary::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(120deg, #ff00e5, #4edea3, #ff00e5, #4edea3);
+  background-size: 300% 300%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.zentra-btn--primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--primary-container);
+  pointer-events: none;
+}
+
+/* Secondary: transparent fill; gradient is border-only via mask */
+.zentra-btn--secondary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(120deg, #ff00e5, #4edea3, #ff00e5, #4edea3);
+  background-size: 300% 300%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.zentra-btn .material-symbols-outlined {
+  font-size: 1.35rem;
+  color: inherit;
+}
+
+/* Header-sized secondary (fits h-20 nav) — style matches View Demo */
+.zentra-btn--nav {
+  height: 40px;
+  padding: 0 1.5rem;
+  font-size: 0.9375rem;
+  border-width: 2px;
+}
+
+.zentra-btn--nav.zentra-btn--secondary::before {
+  padding: 2px;
+}
+
+.zentra-btn--primary:hover::before,
+.zentra-btn--secondary:hover::before {
+  opacity: 1;
+  animation: zentra-btn-border 2.2s ease infinite;
+}
+
+@keyframes zentra-btn-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zentra-btn--primary:hover::before,
+  .zentra-btn--secondary:hover::before {
+    animation: none;
+    background: linear-gradient(120deg, #ff00e5, #4edea3);
+    background-size: 100% 100%;
+  }
+}
+
+.zentra-hero__price-badge {
+  background: linear-gradient(135deg, var(--accent-pink), var(--vibrant-purple));
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+.zentra-agent__scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.zentra-agent__scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--primary) 30%, transparent);
+  border-radius: 9999px;
+}
+
+/* —— Zentra launch CTA (Ready to launch your empire?) —— */
+.zentra-launch {
+  position: relative;
+  isolation: isolate;
+}
+
+.zentra-launch__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.zentra-launch__scene canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.zentra-launch__scene.is-static {
+  opacity: 0;
+}
+
+.zentra-faq__wrap,
+.zentra-launch__content,
+.zentra-footer__grid,
+.zentra-footer__bottom {
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .zentra-faq__wrap,
+  .zentra-launch__content,
+  .zentra-footer__grid,
+  .zentra-footer__bottom {
+    padding-inline: 0;
+  }
+}
+
+/* Honeypot — visually hidden */
+.zentra-honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.zentra-honeypot__field {
+  position: absolute;
+  left: -10000px;
+}
+
+/* Newsletter thank-you popup */
+.zentra-newsletter-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.zentra-newsletter-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 10, 8, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.zentra-newsletter-modal__card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 26rem);
+  padding: 2rem 1.75rem 1.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--hairline);
+  background: var(--surface-container);
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+.zentra-newsletter-modal__icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+
+.zentra-newsletter-modal__card h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--on-surface);
+}
+
+.zentra-newsletter-modal__card p {
+  margin: 0 0 1.5rem;
+  color: var(--on-surface-variant);
+  line-height: 1.55;
+  font-size: 0.98rem;
+}
+
+.zentra-newsletter-modal__card .zentra-btn {
+  margin-inline: auto;
+}

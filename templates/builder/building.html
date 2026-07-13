@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Building your AI store · Zentra{% endblock %}
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+<link rel="stylesheet" href="{% static 'css/builder.css' %}" />
+{% endblock %}
+
+{% block body %}
+<div class="build-page">
+  <header class="build-page__top">
+    <a href="{% url 'dashboard:home' %}" class="build-page__brand" aria-label="Zentra">
+      <img src="{% static 'images/logo-mark.png' %}?v=3" alt="" width="48" height="48" />
+    </a>
+  </header>
+
+  <main class="build-page__main">
+    <div class="build-card" data-status-url="{{ status_url }}" id="build-card">
+      <div class="build-card__orb" aria-hidden="true"></div>
+      <p class="build-card__eyebrow">AI store builder</p>
+      <h1 id="build-title">Building your AI store…</h1>
+      <p class="build-card__lede">
+        This usually takes under a minute. Stay on this page.
+      </p>
+
+      <div class="build-progress" role="status" aria-live="polite">
+        <div class="build-progress__head">
+          <p class="build-progress__label" id="build-label">{{ job.progress_label }}</p>
+          <span class="build-progress__pct" id="build-pct">{{ job.progress_percent }}%</span>
+        </div>
+        <div class="build-progress__bar">
+          <span id="build-bar" style="width: {{ job.progress_percent }}%"></span>
+        </div>
+      </div>
+
+      <ol class="build-steps" id="build-steps">
+        {% for label in labels %}
+          <li class="{% if forloop.counter0 < job.progress_step %}is-done{% elif forloop.counter0 == job.progress_step %}is-current{% endif %}">
+            <span class="material-symbols-outlined" aria-hidden="true">
+              {% if forloop.counter0 < job.progress_step %}check_circle{% else %}radio_button_unchecked{% endif %}
+            </span>
+            {{ label }}
+          </li>
+        {% endfor %}
+      </ol>
+
+      <p class="build-card__hint">
+        Connected store: <span class="shop-mono">{{ job.shop }}</span>
+        {% if job.niche %} · Niche: {{ job.niche.display_codename }}{% endif %}
+      </p>
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  var card = document.getElementById("build-card");
+  if (!card) return;
+  var url = card.getAttribute("data-status-url");
+  var bar = document.getElementById("build-bar");
+  var label = document.getElementById("build-label");
+  var pctEl = document.getElementById("build-pct");
+  var steps = document.querySelectorAll("#build-steps li");
+  var displayPct = parseInt((pctEl && pctEl.textContent) || "0", 10) || 0;
+  var targetPct = displayPct;
+
+  function paint(data) {
+    targetPct = typeof data.progress_percent === "number" ? data.progress_percent : targetPct;
+    if (data.done) targetPct = 100;
+    if (label) label.textContent = data.progress_label || "";
+
+    steps.forEach(function (li, i) {
+      li.classList.remove("is-done", "is-current");
+      var icon = li.querySelector(".material-symbols-outlined");
+      if (data.done || i < data.progress_step) {
+        li.classList.add("is-done");
+        if (icon) icon.textContent = "check_circle";
+      } else if (i === data.progress_step) {
+        li.classList.add("is-current");
+        if (icon) icon.textContent = "progress_activity";
+      } else if (icon) {
+        icon.textContent = "radio_button_unchecked";
+      }
+    });
+  }
+
+  function animateBar() {
+    if (displayPct < targetPct) {
+      displayPct = Math.min(targetPct, displayPct + 1.5);
+    } else if (displayPct > targetPct) {
+      displayPct = targetPct;
+    }
+    if (bar) bar.style.width = displayPct + "%";
+    if (pctEl) pctEl.textContent = Math.round(displayPct) + "%";
+    requestAnimationFrame(animateBar);
+  }
+  requestAnimationFrame(animateBar);
+
+  function tick() {
+    fetch(url, { headers: { Accept: "application/json" }, credentials: "same-origin" })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        paint(data);
+        if (data.done && data.redirect) {
+          targetPct = 100;
+          setTimeout(function () { window.location.href = data.redirect; }, 450);
+          return;
+        }
+        if (data.failed) {
+          if (data.redirect) {
+            window.location.href = data.redirect;
+          }
+          return;
+        }
+        setTimeout(tick, 700);
+      })
+      .catch(function () { setTimeout(tick, 1200); });
+  }
+
+  tick();
+})();
+</script>
+{% endblock %}

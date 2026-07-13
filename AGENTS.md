@@ -1,5 +1,9 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# Agent notes — Zentra-Web
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+This repo is a **Django** webapp (Python), not Next.js.
+
+- Read `README.md` and `docs/WEBAPP-SHOPIFY-INTEGRATION.md` before changing architecture.
+- Shopify OAuth / Admin API live in sibling `../Zentra` (Node).
+- Feature logic: `apps/*/views.py` + `urls.py`
+- HTML: `templates/`
+- CSS: `static/css/`

@@ -1,0 +1,273 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block dash_extra_css %}
+<link rel="stylesheet" href="{% static 'css/catalog.css' %}" />
+{% endblock %}
+
+{% block dash_title %}Product Finder{% endblock %}
+{% block dash_header_title %}<h1 class="dash-page-heading">Product Finder</h1>{% endblock %}
+
+{% block dash_content %}
+<section
+  class="catalog"
+  data-product-finder
+  data-shop="{{ shop }}"
+  data-can-import="{% if can_import %}1{% else %}0{% endif %}"
+  data-imports-url="{% url 'dashboard:imports' %}"
+  data-import-api="{% url 'dashboard:api_imports_create' %}"
+  data-csrf="{{ csrf_token }}"
+>
+  {% if needs_shop_connect %}
+  <div class="cat-empty" role="status" style="margin-bottom: 1rem; padding: 1rem 1.25rem;">
+    <h2 style="font-size: 1rem; margin: 0 0 0.35rem;">Connect a Shopify store to import</h2>
+    <p style="margin: 0;">
+      You can browse the Winning Product Vault below.
+      <a href="{% url 'dashboard:connect' %}">Connect store →</a>
+      to import and push products.
+    </p>
+  </div>
+  {% endif %}
+
+  {% if api_error %}
+  <div class="cat-empty" role="alert">
+    <h2>Couldn’t load products</h2>
+    <p>{{ api_error }}</p>
+  </div>
+  {% endif %}
+
+  <form class="cat-filters" method="get" action="{% url 'dashboard:product_finder' %}" role="search">
+    <div class="cat-field">
+      <label for="pf-search">Search by product name</label>
+      <input
+        id="pf-search"
+        type="search"
+        name="q"
+        value="{{ q }}"
+        placeholder="Search product name..."
+        autocomplete="off"
+      />
+    </div>
+    <div class="cat-field">
+      <label id="pf-country-label" for="pf-country">Country</label>
+      <div class="cat-select" data-cat-select>
+        <select id="pf-country" name="country" class="cat-select__native" aria-labelledby="pf-country-label" tabindex="-1">
+          <option value="">All</option>
+          {% for c in countries %}
+          <option value="{{ c }}" {% if country == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+        <button
+          type="button"
+          class="cat-select__trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-labelledby="pf-country-label"
+        >
+          <span class="cat-select__value">{% if country %}{{ country }}{% else %}All{% endif %}</span>
+          <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
+        </button>
+        <ul class="cat-select__menu" role="listbox" hidden>
+          <li role="option" data-value="" class="{% if not country %}is-selected{% endif %}" {% if not country %}aria-selected="true"{% endif %}>All</li>
+          {% for c in countries %}
+          <li
+            role="option"
+            data-value="{{ c }}"
+            class="{% if country == c %}is-selected{% endif %}"
+            {% if country == c %}aria-selected="true"{% endif %}
+          >{{ c }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="cat-field">
+      <label id="pf-niche-label" for="pf-niche">Niche</label>
+      <div class="cat-select" data-cat-select>
+        <select id="pf-niche" name="niche" class="cat-select__native" aria-labelledby="pf-niche-label" tabindex="-1">
+          <option value="">All</option>
+          {% for n in niches %}
+          <option value="{{ n }}" {% if niche == n %}selected{% endif %}>{{ n }}</option>
+          {% endfor %}
+        </select>
+        <button
+          type="button"
+          class="cat-select__trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-labelledby="pf-niche-label"
+        >
+          <span class="cat-select__value">{% if niche %}{{ niche }}{% else %}All{% endif %}</span>
+          <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
+        </button>
+        <ul class="cat-select__menu" role="listbox" hidden>
+          <li role="option" data-value="" class="{% if not niche %}is-selected{% endif %}" {% if not niche %}aria-selected="true"{% endif %}>All</li>
+          {% for n in niches %}
+          <li
+            role="option"
+            data-value="{{ n }}"
+            class="{% if niche == n %}is-selected{% endif %}"
+            {% if niche == n %}aria-selected="true"{% endif %}
+          >{{ n }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="cat-filters__actions">
+      <button type="submit" class="cat-btn cat-btn--primary">Search</button>
+    </div>
+  </form>
+
+  {% if show_empty and not api_error %}
+  <div class="cat-empty" role="status">
+    <h2>{% if q or country or niche %}No products match{% else %}Winning Product Vault is empty{% endif %}</h2>
+    <p>
+      {% if q or country or niche %}
+      Try loosening filters or clearing search to see more products.
+      {% else %}
+      Run <strong>Product Hunter</strong> in Django admin (or sync from sheet) to load products.
+      {% endif %}
+    </p>
+  </div>
+  {% elif products %}
+  <div class="cat-toolbar">
+    <p class="cat-toolbar__meta">{{ total }} products · page {{ page }} of {{ total_pages }}</p>
+    <div class="cat-view-toggle" data-view-toggle role="group" aria-label="Result layout">
+      <button type="button" data-view="grid" aria-pressed="true">
+        <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+        Grid
+      </button>
+      <button type="button" data-view="list" aria-pressed="false">
+        <span class="material-symbols-outlined" aria-hidden="true">view_list</span>
+        List
+      </button>
+    </div>
+  </div>
+
+  <div class="cat-grid" data-cat-grid data-view="grid">
+    {% for p in products %}
+    <article
+      class="cat-card"
+      data-product-card
+      data-source-id="{{ p.id }}"
+      data-title="{{ p.title }}"
+      data-niche="{{ p.niche }}"
+      data-country="{{ p.country }}"
+      data-cost="{{ p.cost_label }}"
+      data-sell="{{ p.sell_label }}"
+      data-margin="{{ p.margin_pct }}"
+      data-source="{{ p.source_url }}"
+      data-status="{{ p.status }}"
+      data-hue="{{ p.image_hue }}"
+      data-image="{{ p.image_url }}"
+      {% if p.image_fallbacks %}data-images="{{ p.image_url }}|{% for u in p.image_fallbacks %}{{ u }}{% if not forloop.last %}|{% endif %}{% endfor %}"{% elif p.image_url %}data-images="{{ p.image_url }}"{% endif %}
+      style="--cat-hue: {{ p.image_hue }}"
+    >
+      <div class="cat-card__media{% if p.image_url %} has-image{% endif %}" aria-hidden="true">
+        {% if p.image_url %}
+        <img
+          src="{{ p.image_url }}"
+          alt=""
+          loading="lazy"
+          decoding="async"
+          referrerpolicy="no-referrer"
+          data-img-fallback
+        />
+        {% endif %}
+      </div>
+      <div class="cat-card__body">
+        <h3 class="cat-card__title">{{ p.title }}</h3>
+        <p class="cat-card__meta">{{ p.niche }} · {{ p.country }}</p>
+        <div class="cat-card__prices">
+          <div class="cat-price">
+            <span class="cat-price__label">Cost</span>
+            <span class="cat-price__value">{{ p.cost_label }}</span>
+          </div>
+          <div class="cat-price">
+            <span class="cat-price__label">Sell</span>
+            <span class="cat-price__value">{{ p.sell_label }}<em>3×</em></span>
+          </div>
+        </div>
+        <div class="cat-card__actions">
+          <button type="button" class="cat-btn cat-btn--secondary cat-btn--sm" data-open-details>
+            View details
+          </button>
+          {% if p.status == "imported" %}
+          <a class="cat-badge cat-badge--imported" href="{% url 'dashboard:imports' %}">
+            Added to My Imports
+          </a>
+          {% elif p.status == "in_store" %}
+          <span class="cat-badge cat-badge--live">In store</span>
+          {% else %}
+          <button type="button" class="cat-btn cat-btn--primary cat-btn--sm" data-import-product>
+            Import
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </button>
+          {% endif %}
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <nav class="cat-pager" aria-label="Pagination">
+    {% if has_prev %}
+    <a
+      class="cat-btn cat-btn--secondary cat-btn--sm"
+      href="?q={{ q|urlencode }}&country={{ country|urlencode }}&niche={{ niche|urlencode }}&page={{ page|add:'-1' }}"
+    >Previous</a>
+    {% else %}
+    <button type="button" class="cat-btn cat-btn--secondary cat-btn--sm" disabled>Previous</button>
+    {% endif %}
+    <span class="cat-pager__label">Page {{ page }} of {{ total_pages }}</span>
+    {% if has_next %}
+    <a
+      class="cat-btn cat-btn--secondary cat-btn--sm"
+      href="?q={{ q|urlencode }}&country={{ country|urlencode }}&niche={{ niche|urlencode }}&page={{ page|add:'1' }}"
+    >Next</a>
+    {% else %}
+    <button type="button" class="cat-btn cat-btn--secondary cat-btn--sm" disabled>Next</button>
+    {% endif %}
+  </nav>
+  {% endif %}
+
+  <div class="cat-modal" data-cat-modal hidden>
+    <button type="button" class="cat-modal__backdrop" data-cat-backdrop aria-label="Close dialog"></button>
+    <div
+      class="cat-modal__dialog"
+      data-cat-dialog
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pf-modal-title"
+    >
+      <div class="cat-modal__top">
+        <h2 id="pf-modal-title" data-m-title></h2>
+        <button type="button" class="cat-modal__close" data-cat-close aria-label="Close">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </div>
+      <div class="cat-modal__media" data-m-media aria-hidden="true">
+        <img data-m-image alt="" hidden decoding="async" referrerpolicy="no-referrer" />
+      </div>
+      <dl class="cat-modal__fields">
+        <div class="cat-kv"><dt>Niche</dt><dd data-m-niche></dd></div>
+        <div class="cat-kv"><dt>Country</dt><dd data-m-country></dd></div>
+      </dl>
+      <div class="cat-profit" aria-label="Profit calculator">
+        <div class="cat-kv"><dt>Cost</dt><dd data-m-cost></dd></div>
+        <div class="cat-kv"><dt>Sell (3×)</dt><dd data-m-sell></dd></div>
+        <div class="cat-kv"><dt>Margin</dt><dd data-m-margin></dd></div>
+      </div>
+      <div class="cat-source">
+        <p class="cat-source__label">Product source</p>
+        <a data-m-source-link href="#" target="_blank" rel="noopener noreferrer">Open product page</a>
+        <p class="cat-source__url" data-m-source-url></p>
+      </div>
+      <div class="cat-modal__actions" data-m-actions></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block dash_extra_js %}
+<script src="{% static 'js/product-finder.js' %}" defer></script>
+{% endblock %}

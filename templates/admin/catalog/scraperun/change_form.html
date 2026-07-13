@@ -1,0 +1,28 @@
+{% extends "admin/change_form.html" %}
+
+{% block content_title %}
+  {% if add %}
+  <h1>Start Hunting</h1>
+  {% else %}
+  {{ block.super }}
+  {% endif %}
+{% endblock %}
+
+{% block after_field_sets %}
+  {% if add %}
+  <p class="help" style="margin: 0 0 1rem; max-width: 42rem;">
+    Product Hunter checks each product URL and images before saving.
+    Anything that returns 404 (or has no live image) is skipped — it is never written to the Winning Product Vault or the Sheet.
+  </p>
+  {% endif %}
+{% endblock %}
+
+{% block submit_buttons_bottom %}
+  <div class="submit-row">
+    {% if add %}
+    <input type="submit" value="Start Hunting" class="default" name="_save">
+    {% else %}
+    {{ block.super }}
+    {% endif %}
+  </div>
+{% endblock %}

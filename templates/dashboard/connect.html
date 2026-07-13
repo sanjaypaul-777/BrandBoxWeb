@@ -1,0 +1,150 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block dash_title %}Connect store{% endblock %}
+{% block dash_header_title %}<h1 class="dash-page-heading">Connect store</h1>{% endblock %}
+
+{% block dash_content %}
+<div class="flow-wrap">
+
+  {% if not show_install %}
+  {# —— Domain entry —— #}
+  <section class="flow-card" id="connect-section-a">
+    <div class="flow-progress">
+      <div class="flow-progress__meta">
+        <span class="flow-progress__step">Step {{ flow_step }}/{{ flow_total }}</span>
+        <span class="flow-progress__eta">{{ flow_eta }}</span>
+      </div>
+      <div class="flow-bar{% if flow_total == 3 %} flow-bar--3{% endif %}" aria-hidden="true">
+        {% for n in flow_segments %}
+        <span class="{% if n < flow_step %}is-done{% elif n == flow_step %}is-current{% endif %}"></span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <h1>Connect your Shopify store</h1>
+    <p class="flow-card__lede">
+      Enter the store domain you use with Shopify. You’ll find it in Shopify Admin →
+      Settings → Domains, or in the browser address bar when you’re logged into Admin
+      (it looks like <strong>yourstorename.myshopify.com</strong>).
+    </p>
+
+    <form method="post" action="{% url 'dashboard:connect' %}?from={{ funnel }}" class="dash-form" id="connect-shop-form" novalidate>
+      {% csrf_token %}
+      <label class="label" for="shop-domain">Store domain</label>
+      <input
+        id="shop-domain"
+        name="shop"
+        type="text"
+        inputmode="url"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="yourstorename.myshopify.com"
+        value="{{ shop_prefill }}"
+        aria-invalid="{% if field_error %}true{% else %}false{% endif %}"
+        aria-describedby="shop-domain-hint{% if field_error %} shop-domain-error{% endif %}"
+        required
+      />
+      <p class="flow-hint" id="shop-domain-hint">
+        Use the <code>*.myshopify.com</code> domain — custom domains won’t work for install.
+      </p>
+      {% if field_error %}
+      <p class="field-error" id="shop-domain-error" role="alert">{{ field_error }}</p>
+      {% else %}
+      <p class="field-error is-hidden" id="shop-domain-error" role="alert" hidden></p>
+      {% endif %}
+
+      <div class="flow-actions">
+        <button type="submit" class="btn-flow btn-flow--primary">
+          Continue
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  {% else %}
+  {# —— Install guide —— #}
+  <section class="flow-card" id="connect-section-b">
+    <div class="flow-progress">
+      <div class="flow-progress__meta">
+        <span class="flow-progress__step">Step {{ flow_step }}/{{ flow_total }}</span>
+        <span class="flow-progress__eta">{{ flow_eta }}</span>
+      </div>
+      <div class="flow-bar{% if flow_total == 3 %} flow-bar--3{% endif %}" aria-hidden="true">
+        {% for n in flow_segments %}
+        <span class="{% if n < flow_step %}is-done{% elif n == flow_step %}is-current{% endif %}"></span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <h1>Install Zentra on your store</h1>
+    <p class="flow-card__lede">
+      One click, and Zentra can start building. This only grants permission to add
+      products and install a theme — nothing else on your store.
+      {% if pending_shop %}
+      <br />Store: <strong>{{ pending_shop.shop }}</strong>
+      {% endif %}
+    </p>
+
+    <ol class="micro-steps">
+      <li>Click “Install Zentra” below</li>
+      <li>Log into your Shopify account if prompted</li>
+      <li>Review the requested permissions</li>
+      <li>Click “Install” to confirm</li>
+    </ol>
+
+    {# Same-tab OAuth only — reuses /dashboard/install/ → Node /auth?shop= #}
+    <form method="post" action="{% url 'dashboard:install' %}" class="flow-actions">
+      {% csrf_token %}
+      <input type="hidden" name="shop" value="{{ pending_shop.shop }}" />
+      <button type="submit" class="btn-flow btn-flow--primary btn-flow--block">
+        Install Zentra
+        <span aria-hidden="true">→</span>
+      </button>
+    </form>
+
+    <p class="flow-hint">
+      <a href="{% url 'dashboard:connect' %}?from={{ funnel }}">← Change store domain</a>
+    </p>
+  </section>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block dash_extra_js %}
+{% if not show_install %}
+<script>
+(function () {
+  var form = document.getElementById("connect-shop-form");
+  var input = document.getElementById("shop-domain");
+  var err = document.getElementById("shop-domain-error");
+  if (!form || !input || !err) return;
+
+  function normalizeHint(raw) {
+    var v = (raw || "").trim().toLowerCase();
+    if (!v) return null;
+    v = v.replace(/^https?:\/\//, "").split("/")[0].replace(/\.$/, "");
+    if (v.indexOf(".") === -1) v = v + ".myshopify.com";
+    return /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(v) ? v : null;
+  }
+
+  form.addEventListener("submit", function (e) {
+    if (normalizeHint(input.value)) {
+      err.hidden = true;
+      err.classList.add("is-hidden");
+      err.textContent = "";
+      input.setAttribute("aria-invalid", "false");
+      return;
+    }
+    e.preventDefault();
+    err.hidden = false;
+    err.classList.remove("is-hidden");
+    err.textContent = "Enter a valid store domain like yourstorename.myshopify.com";
+    input.setAttribute("aria-invalid", "true");
+    input.focus();
+  });
+})();
+</script>
+{% endif %}
+{% endblock %}

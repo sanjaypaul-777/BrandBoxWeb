@@ -1,0 +1,23 @@
+{# Reusable in-flow build error — include inside dashboard / builder shell. #}
+{# Expects: build_error_headline, build_error_body, retry_url, support_email (optional) #}
+{% load static %}
+<section class="build-error" role="alert">
+  <div class="status-card">
+    <div class="status-icon" aria-hidden="true">
+      <span class="material-symbols-outlined">power</span>
+    </div>
+    <h1>{{ build_error_headline|default:"We hit a snag building your store" }}</h1>
+    <p class="status-body">{{ build_error_body }}</p>
+    <div class="status-actions">
+      {% if retry_url %}
+      <a class="zentra-btn zentra-btn--primary" href="{{ retry_url }}">Try again →</a>
+      {% endif %}
+      <a
+        class="zentra-btn zentra-btn--secondary"
+        href="mailto:{{ support_email|default:'hello@zentra.com' }}"
+      >
+        Contact support
+      </a>
+    </div>
+  </div>
+</section>

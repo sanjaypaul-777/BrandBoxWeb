@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact · Zentra{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}" />
+<link rel="stylesheet" href="{% static 'css/contact.css' %}" />
+{% endblock %}
+
+{% block body %}
+<main class="auth-page contact-page">
+  <div class="auth-glow auth-glow--primary" aria-hidden="true"></div>
+  <div class="auth-glow auth-glow--purple" aria-hidden="true"></div>
+  <div class="auth-inner auth-inner--wide">
+    <a href="{% url 'home:index' %}" class="auth-logo" aria-label="Zentra home">
+      <img src="{% static 'images/logo-mark.png' %}?v=3" alt="" width="48" height="48" />
+    </a>
+    <p class="eyebrow">Support</p>
+    <h1>Contact us</h1>
+    <p class="subtitle">Questions about your store, billing, or getting started? Send a note — we read every message.</p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <p class="contact-success" role="status">{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+
+    <div class="auth-card">
+      <form method="post" class="auth-form contact-form" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <p class="error">{{ form.non_field_errors|striptags }}</p>
+        {% endif %}
+
+        <div class="contact-form__row">
+          <div class="contact-form__field">
+            <label class="label" for="{{ form.name.id_for_label }}">Name</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+              <p class="error">{{ form.name.errors|striptags }}</p>
+            {% endif %}
+          </div>
+          <div class="contact-form__field">
+            <label class="label" for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+              <p class="error">{{ form.email.errors|striptags }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <label class="label" for="{{ form.subject.id_for_label }}">Subject</label>
+        {{ form.subject }}
+        {% if form.subject.errors %}
+          <p class="error">{{ form.subject.errors|striptags }}</p>
+        {% endif %}
+
+        <label class="label" for="{{ form.message.id_for_label }}">Message</label>
+        {{ form.message }}
+        {% if form.message.errors %}
+          <p class="error">{{ form.message.errors|striptags }}</p>
+        {% endif %}
+
+        {# Honeypot — leave empty #}
+        <div class="zentra-honeypot" aria-hidden="true">
+          <label for="{{ form.website.id_for_label }}">Website</label>
+          {{ form.website }}
+        </div>
+
+        <button type="submit" class="auth-submit">
+          Send message
+          <span class="material-symbols-outlined" aria-hidden="true">send</span>
+        </button>
+      </form>
+    </div>
+
+    <p class="auth-footer">
+      Or email
+      <a href="mailto:hello@zentra.com">hello@zentra.com</a>
+    </p>
+    <nav class="auth-legal" aria-label="Back">
+      <a href="{% url 'home:index' %}">← Back to home</a>
+    </nav>
+  </div>
+</main>
+{% endblock %}

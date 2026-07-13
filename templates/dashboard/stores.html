@@ -1,0 +1,174 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+{# My Stores — one row per connected Shopify shop, not per AI build. #}
+
+{% block dash_extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+<link rel="stylesheet" href="{% static 'css/stores.css' %}" />
+{% endblock %}
+
+{% block dash_title %}My Stores{% endblock %}
+{% block dash_header_title %}<h1 class="dash-page-heading">My Stores</h1>{% endblock %}
+
+{% block dash_content %}
+<section class="ms" data-my-stores>
+  <header class="ms-head">
+    <div class="ms-head__copy">
+      <p class="ms-head__sub">Every Shopify store you've connected to Zentra.</p>
+    </div>
+    {% if has_stores %}
+    <a class="zentra-btn zentra-btn--primary" href="{{ connect_url }}">+ Connect another store</a>
+    {% endif %}
+  </header>
+
+  {% if not has_stores %}
+  <div class="ms-empty status-card" role="status">
+    <div class="ms-empty__icon" aria-hidden="true">
+      <span class="material-symbols-outlined">storefront</span>
+    </div>
+    <h3>You haven't connected a store yet</h3>
+    <p>Connect your first Shopify store to start building.</p>
+    <a class="zentra-btn zentra-btn--primary" href="{{ connect_url }}">Connect your first store →</a>
+  </div>
+  {% else %}
+
+  <div class="ms-filters" data-ms-filters>
+    <div class="ms-search">
+      <label class="visually-hidden" for="ms-search">Search by shop domain</label>
+      <span class="material-symbols-outlined" aria-hidden="true">search</span>
+      <input
+        id="ms-search"
+        type="search"
+        placeholder="Search shop domain…"
+        autocomplete="off"
+        data-ms-search
+      />
+    </div>
+    <div class="ms-pills" role="group" aria-label="Filter by status">
+      <button type="button" class="ms-pill is-active" data-ms-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="ms-pill" data-ms-filter="live" aria-pressed="false">Live</button>
+      <button type="button" class="ms-pill" data-ms-filter="building" aria-pressed="false">Building</button>
+      <button type="button" class="ms-pill" data-ms-filter="not_built" aria-pressed="false">Not built</button>
+      <button type="button" class="ms-pill" data-ms-filter="failed" aria-pressed="false">Failed</button>
+    </div>
+  </div>
+
+  <div class="ms-list" data-ms-list>
+    {% for row in store_rows %}
+    <article
+      class="ms-row"
+      data-ms-row
+      data-status="{{ row.status }}"
+      data-shop="{{ row.shop|lower }}"
+    >
+      <div class="ms-row__main">
+        <div class="ms-row__top">
+          <h3 class="ms-row__domain">{{ row.shop }}</h3>
+          <span class="ms-status ms-status--{{ row.status }}">{{ row.status_label }}</span>
+        </div>
+
+        {% if row.niche_badge %}
+        <p class="ms-row__niche">{{ row.niche_badge }}</p>
+        {% endif %}
+
+        {% if row.status == "building" and row.progress_line %}
+        <p class="ms-row__progress">{{ row.progress_line }}</p>
+        {% elif row.status == "live" %}
+        <p class="ms-row__meta">
+          {% if row.theme_name %}<span>{{ row.theme_name }}</span>{% endif %}
+          {% if row.connected_at %}
+          <span>Connected {{ row.connected_at|date:"M j, Y" }}</span>
+          {% endif %}
+        </p>
+        {% elif row.status == "not_built" and row.connected_at %}
+        <p class="ms-row__meta">
+          <span>Connected {{ row.connected_at|date:"M j, Y" }}</span>
+        </p>
+        {% elif row.status == "failed" %}
+        <p class="ms-row__fail">
+          We couldn't finish this build — no changes were made to your store.
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="ms-row__actions">
+        {% if row.primary_url %}
+          {% if row.status == "live" %}
+          <a
+            class="zentra-btn zentra-btn--primary ms-row__cta"
+            href="{{ row.primary_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >{{ row.primary_label }}</a>
+          {% elif row.status == "failed" %}
+          <a class="zentra-btn zentra-btn--secondary ms-row__cta" href="{{ row.primary_url }}">
+            {{ row.primary_label }}
+          </a>
+          {% else %}
+          <a class="zentra-btn zentra-btn--primary ms-row__cta" href="{{ row.primary_url }}">
+            {{ row.primary_label }}
+          </a>
+          {% endif %}
+        {% endif %}
+
+        <div class="ms-menu" data-ms-menu>
+          <button
+            type="button"
+            class="ms-menu__trigger"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-label="More actions for {{ row.shop }}"
+            data-ms-menu-btn
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">more_horiz</span>
+          </button>
+          <div class="ms-menu__panel" hidden role="menu">
+            <a class="ms-menu__item" role="menuitem" href="{{ row.detail_url }}">View details</a>
+            <button
+              type="button"
+              class="ms-menu__item ms-menu__item--danger"
+              role="menuitem"
+              data-ms-disconnect
+              data-shop="{{ row.shop }}"
+              data-action="{% url 'dashboard:store_disconnect' row.pk %}"
+            >
+              Disconnect store
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <p class="ms-empty-filter" data-ms-empty-filter hidden role="status">
+    No stores match this filter.
+  </p>
+
+  <div class="ms-confirm" data-ms-confirm hidden>
+    <button type="button" class="ms-confirm__backdrop" data-ms-confirm-cancel aria-label="Close"></button>
+    <div class="ms-confirm__dialog status-card" role="alertdialog" aria-labelledby="ms-disconnect-title" aria-modal="true">
+      <h3 id="ms-disconnect-title">Disconnect this store?</h3>
+      <p>
+        This removes <strong data-ms-confirm-shop></strong> from Zentra and clears its
+        stored access for your account. You can reconnect later.
+      </p>
+      <div class="ms-confirm__actions">
+        <button type="button" class="zentra-btn zentra-btn--secondary" data-ms-confirm-cancel>Cancel</button>
+        <form method="post" data-ms-confirm-form>
+          {% csrf_token %}
+          <button type="submit" class="zentra-btn zentra-btn--primary ms-confirm__danger">Disconnect store</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block dash_extra_js %}
+{% if has_stores %}
+<script src="{% static 'js/my-stores.js' %}" defer></script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block dash_extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+<link rel="stylesheet" href="{% static 'css/stores.css' %}" />
+{% endblock %}
+
+{% block dash_title %}{{ connection.shop }}{% endblock %}
+{% block dash_header_title %}<h1 class="dash-page-heading">Store details</h1>{% endblock %}
+
+{% block dash_content %}
+<section class="ms">
+  <p class="ms-back">
+    <a href="{% url 'dashboard:stores' %}">
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+      Back to My Stores
+    </a>
+  </p>
+
+  <article class="ms-row ms-row--detail">
+    <div class="ms-row__main">
+      <div class="ms-row__top">
+        <h2 class="ms-row__domain">{{ connection.shop }}</h2>
+        <span class="ms-status ms-status--{{ store_row.status }}">{{ store_row.status_label }}</span>
+      </div>
+      {% if store_row.niche_badge %}
+      <p class="ms-row__niche">{{ store_row.niche_badge }}</p>
+      {% endif %}
+      {% if store_row.theme_name %}
+      <p class="ms-row__meta"><span>Theme · {{ store_row.theme_name }}</span></p>
+      {% endif %}
+      {% if store_row.connected_at %}
+      <p class="ms-row__meta"><span>Connected {{ store_row.connected_at|date:"M j, Y" }}</span></p>
+      {% endif %}
+      {% if store_row.status == "failed" %}
+      <p class="ms-row__fail">We couldn't finish this build — no changes were made to your store.</p>
+      {% endif %}
+    </div>
+    <div class="ms-row__actions">
+      {% if store_row.primary_url %}
+      <a
+        class="zentra-btn {% if store_row.status == 'failed' %}zentra-btn--secondary{% else %}zentra-btn--primary{% endif %}"
+        href="{{ store_row.primary_url }}"
+        {% if store_row.primary_external %}target="_blank" rel="noopener noreferrer"{% endif %}
+      >{{ store_row.primary_label }}</a>
+      {% endif %}
+    </div>
+  </article>
+</section>
+{% endblock %}

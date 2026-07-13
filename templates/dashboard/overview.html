@@ -1,0 +1,213 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block dash_extra_css %}
+<link
+  href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap"
+  rel="stylesheet"
+/>
+{% endblock %}
+
+{% block dash_title %}Overview{% endblock %}
+{% block dash_header_title %}<h1 class="dash-page-heading">Overview</h1>{% endblock %}
+
+{% block dash_content %}
+{% if not is_connected %}
+{# Not connected — entry only (no View B content). Driven by app_installed DB check. #}
+<section class="nc" aria-label="Connect your Shopify store">
+  <header class="nc__intro">
+    <h2 class="nc__title">Let’s get your Shopify connected</h2>
+    <p class="nc__sub">
+      Choose how you’d like to get started — you’ll be building your AI
+      store in a couple of minutes either way.
+    </p>
+  </header>
+
+  <div class="nc__grid">
+    <article class="nc-card">
+      <div class="nc-card__icon nc-card__icon--mint" aria-hidden="true">
+        <span class="material-symbols-outlined">link</span>
+      </div>
+      <h3 class="nc-card__title">Connect Shopify</h3>
+      <p class="nc-card__body">Paste your *.myshopify.com domain and install Zentra.</p>
+      <a class="btn-mint nc-card__btn" href="{% url 'dashboard:connect' %}?from=connect">Connect →</a>
+    </article>
+
+    <article class="nc-card">
+      <div class="nc-card__icon nc-card__icon--shopify" aria-hidden="true">
+        <svg class="nc-card__shopify" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="28" height="28" focusable="false">
+          <path fill="#7cb342" d="M37.216,11.78c-0.023-0.211-0.211-0.305-0.351-0.305s-3.21-0.234-3.21-0.234s-2.132-2.132-2.39-2.343c-0.234-0.234-0.68-0.164-0.867-0.117c-0.023,0-0.469,0.141-1.195,0.375c-0.726-2.086-1.968-3.984-4.194-3.984h-0.211C24.187,4.375,23.391,4,22.735,4c-5.155,0-7.639,6.444-8.412,9.725c-2.015,0.633-3.445,1.054-3.609,1.125c-1.125,0.351-1.148,0.375-1.289,1.429c-0.117,0.797-3.046,23.456-3.046,23.456L29.179,44l12.373-2.671C41.575,41.282,37.24,11.991,37.216,11.78z M27.937,9.483c-0.562,0.164-1.242,0.375-1.921,0.609V9.671c0-1.265-0.164-2.296-0.469-3.117C26.718,6.695,27.445,7.984,27.937,9.483L27.937,9.483z M24.117,6.812c0.305,0.797,0.516,1.922,0.516,3.468v0.234c-1.265,0.398-2.601,0.797-3.984,1.242C21.422,8.804,22.899,7.351,24.117,6.812L24.117,6.812z M22.617,5.359c0.234,0,0.469,0.094,0.656,0.234c-1.664,0.773-3.421,2.718-4.148,6.655c-1.101,0.351-2.156,0.656-3.163,0.984C16.806,10.233,18.915,5.359,22.617,5.359z"></path>
+          <path fill="#558b2f" d="M36.865,11.428c-0.141,0-3.21-0.234-3.21-0.234s-2.132-2.132-2.39-2.343C31.17,8.757,31.053,8.71,30.96,8.71L29.249,44l12.373-2.671c0,0-4.335-29.338-4.359-29.549C37.169,11.569,37.005,11.475,36.865,11.428z"></path>
+          <path fill="#fff" d="M24.792,18.593l-1.475,4.449c0,0-1.337-0.715-2.927-0.715c-2.374,0-2.489,1.498-2.489,1.867c0,2.028,5.301,2.812,5.301,7.583c0,3.757-2.374,6.177-5.578,6.177c-3.872,0-5.808-2.397-5.808-2.397l1.037-3.411c0,0,2.028,1.752,3.734,1.752c1.129,0,1.59-0.876,1.59-1.521c0-2.651-4.333-2.766-4.333-7.145c0-3.665,2.628-7.214,7.952-7.214C23.777,17.994,24.792,18.593,24.792,18.593z"></path>
+        </svg>
+      </div>
+      <h3 class="nc-card__title">Create Shopify Account</h3>
+      <p class="nc-card__body">Create a Shopify account, then come back to connect.</p>
+      <a class="btn-ghost nc-card__btn" href="{% url 'dashboard:create_store' %}">Create account →</a>
+    </article>
+  </div>
+</section>
+
+{% else %}
+{# View B — connected dashboard (unchanged) #}
+<div class="ov">
+
+  {# 1. Hero #}
+  <section class="ov-hero">
+    {% if hero_mode == "create" %}
+    {# Case A: connected via app, no AI store built yet #}
+    <div class="ov-hero__inner">
+      <h2 class="ov-hero__title">Create your AI store</h2>
+      <div class="ov-hero__actions">
+        <a href="{% url 'dashboard:builder' %}" class="btn-flow btn-flow--primary">Create AI store</a>
+      </div>
+    </div>
+    {% else %}
+    {# Case A: connected via app, ≥1 AI store already built #}
+    <div class="ov-hero__inner">
+      <h2 class="ov-hero__title">Ready for the next niche?</h2>
+      <div class="ov-hero__actions">
+        <a href="{% url 'dashboard:builder' %}" class="btn-flow btn-flow--primary">
+          Build another store
+          <span aria-hidden="true">+</span>
+        </a>
+        {% if storefront_url %}
+        <a
+          class="btn-flow btn-flow--ghost"
+          href="{{ storefront_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View live store
+          <span aria-hidden="true">↗</span>
+        </a>
+        {% else %}
+        <a class="btn-flow btn-flow--ghost" href="{% url 'dashboard:settings' %}">
+          View live store
+          <span aria-hidden="true">↗</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+    </section>
+
+  {# 2. Stats #}
+  <section class="ov-stats" aria-label="Stats">
+    <article class="ov-glass ov-stat">
+      <div class="ov-stat__top">
+        <p class="ov-stat__label">Total stores built</p>
+        <span class="ov-pill ov-pill--mint">{{ stats.stores_trend }}</span>
+      </div>
+      <p class="ov-stat__value">{{ stats.stores_built }}</p>
+    </article>
+    <article class="ov-glass ov-stat">
+      <div class="ov-stat__top">
+        <p class="ov-stat__label">Products in store</p>
+        <span class="ov-pill ov-pill--mint">{{ stats.products_trend }}</span>
+      </div>
+      {% if stats.products_count_available %}
+      <p class="ov-stat__value">{{ stats.products_used }}</p>
+      <p class="ov-stat__hint">{{ stats.products_status_copy }}</p>
+      {% elif stats.products_status_key == "not_connected" %}
+      <p class="ov-stat__value ov-stat__value--muted">—</p>
+      <p class="ov-stat__hint">{{ stats.products_status_copy }}</p>
+      <a class="ov-link" href="{% url 'dashboard:connect' %}?from=connect">Connect store →</a>
+      {% else %}
+      <p class="ov-stat__value ov-stat__value--muted">—</p>
+      <p class="ov-stat__hint">{{ stats.products_status_copy }}</p>
+      {% if connection.is_preview %}
+      <a class="ov-link" href="{% url 'dashboard:connect' %}?from=connect">Connect real store →</a>
+      {% endif %}
+      {% endif %}
+    </article>
+    <article class="ov-glass ov-stat">
+      <div class="ov-stat__top">
+        <p class="ov-stat__label">Current plan</p>
+        {% if is_free_plan %}
+        <a class="ov-pill ov-pill--magenta" href="{% url 'dashboard:upgrade' %}">Upgrade →</a>
+        {% endif %}
+      </div>
+      <p class="ov-stat__value ov-stat__value--plan">{{ stats.plan_label }}</p>
+    </article>
+  </section>
+
+  {# 3. Store + activity #}
+  <div class="ov-split">
+    <section class="ov-glass ov-store">
+      {% if snapshot %}
+      <div class="ov-store__head">
+        <div class="ov-store__identity">
+          <p class="ov-store__name">{{ snapshot.name }}</p>
+          <p class="ov-store__theme">{{ snapshot.theme }}</p>
+        </div>
+        <div class="ov-store__meta">
+          <span class="ov-status ov-status--{{ snapshot.status|lower }}">{{ snapshot.status }}</span>
+          {% if snapshot.id %}
+          <a class="ov-link" href="{% url 'dashboard:store_detail' snapshot.id %}">View →</a>
+          {% endif %}
+        </div>
+      </div>
+      <hr class="ov-divider" />
+      <div class="ov-ready__row">
+        <span class="ov-ready__label">Store readiness</span>
+        <span class="ov-ready__pct">{{ readiness_pct }}%</span>
+      </div>
+      <div
+        class="ov-ready__track"
+        role="progressbar"
+        aria-valuenow="{{ readiness_pct }}"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <span class="ov-ready__fill" style="width: {{ readiness_pct }}%"></span>
+      </div>
+      <p class="ov-ready__summary">{{ readiness_summary }}</p>
+      {% else %}
+      <div class="ov-store--empty">
+        <p class="ov-empty-title">No store yet</p>
+        <p class="ov-empty-copy">Build your first AI store to track readiness here.</p>
+      </div>
+      {% endif %}
+    </section>
+
+    <section class="ov-glass ov-activity">
+      <h3 class="ov-activity__title">Recent activity</h3>
+      {% if activities %}
+      <ul class="ov-activity__list">
+        {% for event in activities %}
+        <li class="ov-activity__item">
+          <time class="ov-activity__time" datetime="{{ event.created_at|date:'c' }}">{{ event.created_at|timesince }} ago</time>
+          <p class="ov-activity__text">{{ event.message }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="ov-activity__empty">No recent activity yet.</p>
+      {% endif %}
+    </section>
+  </div>
+
+  {# 4. Spotlight #}
+  <section class="ov-glass ov-spotlight">
+    <div class="ov-spotlight__head">
+      <h3 class="ov-spotlight__title">Winning products spotlight</h3>
+      <a class="ov-link" href="{% url 'dashboard:product_finder' %}">See all →</a>
+    </div>
+    <div class="ov-spotlight__grid">
+      {% for item in spotlight %}
+      <a class="ov-spot" href="{% url 'dashboard:product_finder' %}">
+        <span class="ov-spot__thumb" style="background: {{ item.color }}"></span>
+        <span class="ov-spot__name">{{ item.name }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  {# 5. Pro (Free only) #}
+  {% if is_free_plan %}
+  {% include "dashboard/_pro_upgrade.html" with compact=True %}
+  {% endif %}
+
+</div>
+{% endif %}
+{% endblock %}

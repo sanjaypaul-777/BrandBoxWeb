@@ -1,41 +1,34 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+db.sqlite3
+staticfiles/
+media/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Env
+.env
+.env.local
+.env.*
 
-# testing
-/coverage
+# Node (legacy Next.js — removed from active stack)
+node_modules/
+.next/
+out/
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+# OS / IDE
 .DS_Store
+.idea/
+.vscode/
+
+# Misc
 *.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
 .vercel
+debug.log
+google-sheets-sa.json
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Secrets (Google service account, etc.)
+secrets/
+**/credentials.json
+**/google-sheets-sa.json

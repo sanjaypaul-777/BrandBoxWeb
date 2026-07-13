@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign up · Zentra{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}" />
+{% endblock %}
+
+{% block body %}
+<main class="auth-page">
+  <div class="auth-glow auth-glow--primary" aria-hidden="true"></div>
+  <div class="auth-glow auth-glow--purple" aria-hidden="true"></div>
+  <div class="auth-inner">
+    <a href="{% url 'home:index' %}" class="auth-logo" aria-label="Zentra home">
+      <img src="{% static 'images/logo-mark.png' %}?v=3" alt="" width="48" height="48" />
+    </a>
+    <h1>Create your account</h1>
+    <p class="subtitle">Build an AI-powered Shopify store in one click.</p>
+
+    <div class="auth-card">
+      {% include "accounts/_social_auth.html" %}
+      <form method="post" class="auth-form" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <p class="error">{{ form.non_field_errors|striptags }}</p>
+        {% endif %}
+
+        <div class="field-row">
+          <div>
+            <label class="label" for="id_first_name">First name</label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}
+              <p class="error">{{ form.first_name.errors|striptags }}</p>
+            {% endif %}
+          </div>
+          <div>
+            <label class="label" for="id_last_name">Last name</label>
+            {{ form.last_name }}
+            {% if form.last_name.errors %}
+              <p class="error">{{ form.last_name.errors|striptags }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <label class="label" for="id_email">Email</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <p class="error">{{ form.email.errors|striptags }}</p>
+        {% endif %}
+
+        <label class="label" for="id_password">Password</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+          <p class="error">{{ form.password.errors|striptags }}</p>
+        {% endif %}
+
+        <button type="submit" class="auth-submit">
+          Create Account
+          <span class="material-symbols-outlined">auto_awesome</span>
+        </button>
+      </form>
+    </div>
+
+    <p class="auth-footer">
+      Already a member?
+      <a href="{% url 'accounts:login' %}">Sign in</a>
+    </p>
+
+    <nav class="auth-legal" aria-label="Legal">
+      <span>Privacy Policy</span>
+      <span>Terms of Service</span>
+      <a href="mailto:hello@zentra.com">Support</a>
+    </nav>
+  </div>
+</main>
+{% endblock %}

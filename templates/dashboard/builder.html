@@ -1,0 +1,135 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block dash_extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/builder.css' %}" />
+{% endblock %}
+
+{% block dash_title %}AI Store Builder{% endblock %}
+{% block dash_header_title %}<h1 class="dash-page-heading">AI Store Builder</h1>{% endblock %}
+
+{% block dash_content %}
+<section class="ab" data-step="{{ wizard_step }}">
+
+  <div class="ab-progress">
+    <div class="ab-progress__meta">
+      <span class="ab-progress__step">Step {{ wizard_step }} of {{ wizard_total|default:2 }}</span>
+      <span class="ab-progress__eta">
+        {% if wizard_step == 1 %}About 1 minute{% else %}Ready to launch{% endif %}
+      </span>
+    </div>
+    <div class="ab-bar ab-bar--2" aria-hidden="true">
+      <span class="{% if wizard_step >= 1 %}is-done{% endif %}{% if wizard_step == 1 %} is-current{% endif %}"></span>
+      <span class="{% if wizard_step >= 2 %}is-done{% endif %}{% if wizard_step == 2 %} is-current{% endif %}"></span>
+    </div>
+  </div>
+
+  {% if wizard_step == 1 %}
+  {# —— STEP 1: Choose niche —— #}
+  <header class="ab-intro">
+    <h2 class="ab-intro__title">Choose your niche</h2>
+    <p class="ab-intro__sub">Every niche is preloaded with a matching theme, ready to go.</p>
+  </header>
+
+  <form method="post" action="{% url 'dashboard:builder' %}?step=1" id="ab-niche-form">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="select_niche" />
+    <input type="hidden" name="niche" id="ab-niche-value" value="{{ selected_niche.slug|default:'' }}" />
+    {% if connection %}<input type="hidden" name="shop" value="{{ connection.shop }}" />{% endif %}
+
+    <div class="ab-niche-grid" role="listbox" aria-label="Niches">
+      {% for n in niches %}
+      <button
+        type="button"
+        class="ab-niche{% if selected_niche and selected_niche.slug == n.slug %} is-selected{% endif %}"
+        role="option"
+        aria-selected="{% if selected_niche and selected_niche.slug == n.slug %}true{% else %}false{% endif %}"
+        data-slug="{{ n.slug }}"
+      >
+        <span class="ab-niche__thumb" style="--ab-accent: {{ n.accent }}"></span>
+        <span class="ab-niche__code">{{ n.display_codename }}</span>
+        <span class="ab-niche__cat">{{ n.name }}</span>
+      </button>
+      {% endfor %}
+    </div>
+
+    <div class="ab-footer">
+      <p class="ab-reassure">You can edit everything after it’s built</p>
+      <button type="submit" class="ab-btn ab-btn--primary" id="ab-niche-continue" {% if not selected_niche %}disabled{% endif %}>
+        Continue →
+      </button>
+    </div>
+  </form>
+
+  {% else %}
+  {# —— STEP 2: Build confirmation —— #}
+  <header class="ab-intro">
+    <h2 class="ab-intro__title">Ready to build your store</h2>
+    <p class="ab-intro__sub">
+      This builds directly inside your own Shopify store — fully yours the moment it’s done.
+    </p>
+  </header>
+
+  <div class="ab-summary">
+    <div class="ab-summary__row">
+      <span class="ab-summary__label">Niche</span>
+      <span class="ab-summary__value">{{ selected_niche.display_codename }} · {{ selected_niche.name }}</span>
+    </div>
+    <div class="ab-summary__row">
+      <span class="ab-summary__label">Products</span>
+      <span class="ab-summary__value ab-summary__value--products">
+        {% if summary.count > 0 %}
+          {{ summary.count }} winning products included
+        {% else %}
+          No products yet
+        {% endif %}
+        <a class="ab-summary__link" href="{{ finder_url }}">{{ summary.link_label }}</a>
+      </span>
+    </div>
+    <div class="ab-summary__row">
+      <span class="ab-summary__label">Theme</span>
+      <span class="ab-summary__value">{{ selected_niche.display_theme }}</span>
+    </div>
+  </div>
+
+  <form method="post" action="{% url 'dashboard:builder' %}?step=2">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="confirm_build" />
+    {% if connection %}<input type="hidden" name="shop" value="{{ connection.shop }}" />{% endif %}
+    <div class="ab-footer ab-footer--split">
+      <a class="ab-back" href="{% url 'dashboard:builder' %}?step=1{% if connection %}&shop={{ connection.shop }}{% endif %}">← Back</a>
+      <button type="submit" class="ab-btn ab-btn--primary ab-btn--lg">
+        Build my AI store now →
+      </button>
+    </div>
+  </form>
+  {% endif %}
+
+</section>
+{% endblock %}
+
+{% block dash_extra_js %}
+{% if wizard_step == 1 %}
+<script>
+(function () {
+  var form = document.getElementById("ab-niche-form");
+  var hidden = document.getElementById("ab-niche-value");
+  var btn = document.getElementById("ab-niche-continue");
+  if (!form || !hidden || !btn) return;
+  form.querySelectorAll(".ab-niche").forEach(function (card) {
+    card.addEventListener("click", function () {
+      form.querySelectorAll(".ab-niche").forEach(function (c) {
+        c.classList.remove("is-selected");
+        c.setAttribute("aria-selected", "false");
+      });
+      card.classList.add("is-selected");
+      card.setAttribute("aria-selected", "true");
+      hidden.value = card.getAttribute("data-slug") || "";
+      btn.disabled = !hidden.value;
+    });
+  });
+})();
+</script>
+{% endif %}
+{% endblock %}

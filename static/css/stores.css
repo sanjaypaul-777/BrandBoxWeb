@@ -1,0 +1,470 @@
+/**
+ * My Stores — connected Shopify shops list.
+ * Glass cards, mint / magenta / red status pills (Zentra Obsidian).
+ */
+
+.ms {
+  --ms-mint: #4edea3;
+  --ms-magenta: #ff00e5;
+  --ms-max: 1280px;
+  max-width: var(--ms-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  font-family: var(--font-body);
+}
+
+.ms-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.ms-head__title {
+  margin: 0 0 0.35rem;
+  font-family: "Sora", var(--font-display);
+  font-size: clamp(1.55rem, 2.4vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--on-surface);
+}
+
+.ms-head__sub {
+  margin: 0;
+  color: var(--on-surface-variant);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.ms-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--hairline);
+  background: color-mix(in srgb, var(--surface-container) 72%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.ms-search {
+  position: relative;
+  flex: 1 1 14rem;
+  min-width: 12rem;
+}
+
+.ms-search .material-symbols-outlined {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: "Material Symbols Outlined", sans-serif;
+  font-size: 1.2rem;
+  color: var(--outline);
+  pointer-events: none;
+}
+
+.ms-search input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem 0.9rem 0.65rem 2.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--outline-variant);
+  background: color-mix(in srgb, var(--deep-obsidian) 55%, transparent);
+  color: var(--on-surface);
+  font-size: 0.9375rem;
+}
+
+.ms-search input:focus {
+  outline: 2px solid color-mix(in srgb, var(--ms-mint) 55%, transparent);
+  outline-offset: 1px;
+  border-color: var(--ms-mint);
+}
+
+.ms-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ms-pill {
+  min-height: 36px;
+  padding: 0 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--on-surface-variant);
+  font-size: 0.8125rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.ms-pill:hover {
+  border-color: color-mix(in srgb, var(--ms-mint) 40%, var(--hairline));
+  color: var(--on-surface);
+}
+
+.ms-pill.is-active {
+  background: color-mix(in srgb, var(--ms-mint) 16%, transparent);
+  border-color: color-mix(in srgb, var(--ms-mint) 40%, transparent);
+  color: var(--ms-mint);
+}
+
+.ms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ms-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.05rem 1.15rem;
+  border-radius: 1rem;
+  border: 1px solid var(--hairline);
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.ms-row--detail {
+  align-items: start;
+}
+
+.ms-row__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.ms-row__domain {
+  margin: 0;
+  font-family: "Sora", var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--on-surface);
+  word-break: break-word;
+}
+
+.ms-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.55rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ms-status--live {
+  color: var(--on-primary);
+  background: var(--ms-mint);
+}
+
+.ms-status--building {
+  color: #fff;
+  background: var(--ms-magenta);
+}
+
+.ms-status--not_built {
+  color: var(--on-surface-variant);
+  background: color-mix(in srgb, var(--surface-container-high) 90%, transparent);
+  border: 1px solid var(--hairline);
+}
+
+.ms-status--failed {
+  color: #fff;
+  background: color-mix(in srgb, var(--error) 75%, #93000a);
+}
+
+.ms-row__niche {
+  margin: 0 0 0.35rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ms-mint);
+}
+
+.ms-row__meta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
+}
+
+.ms-row__progress {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ms-magenta);
+}
+
+.ms-row__fail {
+  margin: 0.2rem 0 0;
+  font-size: 0.88rem;
+  color: var(--error);
+  line-height: 1.45;
+}
+
+.ms-row__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+
+.ms-row__cta {
+  height: 42px;
+  font-size: 0.9rem;
+  padding: 0 1.25rem;
+}
+
+.ms-menu {
+  position: relative;
+}
+
+.ms-menu__trigger {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+}
+
+.ms-menu__trigger:hover,
+.ms-menu.is-open .ms-menu__trigger {
+  color: var(--ms-mint);
+  border-color: color-mix(in srgb, var(--ms-mint) 40%, var(--hairline));
+}
+
+.ms-menu__trigger .material-symbols-outlined {
+  font-family: "Material Symbols Outlined", sans-serif;
+  font-size: 1.35rem;
+  color: inherit;
+}
+
+.ms-menu__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  z-index: 40;
+  min-width: 11.5rem;
+  padding: 0.35rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--hairline);
+  background: color-mix(in srgb, #121a16 92%, var(--ms-mint));
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+
+.ms-menu__panel[hidden] {
+  display: none !important;
+}
+
+.ms-menu__item {
+  display: block;
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: none;
+  border-radius: 0.55rem;
+  background: transparent;
+  color: var(--on-surface);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ms-menu__item:hover {
+  background: color-mix(in srgb, var(--ms-mint) 14%, transparent);
+  color: var(--ms-mint);
+}
+
+.ms-menu__item--danger:hover {
+  background: color-mix(in srgb, var(--error) 14%, transparent);
+  color: var(--error);
+}
+
+.ms-empty {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--hairline);
+  border-radius: 1rem;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.ms-empty__icon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 1rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.85rem;
+  border: 1px solid var(--hairline);
+  color: var(--ms-mint);
+}
+
+.ms-empty__icon .material-symbols-outlined {
+  font-family: "Material Symbols Outlined", sans-serif;
+  font-size: 1.55rem;
+  color: inherit;
+}
+
+.ms-empty h3 {
+  margin: 0 0 0.5rem;
+  font-family: "Sora", var(--font-display);
+  font-size: 1.35rem;
+  color: var(--on-surface);
+}
+
+.ms-empty p {
+  margin: 0 0 1.35rem;
+  color: var(--on-surface-variant);
+}
+
+.ms-empty-filter {
+  margin: 0;
+  text-align: center;
+  color: var(--on-surface-variant);
+  font-size: 0.95rem;
+}
+
+.ms-empty-filter[hidden] {
+  display: none !important;
+}
+
+.ms-back a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--outline);
+  text-decoration: none;
+}
+
+.ms-back a:hover {
+  color: var(--ms-mint);
+}
+
+.ms-back .material-symbols-outlined {
+  font-family: "Material Symbols Outlined", sans-serif;
+  font-size: 1rem;
+  color: inherit;
+}
+
+.ms-confirm[hidden] {
+  display: none !important;
+}
+
+.ms-confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.ms-confirm__backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(5, 8, 6, 0.72);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+
+.ms-confirm__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 100%);
+  padding: 1.5rem;
+  text-align: left;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--hairline);
+  border-radius: 1rem;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+
+.ms-confirm__dialog h3 {
+  margin: 0 0 0.55rem;
+  font-family: "Sora", var(--font-display);
+  font-size: 1.2rem;
+  color: var(--on-surface);
+}
+
+.ms-confirm__dialog p {
+  margin: 0 0 1.25rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.ms-confirm__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: flex-end;
+}
+
+.ms-confirm__danger {
+  background: color-mix(in srgb, var(--error) 75%, #93000a) !important;
+  color: #fff !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 720px) {
+  .ms-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ms-row__actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .ms-head .zentra-btn {
+    width: 100%;
+  }
+}

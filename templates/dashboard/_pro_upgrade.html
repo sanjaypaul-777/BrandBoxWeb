@@ -1,0 +1,21 @@
+{% comment %}Shared Pro upgrade copy + CTA — Overview card + Upgrade page.{% endcomment %}
+<div class="pro-upgrade {% if compact %}pro-upgrade--compact{% endif %}">
+  <div class="pro-upgrade__copy">
+    <p class="pro-upgrade__eyebrow">ZENTRA PRO</p>
+    <h2 class="pro-upgrade__title">{% if compact %}Upgrade to Pro{% else %}Go Pro and ship faster{% endif %}</h2>
+    <p class="pro-upgrade__lead">
+      Unlock the full catalog, unlimited builds, and one-click Shopify pushes.
+    </p>
+    <ul class="pro-upgrade__features">
+      {% for feature in pro_features %}
+        <li>{{ feature }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="pro-upgrade__cta">
+    <a href="{% url 'dashboard:upgrade' %}" class="pro-upgrade__btn">
+      Upgrade to Pro →
+    </a>
+    <p class="pro-upgrade__note">Cancel anytime · Instant unlock</p>
+  </div>
+</div>

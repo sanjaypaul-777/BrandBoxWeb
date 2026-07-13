@@ -1,0 +1,25 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block dash_title %}Connection error{% endblock %}
+{% block dash_header_title %}<h1 class="dash-page-heading">Connection error</h1>{% endblock %}
+
+{% block dash_content %}
+<div class="flow-wrap">
+  <section class="flow-card">
+    <h1>Something went wrong connecting your store</h1>
+    <p class="flow-card__lede">
+      The Shopify connection didn’t finish. You can try again — we’ll keep your
+      store domain ready so you don’t have to retype it.
+    </p>
+    <div class="flow-actions">
+      <a
+        class="btn-flow btn-flow--primary"
+        href="{% url 'dashboard:connect' %}{% if shop_prefill %}?shop={{ shop_prefill|urlencode }}{% endif %}"
+      >
+        Try again
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+</div>
+{% endblock %}
