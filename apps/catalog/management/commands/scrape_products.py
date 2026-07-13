@@ -7,6 +7,7 @@ Examples:
   python manage.py scrape_products --sync-sheet
   python manage.py scrape_products --clean-dupes
   python manage.py scrape_products --purge-dead
+  python manage.py scrape_products --clean-prices
 """
 
 from django.core.management.base import BaseCommand
@@ -38,9 +39,16 @@ class Command(BaseCommand):
             action="store_true",
             help="Delete vault products whose source page or images return 404",
         )
+        parser.add_argument(
+            "--clean-prices",
+            action="store_true",
+            help="Rewrite Sheet Price/Compare Price to USD dollars (12000→120.00)",
+        )
 
     def handle(self, *args, **options):
-        if options["purge_dead"]:
+        if options["clean_prices"]:
+            mode = ScrapeRun.Mode.CLEAN_PRICES
+        elif options["purge_dead"]:
             mode = ScrapeRun.Mode.PURGE_DEAD
         elif options["fill_ids"]:
             mode = ScrapeRun.Mode.FILL_IDS

@@ -328,6 +328,94 @@ def clean_sheet_duplicates(*, sheet_name: str | None = None, log: LogFn | None =
     return dupes
 
 
+def clean_sheet_prices(*, sheet_name: str | None = None, log: LogFn | None = None) -> int:
+    """
+    Rewrite Price / Compare Price columns on the Google Sheet to USD dollars
+    (e.g. 12000 → 120.00). Also heals Django vault from the cleaned values.
+    """
+    from apps.catalog.models import CatalogProduct
+    from apps.catalog.scraper.sheets_client import SHEET_HEADERS
+
+    sheet_name = sheet_name or sheet_tab_default()
+    client = get_sheets_client()
+    worksheet = ensure_sheet_ready(client, sheet_name)
+    all_rows = worksheet.get_all_values()
+    if len(all_rows) <= 1:
+        _log(log, "[*] Sheet empty")
+        return 0
+
+    headers = all_rows[0]
+    # Resolve price columns (case-insensitive)
+    lower = {str(h).strip().lower(): i for i, h in enumerate(headers)}
+    price_i = lower.get("price")
+    compare_i = lower.get("compare price") or lower.get("compare_price")
+    country_i = lower.get("country")
+    if price_i is None and compare_i is None:
+        _log(log, "[!] No Price / Compare Price columns found")
+        return 0
+
+    expected = len(SHEET_HEADERS)
+    fixed_rows: list[list] = []
+    changed = 0
+    for values in all_rows[1:]:
+        row = list(values)
+        while len(row) < max(expected, (compare_i or 0) + 1, (price_i or 0) + 1):
+            row.append("")
+        country = row[country_i] if country_i is not None and country_i < len(row) else ""
+        old_price = row[price_i] if price_i is not None else ""
+        old_compare = row[compare_i] if compare_i is not None else ""
+        new_price = (
+            normalize_price_usd(old_price, "", country=country or None)
+            if price_i is not None
+            else ""
+        )
+        new_compare = (
+            normalize_compare_usd(
+                old_compare,
+                cost=new_price or old_price,
+                country=country or None,
+            )
+            if compare_i is not None
+            else ""
+        )
+        if price_i is not None:
+            if new_price != str(old_price or ""):
+                changed += 1
+            row[price_i] = new_price
+        if compare_i is not None:
+            if new_compare != str(old_compare or ""):
+                changed += 1
+            row[compare_i] = new_compare
+        # Pad / trim to schema
+        while len(row) < expected:
+            row.append("")
+        fixed_rows.append(row[:expected])
+
+    end_col = chr(ord("A") + expected - 1)
+    worksheet.batch_clear([f"A2:{end_col}{len(all_rows)}"])
+    if fixed_rows:
+        worksheet.update(
+            values=fixed_rows, range_name="A2", value_input_option="USER_ENTERED"
+        )
+    _log(log, f"[DONE] Cleaned sheet prices — {changed} cell(s) updated across {len(fixed_rows)} rows")
+
+    # Keep Django vault in sync with cleaned sheet prices
+    from apps.catalog.services.dual_write import product_from_sheet_row
+
+    synced = 0
+    for values in fixed_rows:
+        data = product_from_sheet_row(SHEET_HEADERS, values)
+        if not data or not data.get("source_id"):
+            continue
+        CatalogProduct.objects.filter(source_id=data["source_id"]).update(
+            price=data.get("price") or "",
+            compare_price=data.get("compare_price") or "",
+        )
+        synced += 1
+    _log(log, f"[*] Vault price sync touched {synced} row(s)")
+    return changed
+
+
 def fill_sheet_ids(*, sheet_name: str | None = None, log: LogFn | None = None) -> int:
     from apps.catalog.scraper.sheets_client import ensure_stable_ids_on_sheet
 
@@ -371,6 +459,8 @@ def execute_scrape_run(run_id: int) -> None:
             n = fill_sheet_ids(sheet_name=sheet, log=log)
         elif run.mode == ScrapeRun.Mode.PURGE_DEAD:
             n = purge_dead_vault_products(log=log)
+        elif run.mode == ScrapeRun.Mode.CLEAN_PRICES:
+            n = clean_sheet_prices(sheet_name=sheet, log=log)
         elif run.mode == ScrapeRun.Mode.ALL_NICHES:
             n = scrape_all_niches(target=run.target_rows, sheet_name=sheet, log=log)
         else:

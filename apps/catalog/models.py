@@ -123,6 +123,7 @@ class ScrapeRun(models.Model):
         CLEAN_DUPES = "clean_dupes", "Clean sheet duplicates"
         FILL_IDS = "fill_ids", "Fill stable ids on sheet"
         PURGE_DEAD = "purge_dead", "Purge dead (404) products"
+        CLEAN_PRICES = "clean_prices", "Clean sheet prices to USD"
 
     status = models.CharField(
         max_length=16, choices=Status.choices, default=Status.PENDING, db_index=True

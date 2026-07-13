@@ -113,10 +113,15 @@ def sheet_values_from_product_dict(data: dict) -> list[str]:
         str(data.get("landing_url") or ""),
         str(data.get("product_url") or ""),
         str(data.get("title") or ""),
-        normalize_price_usd(data.get("price") or "", ""),
+        normalize_price_usd(
+            data.get("price") or "",
+            "",
+            country=data.get("country") or None,
+        ),
         normalize_compare_usd(
             data.get("compare_price") or "",
             cost=data.get("price") or "",
+            country=data.get("country") or None,
         ),
         str(data.get("ratings") or ""),
         str(data.get("review_count") or ""),
