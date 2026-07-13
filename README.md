@@ -53,12 +53,13 @@ STAFF / SUPERUSER
   /admin/           Django admin (users, shops, niches, builds)
 ```
 
-> **UI shell only — backend later:** Product Finder and My Imports use mock data in
-> `apps/dashboard/mock_catalog.py` (filters/modal/toasts/edit are front-end only).
-> Wire search, import, push, and Shopify APIs when the Node app is connected.
+> **Product Finder** reads the Winning Product Vault (Django SQL). **My Imports**
+> are shop drafts in Django; Push goes through the Node Shopify app.
 >
 > **Errors:** never show raw exceptions to users. 500 pages show a `ZEN-500-…`
-> reference that is logged with the real traceback for support.## Project tree
+> reference that is logged with the real traceback for support.
+
+## Project tree
 
 ```text
 Zentra-Web/
