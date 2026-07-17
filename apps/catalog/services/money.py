@@ -357,8 +357,3 @@ def pick_offer_price_and_currency(offers: Any) -> tuple[str, str]:
         return "", "USD"
     return str(chosen.get("price") or ""), str(chosen.get("priceCurrency") or "USD").upper() or "USD"
 
-
-def pick_usd_offer_price(offers: Any) -> str:
-    """Back-compat: price string only (prefer USD offer)."""
-    price, _cur = pick_offer_price_and_currency(offers)
-    return price

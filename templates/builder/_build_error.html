@@ -10,7 +10,10 @@
     <p class="status-body">{{ build_error_body }}</p>
     <div class="status-actions">
       {% if retry_url %}
-      <a class="zentra-btn zentra-btn--primary" href="{{ retry_url }}">Try again →</a>
+      <form method="post" action="{{ retry_url }}" class="build-retry-form">
+        {% csrf_token %}
+        <button type="submit" class="zentra-btn zentra-btn--primary">Try again →</button>
+      </form>
       {% endif %}
       <a
         class="zentra-btn zentra-btn--secondary"

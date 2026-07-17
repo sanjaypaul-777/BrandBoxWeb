@@ -203,6 +203,13 @@ def push_to_shopify(*, shop: str, import_id: int) -> dict:
         or shopify_id_early
         or ""
     )
+    if not shopify_id:
+        # Node said ok but returned no product id — nothing verifiable is live.
+        return {
+            "ok": False,
+            "error": "missing_shopify_id",
+            "message": "Push did not return a Shopify product id. Try again.",
+        }
     imp.status = ShopImport.Status.IN_STORE
     imp.shopify_product_id = shopify_id
     if node_id:

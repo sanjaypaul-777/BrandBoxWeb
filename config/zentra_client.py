@@ -197,7 +197,14 @@ def sync_connection_install_flag(connection, result: dict[str, Any]) -> bool:
         connection.app_installed = True
         connection.app_installed_at = timezone.now()
         fields.extend(["app_installed", "app_installed_at"])
-    elif not installed and connection.app_installed and result.get("checkable"):
+    elif (
+        not installed
+        and connection.app_installed
+        and result.get("checkable")
+        and not result.get("error")
+    ):
+        # Only disconnect on a definitive Node answer (installed=false with no
+        # transport/HTTP error). 5xx / 401 / timeouts must never clear the flag.
         connection.app_installed = False
         connection.app_installed_at = None
         fields.extend(["app_installed", "app_installed_at"])
@@ -249,7 +256,10 @@ def sync_niche_product_counts() -> dict[str, Any]:
         slug = (item.get("webSlug") or item.get("nicheId") or "").strip().lower()
         if not slug:
             continue
-        count = int(item.get("productCount") or 0)
+        try:
+            count = int(item.get("productCount") or 0)
+        except (TypeError, ValueError):
+            count = 0
         theme = (item.get("themeName") or "").strip()
         qs = NichePack.objects.filter(slug=slug)
         if not qs.exists():

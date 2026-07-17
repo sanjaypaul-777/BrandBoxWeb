@@ -150,60 +150,6 @@ def _score_product_for_virality(product: dict, base_url: str) -> tuple[int, str]
     return score, product_url
 
 
-def get_best_product_from_store(landing_url: str) -> dict | None:
-    """
-    Get the single best-selling or viral product from a Shopify store.
-    Uses products.json for fast analysis (tags, title signals), then fetches full data.
-    If landing page is already a product page, uses that (ad-promoted = viral).
-    """
-    base_url = _get_base_url(landing_url)
-
-    # Case 1: Landing page is a product page - that's the advertised product (viral by definition)
-    try:
-        html, final_url = fetch_page(landing_url)
-        if "/products/" in final_url:
-            product_url = final_url.split("?")[0]
-            return extract_product_data(product_url, pre_fetched_html=html)
-    except Exception:
-        pass
-
-    # Case 2: Use products.json to find best product
-    try:
-        products_json_url = urljoin(base_url, "/products.json?limit=100")
-        with httpx.Client(timeout=REQUEST_TIMEOUT) as client:
-            resp = client.get(products_json_url, headers={"User-Agent": "Mozilla/5.0"})
-            if resp.status_code != 200:
-                return None
-            data = resp.json()
-    except Exception:
-        return None
-
-    products = data.get("products", [])
-    if not products:
-        return None
-
-    # Score and pick best
-    scored: list[tuple[int, str]] = []
-    for p in products:
-        score, url = _score_product_for_virality(p, base_url)
-        if url:
-            scored.append((score, url))
-
-    if not scored:
-        best_url = urljoin(base_url, f"/products/{products[0].get('handle', '')}")
-        scored = [(0, best_url)]
-
-    # Sort by score desc, return single best
-    scored.sort(key=lambda x: (-x[0], x[1]))
-    for _, url in scored[:10]:
-        if not url:
-            continue
-        result = extract_product_data(url)
-        if result and (result.get("title") or result.get("price")):
-            return result
-    return None
-
-
 def get_top_products_from_store(
     landing_url: str,
     max_products: int = 10,

@@ -120,17 +120,23 @@ def ensure_niche_packs():
     keep_slugs = set()
     for item in NICHES:
         keep_slugs.add(item["slug"])
+        meta = {
+            "codename": item["codename"],
+            "name": item["name"],
+            "theme_name": item["theme_name"],
+            "description": item["description"],
+            "accent": item["accent"],
+            "sort_order": item["sort_order"],
+            "is_active": True,
+        }
+        # product_count is seeded once on create; after that only the Node
+        # sync below updates it, so a dead tunnel can't reset live counts.
         NichePack.objects.update_or_create(
             slug=item["slug"],
-            defaults={
-                "codename": item["codename"],
-                "name": item["name"],
-                "theme_name": item["theme_name"],
-                "description": item["description"],
-                "accent": item["accent"],
-                "sort_order": item["sort_order"],
+            defaults=meta,
+            create_defaults={
+                **meta,
                 "product_count": item["default_product_count"],
-                "is_active": True,
             },
         )
 

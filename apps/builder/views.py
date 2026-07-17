@@ -148,9 +148,9 @@ def building(request, job_id: int):
 
 
 @login_required
-@require_http_methods(["GET", "POST"])
+@require_http_methods(["POST"])
 def retry_build(request, job_id: int):
-    """Retry a failed build via Node /api/build/retry (new buildId)."""
+    """Retry a failed build via Node /api/build/retry (new buildId). POST-only."""
     job = get_object_or_404(BuildJob, pk=job_id, user=request.user)
     if job.status == BuildJob.Status.FAILED:
         retry_failed_step(job)
