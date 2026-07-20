@@ -14,7 +14,7 @@
   var viewToggle = root.querySelector("[data-imp-view-toggle]");
 
   function detailUrl(id) {
-    return apiBase.replace(/\/?$/, "/") + encodeURIComponent(id) + "/";
+    return apiBase.replace(/\/?$/,"/") + encodeURIComponent(id) + "/";
   }
 
   function showToast(message, tone) {
@@ -35,7 +35,7 @@
     list.setAttribute("data-view", view);
     viewToggle.querySelectorAll("button[data-view]").forEach(function (btn) {
       var on = btn.getAttribute("data-view") === view;
-      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.setAttribute("aria-pressed", on ?"true" :"false");
     });
   }
 
@@ -50,11 +50,9 @@
   function api(id, method, body) {
     return fetch(detailUrl(id), {
       method: method,
-      credentials: "same-origin",
+      credentials:"same-origin",
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrf,
+        Accept:"application/json","Content-Type":"application/json","X-CSRFToken": csrf,
       },
       body: body ? JSON.stringify(body) : undefined,
     }).then(function (r) {
@@ -99,7 +97,7 @@
       var sell = (form.querySelector("[data-imp-sell]") || {}).value || "";
       var compare = (form.querySelector("[data-imp-compare]") || {}).value || "";
       saveBtn.disabled = true;
-      api(importId, "PATCH", {
+      api(importId,"PATCH", {
         title: title,
         sellPrice: sell,
         compareAtPrice: compare || null,
@@ -108,8 +106,7 @@
           saveBtn.disabled = false;
           if (!res.ok) {
             showToast(
-              (res.data && (res.data.message || res.data.error)) || "Save failed",
-              "error"
+              (res.data && (res.data.message || res.data.error)) || "Save failed","error"
             );
             return;
           }
@@ -118,7 +115,7 @@
           if (titleEl && imp.title) titleEl.textContent = imp.title;
           var sellLabel = view && view.querySelector("[data-imp-sell-label]");
           if (sellLabel && imp.sellPrice != null && imp.sellPrice !== "") {
-            sellLabel.textContent = "$" + Number(imp.sellPrice).toFixed(2);
+            sellLabel.textContent ="$" + Number(imp.sellPrice).toFixed(2);
           }
           var sellInput = form.querySelector("[data-imp-sell]");
           if (sellInput && imp.sellPrice != null && imp.sellPrice !== "") {
@@ -129,68 +126,66 @@
           var compareInput = form.querySelector("[data-imp-compare]");
           if (imp.compareAtPrice != null && imp.compareAtPrice !== "") {
             var cmp = Number(imp.compareAtPrice).toFixed(2);
-            if (compareLabel) compareLabel.textContent = "$" + cmp;
+            if (compareLabel) compareLabel.textContent ="$" + cmp;
             if (compareWrap) compareWrap.hidden = false;
             if (compareInput) compareInput.value = cmp;
           } else {
-            if (compareLabel) compareLabel.textContent = "";
+            if (compareLabel) compareLabel.textContent ="";
             if (compareWrap) compareWrap.hidden = true;
-            if (compareInput) compareInput.value = "";
+            if (compareInput) compareInput.value ="";
           }
           var titleInput = form.querySelector("[data-imp-title]");
           if (titleInput && imp.title) titleInput.value = imp.title;
           form.hidden = true;
           if (view) view.hidden = false;
           if (actions) actions.hidden = false;
-          showToast("Saved", "success");
+          showToast("Saved","success");
         })
         .catch(function () {
           saveBtn.disabled = false;
-          showToast("Save failed", "error");
+          showToast("Save failed","error");
         });
       return;
     }
 
     if (removeBtn && importId) {
       removeBtn.disabled = true;
-      api(importId, "DELETE")
+      api(importId,"DELETE")
         .then(function (res) {
           if (!res.ok) {
             removeBtn.disabled = false;
             showToast(
-              (res.data && (res.data.message || res.data.error)) || "Remove failed",
-              "error"
+              (res.data && (res.data.message || res.data.error)) || "Remove failed","error"
             );
             return;
           }
           row.remove();
-          showToast("Removed from your imports", "success");
+          showToast("Removed from your imports","success");
           if (list && !list.querySelector("[data-imp-row]")) {
             window.location.reload();
           }
         })
         .catch(function () {
           removeBtn.disabled = false;
-          showToast("Remove failed", "error");
+          showToast("Remove failed","error");
         });
       return;
     }
 
     if (pushBtn && importId) {
       pushBtn.disabled = true;
-      pushBtn.textContent = "Pushing…";
-      api(importId, "POST", { action: "publish", publish: true })
+      pushBtn.textContent ="Pushing…";
+      api(importId,"POST", { action:"publish", publish: true })
         .then(function (res) {
           if (!res.ok) {
             pushBtn.disabled = false;
-            pushBtn.textContent = "Push";
+            pushBtn.textContent ="Push";
             showToast(
-              (res.data && (res.data.message || res.data.error)) || "Push failed",
-              "error"
+              (res.data && (res.data.message || res.data.error)) || "Push failed","error"
             );
             return;
           }
-          showToast("Pushed — now live in your store.", "success");
+          showToast("Pushed — now live in your store.","success");
           row.remove();
           if (list && !list.querySelector("[data-imp-row]")) {
             window.location.reload();
@@ -198,8 +193,8 @@
         })
         .catch(function () {
           pushBtn.disabled = false;
-          pushBtn.textContent = "Push";
-          showToast("Push failed", "error");
+          pushBtn.textContent ="Push";
+          showToast("Push failed","error");
         });
     }
   });

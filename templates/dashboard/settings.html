@@ -2,36 +2,67 @@
 {% load static %}
 
 {% block dash_extra_css %}
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'css/settings.css' %}" />
 {% endblock %}
 
 {% block dash_title %}Settings{% endblock %}
-{% block dash_header_title %}<h1 class="dash-page-heading">Settings</h1>{% endblock %}
 
 {% block dash_content %}
 <section
   class="st"
   data-settings
   data-notify-url="{% url 'dashboard:settings_notifications' %}"
-  data-niche-url="{% url 'dashboard:settings_default_niche' %}"
 >
   {# —— Account —— #}
   <section class="st-card" aria-labelledby="st-account">
-    <h2 id="st-account" class="st-card__title">Account</h2>
+    <header class="st-card__head">
+      <h2 id="st-account" class="st-card__title st-card__title--flush">Account</h2>
+      <a class="btn-text" href="{{ profile_edit_url }}">Edit</a>
+    </header>
     <dl class="st-dl">
-      <div class="st-dl__row">
-        <dt>Email</dt>
-        <dd>{{ account_email }}</dd>
-      </div>
       <div class="st-dl__row">
         <dt>Name</dt>
         <dd>{{ account_name }}</dd>
       </div>
       <div class="st-dl__row">
+        <dt>Username</dt>
+        <dd>{{ account_username }}</dd>
+      </div>
+      <div class="st-dl__row">
+        <dt>Company</dt>
+        <dd>{% if profile.company %}{{ profile.company }}{% else %}—{% endif %}</dd>
+      </div>
+      <div class="st-dl__row">
+        <dt>Address</dt>
+        <dd class="st-dl__multiline">{% if profile.address %}{{ profile.address|linebreaksbr }}{% else %}—{% endif %}</dd>
+      </div>
+      <div class="st-dl__row">
+        <dt>Email</dt>
+        <dd>{{ account_email }}</dd>
+      </div>
+      <div class="st-dl__row">
+        <dt>Phone</dt>
+        <dd>{% if profile.phone %}{{ profile.phone }}{% else %}—{% endif %}</dd>
+      </div>
+      <div class="st-dl__row">
+        <dt>Vertical / Industry</dt>
+        <dd>{% if profile.vertical_industry %}{{ profile.vertical_industry }}{% else %}—{% endif %}</dd>
+      </div>
+      <div class="st-dl__row">
+        <dt>Desired Niche</dt>
+        <dd>{% if profile.desired_niche %}{{ profile.desired_niche }}{% else %}—{% endif %}</dd>
+      </div>
+      <div class="st-dl__row">
+        <dt>Bio</dt>
+        <dd class="st-dl__multiline">{% if profile.bio %}{{ profile.bio|linebreaksbr }}{% else %}—{% endif %}</dd>
+      </div>
+      <div class="st-dl__row">
         <dt>Password</dt>
         <dd>
-          <a class="st-link" href="{{ password_change_url }}">Change password →</a>
+          <a class="btn-text" href="{{ password_change_url }}">
+            Change Password
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+          </a>
         </dd>
       </div>
     </dl>
@@ -45,32 +76,10 @@
       <strong>{{ stores_count }}</strong>
       store{{ stores_count|pluralize }} connected.
     </p>
-    <a class="brandbox-btn brandbox-btn--secondary st-card__btn" href="{{ stores_url }}">
-      View all stores →
+    <a class="btn-text" href="{{ stores_url }}">
+      Manage Stores
+      <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
     </a>
-  </section>
-
-  {# —— Billing —— #}
-  <section class="st-card" aria-labelledby="st-billing">
-    <h2 id="st-billing" class="st-card__title">Billing</h2>
-    {% if plan.is_pro %}
-    <p class="st-card__body">
-      You're on the Pro plan{% if plan.renews_on %} — renews on {{ plan.renews_on|date:"M j, Y" }}{% endif %}.
-    </p>
-    {% if billing_url %}
-    <a class="st-link" href="{{ billing_url }}" target="_blank" rel="noopener noreferrer">
-      Manage billing →
-    </a>
-    {% else %}
-    <a class="st-link" href="{{ upgrade_url }}">Manage billing →</a>
-    {% endif %}
-    {% else %}
-    <p class="st-card__body">You're on the Free plan.</p>
-    <p class="st-card__nudge">Pro store owners launch 3x more stores on average.</p>
-    <a class="brandbox-btn brandbox-btn--primary st-card__btn" href="{{ upgrade_url }}">
-      Upgrade to Pro →
-    </a>
-    {% endif %}
   </section>
 
   {# —— Notifications —— #}
@@ -128,113 +137,6 @@
     </ul>
     <p class="st-save-hint" data-notify-status aria-live="polite"></p>
   </section>
-
-  {# —— Preferences —— #}
-  <section class="st-card" aria-labelledby="st-prefs">
-    <h2 id="st-prefs" class="st-card__title">Preferences</h2>
-    <div class="cat-field st-niche">
-      <label id="st-niche-label" for="st-niche-native">Default niche interest</label>
-      <div class="cat-select" data-cat-select data-st-niche>
-        <select
-          id="st-niche-native"
-          class="cat-select__native"
-          aria-labelledby="st-niche-label"
-          tabindex="-1"
-        >
-          <option value="">None</option>
-          {% for n in niches %}
-          <option
-            value="{{ n.slug }}"
-            {% if prefs.default_niche_slug == n.slug %}selected{% endif %}
-          >{{ n.display_codename }} — {{ n.name }}</option>
-          {% endfor %}
-        </select>
-        <button
-          type="button"
-          class="cat-select__trigger"
-          aria-haspopup="listbox"
-          aria-expanded="false"
-          aria-labelledby="st-niche-label"
-        >
-          <span class="cat-select__value">
-            {% if prefs.default_niche_slug %}
-              {% for n in niches %}{% if prefs.default_niche_slug == n.slug %}{{ n.display_codename }} — {{ n.name }}{% endif %}{% endfor %}
-            {% else %}
-              None
-            {% endif %}
-          </span>
-          <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
-        </button>
-        <ul class="cat-select__menu" role="listbox" hidden>
-          <li
-            role="option"
-            data-value=""
-            class="{% if not prefs.default_niche_slug %}is-selected{% endif %}"
-            {% if not prefs.default_niche_slug %}aria-selected="true"{% endif %}
-          >None</li>
-          {% for n in niches %}
-          <li
-            role="option"
-            data-value="{{ n.slug }}"
-            class="{% if prefs.default_niche_slug == n.slug %}is-selected{% endif %}"
-            {% if prefs.default_niche_slug == n.slug %}aria-selected="true"{% endif %}
-          >{{ n.display_codename }} — {{ n.name }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-    <p class="st-save-hint" data-niche-status aria-live="polite"></p>
-  </section>
-
-  {# —— Danger zone —— #}
-  <section class="st-card st-card--danger" aria-labelledby="st-danger">
-    <h2 id="st-danger" class="st-card__title">Danger zone</h2>
-    <p class="st-card__body">
-      This permanently deletes your BrandBox account. Your Shopify stores and their
-      products are not affected.
-    </p>
-    <button type="button" class="brandbox-btn st-danger-btn" data-st-delete-open>
-      Delete my account
-    </button>
-  </section>
-
-  <div class="st-confirm" data-st-confirm hidden>
-    <button type="button" class="st-confirm__backdrop" data-st-confirm-cancel aria-label="Close"></button>
-    <div
-      class="st-confirm__dialog"
-      role="alertdialog"
-      aria-labelledby="st-delete-title"
-      aria-modal="true"
-    >
-      <h3 id="st-delete-title">Delete your BrandBox account?</h3>
-      <p>
-        Type <strong>{{ account_email }}</strong> to confirm. Your Shopify stores
-        and their products are not affected.
-      </p>
-      <form method="post" action="{% url 'dashboard:settings_delete_account' %}" class="st-confirm__form">
-        {% csrf_token %}
-        <label class="st-confirm__label" for="st-confirm-email">Account email</label>
-        <input
-          id="st-confirm-email"
-          name="confirm_email"
-          type="email"
-          autocomplete="off"
-          required
-          data-st-confirm-input
-          data-expected="{{ account_email }}"
-          placeholder="{{ account_email }}"
-        />
-        <div class="st-confirm__actions">
-          <button type="button" class="brandbox-btn brandbox-btn--secondary" data-st-confirm-cancel>
-            Cancel
-          </button>
-          <button type="submit" class="brandbox-btn st-danger-btn" data-st-confirm-submit disabled>
-            Delete my account
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 </section>
 {% endblock %}
 

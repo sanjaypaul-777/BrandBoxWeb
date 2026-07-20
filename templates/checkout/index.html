@@ -11,7 +11,7 @@
   <div class="checkout-shell">
     <header class="checkout-top">
       <a href="{% url 'home:index' %}" class="checkout-brand" aria-label="BrandBox home">
-        <img src="{% static 'images/logo.png' %}?v=3" alt="BrandBox" width="130" height="36" />
+        <img src="{% static 'images/logo.png' %}?v=5" alt="BrandBox" height="60" />
       </a>
       <div class="trust-badges" aria-label="Ratings">
         <div class="trust-badge">
@@ -224,7 +224,7 @@
   function sync() {
     var ok = agree.checked;
     btn.disabled = !ok;
-    btn.setAttribute("aria-disabled", ok ? "false" : "true");
+    btn.setAttribute("aria-disabled", ok ?"false" :"true");
     if (hint) hint.hidden = ok;
   }
 

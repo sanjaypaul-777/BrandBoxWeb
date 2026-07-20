@@ -12,13 +12,13 @@
   <div class="auth-glow auth-glow--purple" aria-hidden="true"></div>
   <div class="auth-inner">
     <a href="{% url 'home:index' %}" class="auth-logo" aria-label="BrandBox home">
-      <img src="{% static 'images/logo-mark.png' %}?v=3" alt="" width="48" height="48" />
+      <img src="{% static 'images/favicon.png' %}?v=5" alt="" width="48" height="48" />
     </a>
     <h1>Create your account</h1>
     <p class="subtitle">Build an AI-powered Shopify store in one click.</p>
 
     <div class="auth-card">
-      {% include "accounts/_social_auth.html" %}
+      {% include"accounts/_social_auth.html" %}
       <form method="post" class="auth-form" novalidate>
         {% csrf_token %}
         {% if form.non_field_errors %}

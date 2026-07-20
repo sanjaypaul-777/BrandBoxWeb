@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block dash_title %}{{ connection.shop }}{% endblock %}
-{% block dash_header_title %}<h1 class="dash-page-heading">Store details</h1>{% endblock %}
 
 {% block dash_content %}
 <section class="ms">
@@ -42,13 +41,13 @@
       {% if store_row.status == "failed" %}
       <form method="post" action="{{ store_row.primary_url }}">
         {% csrf_token %}
-        <button type="submit" class="brandbox-btn brandbox-btn--secondary">
+        <button type="submit" class="btn-secondary">
           {{ store_row.primary_label }}
         </button>
       </form>
       {% else %}
       <a
-        class="brandbox-btn brandbox-btn--primary"
+        class="btn-primary"
         href="{{ store_row.primary_url }}"
         {% if store_row.primary_external %}target="_blank" rel="noopener noreferrer"{% endif %}
       >{{ store_row.primary_label }}</a>

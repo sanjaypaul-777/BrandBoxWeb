@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import (
     ActivityEvent,
+    MerchantProfile,
     NotificationPreferences,
     ShopConnection,
     UserPlan,
@@ -21,6 +22,27 @@ class UserPlanAdmin(admin.ModelAdmin):
     list_display = ("user", "plan", "renews_on", "updated_at")
     list_filter = ("plan",)
     search_fields = ("user__username", "user__email")
+
+
+@admin.register(MerchantProfile)
+class MerchantProfileAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "company",
+        "phone",
+        "vertical_industry",
+        "desired_niche",
+        "updated_at",
+    )
+    search_fields = (
+        "user__username",
+        "user__email",
+        "company",
+        "phone",
+        "vertical_industry",
+        "desired_niche",
+    )
+    readonly_fields = ("updated_at",)
 
 
 @admin.register(NotificationPreferences)

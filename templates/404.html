@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,7 +13,7 @@
     />
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'css/status.css' %}" />
-    <link rel="icon" href="{% static 'images/favicon.ico' %}?v=3" sizes="any" />
+    <link rel="icon" href="{% static 'images/favicon.png' %}?v=5" type="image/png" />
   </head>
   <body>
     <main class="status-page">
@@ -21,7 +21,7 @@
       <div class="status-glow status-glow--purple" aria-hidden="true"></div>
       <div class="status-inner">
         <a href="/" class="status-logo" aria-label="BrandBox">
-          <img src="{% static 'images/logo-mark.png' %}?v=3" alt="" width="48" height="48" />
+          <img src="{% static 'images/favicon.png' %}?v=5" alt="" width="48" height="48" />
         </a>
         <div class="status-card">
           <p class="status-code" aria-hidden="true">404</p>
@@ -34,10 +34,10 @@
             or the link might be outdated.
           </p>
           <div class="status-actions">
-            <a class="brandbox-btn brandbox-btn--primary" href="/dashboard/">
+            <a class="btn-primary" href="/dashboard/">
               Back to Dashboard →
             </a>
-            <a class="brandbox-btn brandbox-btn--secondary" href="mailto:help@brandbox.co">
+            <a class="btn-secondary" href="mailto:help@brandbox.co">
               Contact support
             </a>
           </div>

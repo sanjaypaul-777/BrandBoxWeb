@@ -1,0 +1,22 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block dash_title %}Schedule{% endblock %}
+
+{% block dash_content %}
+<section class="sch" aria-label="Schedule">
+  <header class="sch-head">
+    <h1 class="sch-head__title">Schedule</h1>
+    <p class="sch-head__sub">
+      Upcoming live sessions to launch, stock, and scale your store with BrandBox AI.
+    </p>
+  </header>
+
+  <div class="sch-grid">
+    <article class="sch-card">
+      <span class="material-symbols-outlined sch-card__icon" aria-hidden="true">event</span>
+      <h2 class="sch-card__title">Upcoming sessions</h2>
+      <p class="sch-card__body">New live sessions will appear here. Check back soon for the next schedule.</p>
+    </article>
+  </div>
+</section>
+{% endblock %}

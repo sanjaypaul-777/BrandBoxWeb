@@ -33,6 +33,22 @@ class NichePack(models.Model):
         return self.codename or self.name
 
     @property
+    def display_icon(self) -> str:
+        """Material Symbol for summary / cards — clean minimal."""
+        return {
+            "living": "chair",
+            "peak": "fitness_center",
+            "care": "spa",
+            "junior": "child_care",
+            "paws": "pets",
+            "lux": "diamond",
+            "tech": "devices",
+            "vogue": "checkroom",
+            "mart": "storefront",
+            "pod": "apparel",
+        }.get(self.slug, "auto_awesome")
+
+    @property
     def display_theme(self) -> str:
         if self.theme_name:
             return self.theme_name

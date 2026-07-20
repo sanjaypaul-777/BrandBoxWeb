@@ -1,46 +1,88 @@
 /**
  * stores.css — My Stores + store detail ONLY.
  *
- * Sections (all under .ms-* — safe to edit without touching Finder):
- *   .ms                   page wrapper
- *   .ms-row*              store list row
- *   .ms-menu*             overflow menu
- *   .ms-empty*            empty state
+ * Edit look via --ms-* on .ms (never :root for this page).
+ *
+ * Sections: .ms | .ms-row* | .ms-menu* | .ms-empty*
  */
 
 .ms {
+
+  /* —— Section tokens (edit here only) —— */
+  --ms-bg: transparent;
+  --ms-text: #06101a;
+  --ms-muted: #475569;
+  --ms-surface: #ffffff;
+  --ms-surface-high: #f8fafc;
+  --ms-input-bg: #ffffff;
+  --ms-hairline: rgba(15, 23, 42, 0.1);
+  --ms-outline: #94a3b8;
+  --ms-outline-soft: #64748b;
+  --ms-primary: #4edea3;
+  --ms-on-primary: #003824;
+  --ms-primary-container: #10b981;
+  --ms-primary-fixed: #6ffbbe;
+  --ms-error: #b91c1c;
+  --ms-glass: #ffffff;
+  --ms-navy: #06101a;
+  --ms-accent: #ff00e5;
+  --ms-purple: #ad7bff;
   --ms-mint: #4edea3;
   --ms-magenta: #ff00e5;
   --ms-max: 1280px;
+
+  /* Bridge: children using shared names stay section-scoped */
+  --background: var(--ms-bg);
+  --on-surface: var(--ms-text);
+  --on-background: var(--ms-text);
+  --on-surface-variant: var(--ms-muted);
+  --surface-container: var(--ms-surface);
+  --surface-container-high: var(--ms-surface-high);
+  --deep-obsidian: var(--ms-input-bg);
+  --surface-navy: var(--ms-navy);
+  --hairline: var(--ms-hairline);
+  --outline-variant: var(--ms-outline);
+  --outline: var(--ms-outline-soft);
+  --primary: var(--ms-primary);
+  --on-primary: var(--ms-on-primary);
+  --primary-container: var(--ms-primary-container);
+  --primary-fixed: var(--ms-primary-fixed);
+  --error: var(--ms-error);
+  --glass: var(--ms-glass);
+  --accent-pink: var(--ms-accent);
+  --vibrant-purple: var(--ms-purple);
+
   max-width: var(--ms-max);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.35rem;
+  gap: 21.6px;
   font-family: var(--font-body);
+  color: var(--ms-text);
+  background: var(--ms-bg);
 }
 
 .ms-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1.25rem;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
 .ms-head__title {
-  margin: 0 0 0.35rem;
-  font-family: "Sora", var(--font-display);
-  font-size: clamp(1.55rem, 2.4vw, 1.85rem);
+  margin: 0 0 5.6px;
+  font-family:"Sora", var(--font-display);
+  font-size: clamp(24.8px, 2.4vw, 29.6px);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.32px;
   color: var(--on-surface);
 }
 
 .ms-head__sub {
   margin: 0;
   color: var(--on-surface-variant);
-  font-size: 0.98rem;
+  font-size: 15.68px;
   line-height: 1.5;
 }
 
@@ -48,8 +90,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.85rem 1rem;
-  padding: 0.9rem 1rem;
+  gap: 13.6px 16px;
+  padding: 14.4px 16px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--hairline);
   background: color-mix(in srgb, var(--surface-container) 72%, transparent);
@@ -58,17 +100,17 @@
 
 .ms-search {
   position: relative;
-  flex: 1 1 14rem;
-  min-width: 12rem;
+  flex: 1 1 224px;
+  min-width: 192px;
 }
 
 .ms-search .material-symbols-outlined {
   position: absolute;
-  left: 0.85rem;
+  left: 13.6px;
   top: 50%;
   transform: translateY(-50%);
-  font-family: "Material Symbols Outlined", sans-serif;
-  font-size: 1.2rem;
+  font-family:"Material Symbols Outlined", sans-serif;
+  font-size: 19.2px;
   color: var(--outline);
   pointer-events: none;
 }
@@ -76,12 +118,12 @@
 .ms-search input {
   width: 100%;
   min-height: 44px;
-  padding: 0.65rem 0.9rem 0.65rem 2.55rem;
+  padding: 10.4px 14.4px 10.4px 40.8px;
   border-radius: 999px;
   border: 1px solid var(--outline-variant);
   background: color-mix(in srgb, var(--deep-obsidian) 55%, transparent);
   color: var(--on-surface);
-  font-size: 0.9375rem;
+  font-size: 15px;
 }
 
 .ms-search input:focus {
@@ -93,17 +135,17 @@
 .ms-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 6.4px;
 }
 
 .ms-pill {
   min-height: 36px;
-  padding: 0 0.9rem;
+  padding: 0 14.4px;
   border-radius: 999px;
   border: 1px solid var(--hairline);
   background: transparent;
   color: var(--on-surface-variant);
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 650;
   cursor: pointer;
 }
@@ -114,31 +156,31 @@
 }
 
 .ms-pill.is-active {
-  background: color-mix(in srgb, var(--ms-mint) 16%, transparent);
-  border-color: color-mix(in srgb, var(--ms-mint) 40%, transparent);
-  color: var(--ms-mint);
+  background: color-mix(in srgb, var(--ms-navy) 8%, transparent);
+  border-color: color-mix(in srgb, var(--ms-navy) 28%, transparent);
+  color: var(--ms-navy);
 }
 
 .ms-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 12px;
 }
 
 .ms-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
+  gap: 16px;
   align-items: center;
-  padding: 1.05rem 1.15rem;
-  border-radius: 1rem;
+  padding: 16.8px 18.4px;
+  border-radius: 16px;
   border: 1px solid var(--hairline);
   background: var(--glass);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 12px 28px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .ms-row--detail {
@@ -149,16 +191,16 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.55rem 0.75rem;
-  margin-bottom: 0.35rem;
+  gap: 8.8px 12px;
+  margin-bottom: 5.6px;
 }
 
 .ms-row__domain {
   margin: 0;
-  font-family: "Sora", var(--font-display);
-  font-size: 1.05rem;
+  font-family:"Sora", var(--font-display);
+  font-size: 16.8px;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.16px;
   color: var(--on-surface);
   word-break: break-word;
 }
@@ -166,13 +208,13 @@
 .ms-status {
   display: inline-flex;
   align-items: center;
-  min-height: 1.55rem;
-  padding: 0.15rem 0.55rem;
+  min-height: 24.8px;
+  padding: 2.4px 8.8px;
   border-radius: 999px;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 1.28px;
   text-transform: uppercase;
 }
 
@@ -198,8 +240,8 @@
 }
 
 .ms-row__niche {
-  margin: 0 0 0.35rem;
-  font-size: 0.88rem;
+  margin: 0 0 5.6px;
+  font-size: 14.08px;
   font-weight: 600;
   color: var(--ms-mint);
 }
@@ -208,20 +250,20 @@
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 1rem;
-  font-size: 0.85rem;
+  gap: 5.6px 16px;
+  font-size: 13.6px;
   color: var(--on-surface-variant);
 }
 
 .ms-row__progress {
   margin: 0;
-  font-size: 0.88rem;
+  font-size: 14.08px;
   color: var(--ms-magenta);
 }
 
 .ms-row__fail {
-  margin: 0.2rem 0 0;
-  font-size: 0.88rem;
+  margin: 3.2px 0 0;
+  font-size: 14.08px;
   color: var(--error);
   line-height: 1.45;
 }
@@ -229,14 +271,14 @@
 .ms-row__actions {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 8.8px;
   flex-shrink: 0;
 }
 
 .ms-row__cta {
   height: 42px;
-  font-size: 0.9rem;
-  padding: 0 1.25rem;
+  font-size: 14.4px;
+  padding: 0 20px;
 }
 
 .ms-menu {
@@ -257,28 +299,28 @@
 
 .ms-menu__trigger:hover,
 .ms-menu.is-open .ms-menu__trigger {
-  color: var(--ms-mint);
-  border-color: color-mix(in srgb, var(--ms-mint) 40%, var(--hairline));
+  color: var(--ms-navy);
+  border-color: color-mix(in srgb, var(--ms-navy) 28%, var(--hairline));
 }
 
 .ms-menu__trigger .material-symbols-outlined {
-  font-family: "Material Symbols Outlined", sans-serif;
-  font-size: 1.35rem;
+  font-family:"Material Symbols Outlined", sans-serif;
+  font-size: 21.6px;
   color: inherit;
 }
 
 .ms-menu__panel {
   position: absolute;
   right: 0;
-  top: calc(100% + 0.35rem);
+  top: calc(100% + 5.6px);
   z-index: 40;
-  min-width: 11.5rem;
-  padding: 0.35rem;
-  border-radius: 0.75rem;
+  min-width: 184px;
+  padding: 5.6px;
+  border-radius: 12px;
   border: 1px solid var(--hairline);
-  background: color-mix(in srgb, #121a16 92%, var(--ms-mint));
+  background: #ffffff;
   backdrop-filter: blur(16px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
 }
 
 .ms-menu__panel[hidden] {
@@ -288,13 +330,13 @@
 .ms-menu__item {
   display: block;
   width: 100%;
-  padding: 0.65rem 0.8rem;
+  padding: 10.4px 12.8px;
   border: none;
-  border-radius: 0.55rem;
+  border-radius: 8.8px;
   background: transparent;
   color: var(--on-surface);
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 14.4px;
   font-weight: 600;
   text-align: left;
   text-decoration: none;
@@ -313,42 +355,42 @@
 
 .ms-empty {
   text-align: center;
-  padding: 2.5rem 1.5rem;
+  padding: 40px 24px;
   background: var(--glass);
   backdrop-filter: blur(20px);
   border: 1px solid var(--hairline);
-  border-radius: 1rem;
+  border-radius: 16px;
   box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 16px 40px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .ms-empty__icon {
-  width: 3rem;
-  height: 3rem;
-  margin: 0 auto 1rem;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
   display: grid;
   place-items: center;
-  border-radius: 0.85rem;
+  border-radius: 13.6px;
   border: 1px solid var(--hairline);
   color: var(--ms-mint);
 }
 
 .ms-empty__icon .material-symbols-outlined {
-  font-family: "Material Symbols Outlined", sans-serif;
-  font-size: 1.55rem;
+  font-family:"Material Symbols Outlined", sans-serif;
+  font-size: 24.8px;
   color: inherit;
 }
 
 .ms-empty h3 {
-  margin: 0 0 0.5rem;
-  font-family: "Sora", var(--font-display);
-  font-size: 1.35rem;
+  margin: 0 0 8px;
+  font-family:"Sora", var(--font-display);
+  font-size: 21.6px;
   color: var(--on-surface);
 }
 
 .ms-empty p {
-  margin: 0 0 1.35rem;
+  margin: 0 0 21.6px;
   color: var(--on-surface-variant);
 }
 
@@ -356,7 +398,7 @@
   margin: 0;
   text-align: center;
   color: var(--on-surface-variant);
-  font-size: 0.95rem;
+  font-size: 15.2px;
 }
 
 .ms-empty-filter[hidden] {
@@ -366,23 +408,23 @@
 .ms-back a {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 4.8px;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 1.28px;
   text-transform: uppercase;
   color: var(--outline);
   text-decoration: none;
 }
 
 .ms-back a:hover {
-  color: var(--ms-mint);
+  color: var(--ms-navy);
 }
 
 .ms-back .material-symbols-outlined {
-  font-family: "Material Symbols Outlined", sans-serif;
-  font-size: 1rem;
+  font-family:"Material Symbols Outlined", sans-serif;
+  font-size: 16px;
   color: inherit;
 }
 
@@ -396,7 +438,7 @@
   z-index: 90;
   display: grid;
   place-items: center;
-  padding: 1.25rem;
+  padding: 20px;
 }
 
 .ms-confirm__backdrop {
@@ -412,33 +454,33 @@
   position: relative;
   z-index: 1;
   width: min(420px, 100%);
-  padding: 1.5rem;
+  padding: 24px;
   text-align: left;
   background: var(--glass);
   backdrop-filter: blur(20px);
   border: 1px solid var(--hairline);
-  border-radius: 1rem;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
 }
 
 .ms-confirm__dialog h3 {
-  margin: 0 0 0.55rem;
-  font-family: "Sora", var(--font-display);
-  font-size: 1.2rem;
+  margin: 0 0 8.8px;
+  font-family:"Sora", var(--font-display);
+  font-size: 19.2px;
   color: var(--on-surface);
 }
 
 .ms-confirm__dialog p {
-  margin: 0 0 1.25rem;
+  margin: 0 0 20px;
   color: var(--on-surface-variant);
   line-height: 1.5;
-  font-size: 0.95rem;
+  font-size: 15.2px;
 }
 
 .ms-confirm__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem;
+  gap: 10.4px;
   justify-content: flex-end;
 }
 
@@ -469,7 +511,26 @@
     flex-wrap: wrap;
   }
 
-  .ms-head .brandbox-btn {
+  .ms-head .btn-primary {
     width: 100%;
   }
+}
+
+
+/* —— Unified button type (canonical) —— */
+.btn-text,
+.btn-primary,
+.btn-secondary,
+a.btn-text,
+button.btn-text,
+a.btn-primary,
+button.btn-primary,
+a.btn-secondary,
+button.btn-secondary {
+  font-family: Inter, var(--font-body), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0;
+  line-height: 1.25;
 }

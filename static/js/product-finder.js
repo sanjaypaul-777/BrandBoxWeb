@@ -1,5 +1,5 @@
 /**
- * Product Finder — live search UI + Import → Node via Django API.
+ * Product Hunter — live search UI + Import → Node via Django API.
  */
 (function () {
   var root = document.querySelector("[data-product-finder]");
@@ -9,11 +9,11 @@
   var importApi = root.getAttribute("data-import-api") || "";
   var importsUrl = root.getAttribute("data-imports-url") || "/dashboard/imports/";
   var canImport = root.getAttribute("data-can-import") === "1";
-  var connectUrl = "/dashboard/connect/";
+  var connectUrl ="/dashboard/connect/";
 
   function bindImageFallback(img) {
     if (!img || img.getAttribute("data-fallback-bound")) return;
-    img.setAttribute("data-fallback-bound", "1");
+    img.setAttribute("data-fallback-bound","1");
     img.addEventListener("error", function () {
       var card = img.closest("[data-product-card]") || img.closest("[data-m-media]") || root;
       var list = (card && card.getAttribute("data-images")) || "";
@@ -24,7 +24,7 @@
         img.src = alts[i];
         return;
       }
-      img.style.display = "none";
+      img.style.display ="none";
       var media = img.closest(".cat-card__media, .cat-modal__media");
       if (media) media.classList.remove("has-image");
     });
@@ -37,7 +37,7 @@
     var menu = wrap.querySelector(".cat-select__menu");
     var trigger = wrap.querySelector(".cat-select__trigger");
     if (menu) menu.hidden = true;
-    if (trigger) trigger.setAttribute("aria-expanded", "false");
+    if (trigger) trigger.setAttribute("aria-expanded","false");
   }
 
   function closeAllSelects(except) {
@@ -61,7 +61,7 @@
     wrap.querySelectorAll(".cat-select__menu [role='option']").forEach(function (li) {
       var on = li === option;
       li.classList.toggle("is-selected", on);
-      if (on) li.setAttribute("aria-selected", "true");
+      if (on) li.setAttribute("aria-selected","true");
       else li.removeAttribute("aria-selected");
     });
     closeSelect(wrap);
@@ -79,7 +79,7 @@
       if (!open) {
         wrap.classList.add("is-open");
         menu.hidden = false;
-        trigger.setAttribute("aria-expanded", "true");
+        trigger.setAttribute("aria-expanded","true");
       }
     });
 
@@ -100,7 +100,7 @@
 
   function markImported(card) {
     if (!card) return;
-    card.setAttribute("data-status", "imported");
+    card.setAttribute("data-status","imported");
     var actions = card.querySelector(".cat-card__actions");
     if (!actions) return;
     var btn = actions.querySelector("[data-import-product]");
@@ -108,7 +108,7 @@
     var a = document.createElement("a");
     a.className = "cat-badge cat-badge--imported";
     a.href = importsUrl;
-    a.textContent = "Added to My Imports";
+    a.textContent ="Added to My Imports";
     btn.replaceWith(a);
   }
 
@@ -120,15 +120,13 @@
     if (!importApi || !sourceId) return;
     if (btn) {
       btn.disabled = true;
-      btn.textContent = "Importing…";
+      btn.textContent ="Importing…";
     }
     fetch(importApi, {
-      method: "POST",
-      credentials: "same-origin",
+      method:"POST",
+      credentials:"same-origin",
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrf,
+        Accept:"application/json","Content-Type":"application/json","X-CSRFToken": csrf,
       },
       body: JSON.stringify({ sourceId: sourceId }),
     })
@@ -140,13 +138,12 @@
       .then(function (res) {
         if (!res.ok || !res.data.ok) {
           var msg =
-            (res.data && (res.data.message || res.data.error)) ||
-            "Import failed";
+            (res.data && (res.data.message || res.data.error)) || "Import failed";
           window.alert(msg);
           if (btn) {
             btn.disabled = false;
             btn.innerHTML =
-              'Import <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>';
+              'Import <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>';
           }
           return;
         }
@@ -157,7 +154,7 @@
         if (btn) {
           btn.disabled = false;
           btn.innerHTML =
-            'Import <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>';
+            'Import <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>';
         }
       });
   }
@@ -187,7 +184,7 @@
     grid.setAttribute("data-view", view);
     toggle.querySelectorAll("button[data-view]").forEach(function (btn) {
       var on = btn.getAttribute("data-view") === view;
-      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.setAttribute("aria-pressed", on ?"true" :"false");
     });
   }
 
@@ -232,8 +229,8 @@
     if (data.image && mediaImg) {
       mediaImg.removeAttribute("data-fallback-bound");
       mediaImg.removeAttribute("data-img-i");
-      mediaImg.style.display = "";
-      mediaImg.setAttribute("data-img-fallback", "");
+      mediaImg.style.display ="";
+      mediaImg.setAttribute("data-img-fallback","");
       mediaImg.src = data.image;
       mediaImg.hidden = false;
       media.classList.add("has-image");
@@ -246,26 +243,26 @@
       media.classList.remove("has-image");
     }
     var actions = modal.querySelector("[data-m-actions]");
-    actions.innerHTML = "";
+    actions.innerHTML ="";
     if (data.status === "imported") {
       var a = document.createElement("a");
       a.className = "cat-badge cat-badge--imported";
       a.href = importsUrl;
-      a.textContent = "Added to My Imports";
+      a.textContent ="Added to My Imports";
       actions.appendChild(a);
     } else if (data.status === "in_store") {
       var b = document.createElement("span");
       b.className = "cat-badge cat-badge--live";
-      b.textContent = "In store";
+      b.textContent ="In store";
       actions.appendChild(b);
     } else {
       var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "cat-btn cat-btn--primary";
-      btn.setAttribute("data-import-product", "");
+      btn.type ="button";
+      btn.className = "btn-primary";
+      btn.setAttribute("data-import-product","");
       btn.setAttribute("data-source-id", data.sourceId);
       btn.innerHTML =
-        'Import <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>';
+        'Import <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>';
       btn.addEventListener("click", function () {
         importProduct(data.sourceId, card, btn);
         closeModal();
@@ -278,13 +275,13 @@
     lastFocus = document.activeElement;
     fillModal(card);
     modal.hidden = false;
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow ="hidden";
     if (closeBtn) closeBtn.focus();
   }
 
   function closeModal() {
     modal.hidden = true;
-    document.body.style.overflow = "";
+    document.body.style.overflow ="";
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 

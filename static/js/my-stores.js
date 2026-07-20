@@ -12,7 +12,7 @@
   var confirm = root.querySelector("[data-ms-confirm]");
   var confirmShop = root.querySelector("[data-ms-confirm-shop]");
   var confirmForm = root.querySelector("[data-ms-confirm-form]");
-  var activeFilter = "all";
+  var activeFilter ="all";
 
   function applyFilters() {
     if (!list) return;
@@ -40,7 +40,7 @@
       pills.forEach(function (p) {
         var on = p === pill;
         p.classList.toggle("is-active", on);
-        p.setAttribute("aria-pressed", on ? "true" : "false");
+        p.setAttribute("aria-pressed", on ?"true" :"false");
       });
       applyFilters();
     });
@@ -53,7 +53,7 @@
       var panel = menu.querySelector(".ms-menu__panel");
       var btn = menu.querySelector("[data-ms-menu-btn]");
       if (panel) panel.hidden = true;
-      if (btn) btn.setAttribute("aria-expanded", "false");
+      if (btn) btn.setAttribute("aria-expanded","false");
     });
   }
 
@@ -68,7 +68,7 @@
         menu.classList.add("is-open");
         var panel = menu.querySelector(".ms-menu__panel");
         if (panel) panel.hidden = false;
-        menuBtn.setAttribute("aria-expanded", "true");
+        menuBtn.setAttribute("aria-expanded","true");
       }
       return;
     }
@@ -80,7 +80,7 @@
       confirmShop.textContent = disconnect.getAttribute("data-shop") || "this store";
       confirmForm.action = disconnect.getAttribute("data-action") || "";
       confirm.hidden = false;
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow ="hidden";
       return;
     }
 
@@ -90,7 +90,7 @@
   function closeConfirm() {
     if (!confirm) return;
     confirm.hidden = true;
-    document.body.style.overflow = "";
+    document.body.style.overflow ="";
   }
 
   root.querySelectorAll("[data-ms-confirm-cancel]").forEach(function (btn) {

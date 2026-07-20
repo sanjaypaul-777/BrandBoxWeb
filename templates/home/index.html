@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -8,23 +8,39 @@
 <meta name="description" content="Build a store by typing. Run it from a chat window. Make ads in minutes."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet"/>
 <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
 <link rel="stylesheet" href="{% static 'css/home.css' %}"/>
-<link rel="icon" href="{% static 'images/favicon.ico' %}?v=3" sizes="any" />
-<link rel="icon" href="{% static 'images/favicon-32.png' %}?v=3" type="image/png" sizes="32x32" />
-<link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}?v=3" />
+<link rel="icon" href="{% static 'images/favicon.png' %}?v=5" type="image/png" />
+<link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}?v=5" />
+<script>
+(function () {
+  var done = false;
+  function ready() {
+    if (done) return;
+    done = true;
+    document.documentElement.classList.add("icons-ready");
+  }
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load('24px"Material Symbols Outlined"').then(ready, ready);
+    setTimeout(ready, 1500);
+  } else {
+    ready();
+  }
+})();
+</script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="{% static 'js/tailwind-theme.js' %}"></script>
 </head>
-<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<body class="brandbox-home bg-background text-on-surface font-body-md overflow-x-hidden">
 
 <!-- TopNavBar -->
-<nav class="brandbox-nav fixed top-0 w-full z-50 bg-surface-navy/60 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+<nav class="brandbox-nav fixed top-0 w-full z-50 bg-white/85 backdrop-blur-xl border-b border-[color:var(--hairline)] shadow-sm">
 <div class="max-w-container-max mx-auto flex justify-between items-center h-20">
 <div class="flex items-center gap-8">
 <a href="{% url 'home:index' %}" class="brandbox-brand brandbox-brand--nav" aria-label="BrandBox home">
-<img src="{% static 'images/logo.png' %}?v=3" alt="BrandBox" width="148" height="40"/>
+<img src="{% static 'images/logo.png' %}?v=5" alt="BrandBox" height="60"/>
 </a>
 <div class="hidden md:flex gap-6">
 <a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1 transition-colors duration-300" href="#brandbox-how">How it works</a>
@@ -35,7 +51,7 @@
 </div>
 <div class="flex items-center gap-4">
 <a href="{% url 'accounts:login' %}" class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300">Log In</a>
-<a href="{% url 'accounts:signup' %}" class="brandbox-btn brandbox-btn--secondary brandbox-btn--nav">Get Started</a>
+<a href="{% url 'accounts:signup' %}" class="btn-secondary btn--nav">Get Started</a>
 </div>
 </div>
 </nav>
@@ -44,7 +60,7 @@
 <div class="absolute top-0 left-1/4 w-[600px] h-[600px] brandbox-glow-primary -z-10"></div>
 <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] brandbox-glow-purple -z-10"></div>
 <div class="max-w-container-max mx-auto px-gutter text-center relative z-10">
-<div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full mb-8">
+<div class="inline-flex items-center gap-2 bg-white border border-[color:var(--hairline)] px-4 py-1.5 rounded-full mb-8">
 <span class="bg-accent-pink px-2 py-0.5 rounded text-[10px] font-bold text-white uppercase">65% Off</span>
 <span
   class="text-label-caps font-label-caps text-on-surface-variant uppercase"
@@ -65,11 +81,11 @@
                 New to dropshipping? Build a store by typing. Run it from a chat window. Make ads in minutes, with a free 5-day live series to guide your first steps.
             </p>
 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-<a href="{% url 'accounts:signup' %}" class="brandbox-btn brandbox-btn--primary">
+<a href="{% url 'accounts:signup' %}" class="btn-primary">
                     Build My AI Store
                     <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
 </a>
-<a href="#brandbox-niches" class="brandbox-btn brandbox-btn--secondary">
+<a href="#brandbox-niches" class="btn-secondary">
                     View Demo
                 </a>
 </div>
@@ -86,7 +102,7 @@
 </div>
 </header>
 <!-- Trusted By -->
-<section id="brandbox-trusted" class="brandbox-trusted py-stack-md border-y border-white/5">
+<section id="brandbox-trusted" class="brandbox-trusted py-stack-md border-y border-[color:var(--hairline)]">
 <div class="max-w-container-max mx-auto px-gutter">
 <p class="text-center text-label-caps font-label-caps text-on-surface-variant mb-8 uppercase opacity-60">Powering stores globally with</p>
 <div class="flex flex-wrap justify-center items-center gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
@@ -124,8 +140,8 @@
 <img class="w-full h-48 object-cover rounded-xl group-hover:scale-105 transition-transform duration-500" data-alt="A stylized digital workspace showing a video editing interface where an AI avatar is being selected. The scene is illuminated by neon purple and pink light leaks. Translucent panels float over a dark background, showing wave forms and color adjustment sliders. The overall feel is futuristic, clean, and professional, representing rapid AI-driven content creation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVetNthKkLub46LZuJAbnlvNWOwjL02hXkF71DGKHqkNVIzgOPrxEjmFG_q4CE5DbSEx2SOfm5RSlGQe-FYEAFcl5FwvC-VdEA2ThTTyJUGZE04Mj9_dijjld_NOYznyQJQqLhQkaL68GdoDnY5zUGZK3_mRcZmdzClIw4op6ik98sbcIaY1-6f4sO8BxNnQzvUIl41_Gpb8dHWbeIOhrz8Uu7vQWQyGqyeawRgcfucusHdOKGYJo3K4hSDK9cTYGH-AkkWDsbpCvZ"/>
 </div>
 <!-- Grow -->
-<div class="brandbox-glass p-8 rounded-2xl group hover:border-white/30 transition-all">
-<div class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mb-6 text-white">
+<div class="brandbox-glass p-8 rounded-2xl group hover:border-primary/40 transition-all">
+<div class="w-12 h-12 bg-[color:var(--surface-container-high)] rounded-lg flex items-center justify-center mb-6 text-on-surface">
 <span class="material-symbols-outlined">category</span>
 </div>
 <h3 class="font-headline-md text-headline-md mb-4 text-on-surface">Scale your business</h3>
@@ -159,12 +175,12 @@
 <span class="text-on-surface">"Create an ad for the portable blender."</span>
 </div>
 </div>
-<a href="{% url 'accounts:signup' %}" class="brandbox-btn brandbox-btn--primary">Get AI Access</a>
+<a href="{% url 'accounts:signup' %}" class="btn-primary">Get AI Access</a>
 </div>
 <div class="relative">
 <div class="absolute inset-0 brandbox-glow-primary scale-75 blur-3xl opacity-20"></div>
-<div class="brandbox-glass rounded-2xl p-6 relative border border-white/10 shadow-2xl">
-<div class="flex items-center gap-4 mb-6 pb-4 border-b border-white/5">
+<div class="brandbox-glass rounded-2xl p-6 relative border border-[color:var(--hairline)] shadow-2xl">
+<div class="flex items-center gap-4 mb-6 pb-4 border-b border-[color:var(--hairline)]">
 <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
 <span class="material-symbols-outlined">forum</span>
 </div>
@@ -174,13 +190,13 @@
 </div>
 </div>
 <div class="space-y-4 h-[300px] overflow-y-auto pr-2 brandbox-agent__scroll">
-<div class="bg-white/5 p-4 rounded-xl rounded-tl-none max-w-[85%]">
-<p class="text-sm text-on-surface-variant">Hello! I've analyzed today's trends. There's a 24% spike in demand for "Smart Home Seed Starter Kits". Would you like me to build a product page for it?</p>
+<div class="bg-[color:var(--surface-container-high)] p-4 rounded-xl rounded-tl-none max-w-[85%]">
+<p class="text-sm text-on-surface-variant">Hello! I've analyzed today's trends. There's a 24% spike in demand for"Smart Home Seed Starter Kits". Would you like me to build a product page for it?</p>
 </div>
 <div class="bg-primary/10 p-4 rounded-xl rounded-tr-none max-w-[85%] ml-auto">
 <p class="text-sm text-on-surface">Yes, please. Use a premium, tech-forward style.</p>
 </div>
-<div class="bg-white/5 p-4 rounded-xl rounded-tl-none max-w-[85%]">
+<div class="bg-[color:var(--surface-container-high)] p-4 rounded-xl rounded-tl-none max-w-[85%]">
 <p class="text-sm text-on-surface-variant">Generating page... I've also drafted 3 Facebook ad variations. View them here.</p>
 </div>
 </div>
@@ -200,7 +216,7 @@
 <div class="max-w-container-max mx-auto px-gutter">
 <h2 class="font-headline-lg text-center mb-16">The BrandBox Difference</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="brandbox-glass p-10 rounded-3xl border-white/5">
+<div class="brandbox-glass p-10 rounded-3xl border-[color:var(--hairline)]">
 <p class="text-label-caps font-label-caps text-on-surface-variant mb-6 uppercase">Traditional Dropshipping</p>
 <ul class="space-y-6">
 <li class="flex items-start gap-4 opacity-50">
@@ -294,7 +310,7 @@
 </div>
 </section>
 <!-- Testimonial Section -->
-<section class="brandbox-testimonial py-stack-lg border-y border-white/5 bg-deep-obsidian">
+<section class="brandbox-testimonial py-stack-lg border-y border-[color:var(--hairline)] bg-deep-obsidian">
 <div class="max-w-container-max mx-auto px-gutter">
 <div class="brandbox-glass p-12 rounded-3xl flex flex-col md:flex-row items-center gap-12 max-w-5xl mx-auto">
 <div class="w-48 h-48 rounded-full overflow-hidden border-4 border-primary/20 shrink-0">
@@ -364,14 +380,14 @@
   aria-hidden="true"
 ></div>
 <div class="brandbox-launch__content max-w-container-max mx-auto text-center relative z-10">
-<div class="brandbox-launch__panel brandbox-glass p-16 rounded-[3rem] border-primary/20 relative overflow-hidden">
+<div class="brandbox-launch__panel brandbox-glass p-16 rounded-[48px] border-primary/20 relative overflow-hidden">
 <div class="absolute -top-32 -left-32 w-64 h-64 brandbox-glow-primary opacity-20"></div>
 <div class="absolute -bottom-32 -right-32 w-64 h-64 brandbox-glow-purple opacity-20"></div>
 <h2 class="font-display-hero text-headline-lg-mobile md:text-headline-lg mb-8">Ready to launch your empire?</h2>
 <p class="max-w-2xl mx-auto font-body-lg text-on-surface-variant mb-12">Join 15,000+ entrepreneurs building the future of e-commerce with BrandBox AI.</p>
 <div class="brandbox-launch__actions flex flex-col sm:flex-row justify-center gap-4">
-<a href="{% url 'accounts:signup' %}" class="brandbox-btn brandbox-btn--primary">Build My Store Now <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span></a>
-<a href="{% url 'checkout:index' %}" class="brandbox-btn brandbox-btn--secondary">Claim 65% Discount</a>
+<a href="{% url 'accounts:signup' %}" class="btn-primary">Build My Store Now <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span></a>
+<a href="{% url 'checkout:index' %}" class="btn-secondary">Claim 65% Discount</a>
 </div>
 </div>
 </div>
@@ -381,14 +397,14 @@
 <div class="brandbox-footer__grid max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-stack-md">
 <div class="brandbox-footer__brand col-span-1 md:col-span-1">
 <a href="{% url 'home:index' %}" class="brandbox-brand brandbox-brand--footer" aria-label="BrandBox home">
-<img src="{% static 'images/logo.png' %}?v=3" alt="BrandBox" width="160" height="44"/>
+<img src="{% static 'images/logo.png' %}?v=5" alt="BrandBox" height="60"/>
 </a>
 <p class="text-on-surface-variant text-body-md mb-8 mt-6">The intelligent foundation for the next generation of e-commerce entrepreneurs.</p>
 <div class="brandbox-footer__social flex gap-4">
-<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 transition-colors" href="#">
+<a class="w-10 h-10 rounded-full bg-[color:var(--surface-container-high)] flex items-center justify-center hover:bg-primary/20 transition-colors" href="#">
 <span class="material-symbols-outlined text-sm">public</span>
 </a>
-<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 transition-colors" href="#">
+<a class="w-10 h-10 rounded-full bg-[color:var(--surface-container-high)] flex items-center justify-center hover:bg-primary/20 transition-colors" href="#">
 <span class="material-symbols-outlined text-sm">share</span>
 </a>
 </div>
@@ -429,7 +445,7 @@
 </form>
 </div>
 </div>
-<div class="brandbox-footer__bottom max-w-container-max mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="brandbox-footer__bottom max-w-container-max mx-auto mt-20 pt-8 border-t border-[color:var(--hairline)] flex flex-col md:flex-row justify-between items-center gap-4">
 <p class="text-on-surface-variant text-sm">© 2024 BrandBox AI. All rights reserved.</p>
 <nav class="brandbox-footer__legal flex gap-8 text-sm text-on-surface-variant" aria-label="Footer links">
 <a class="hover:text-primary transition-colors" href="#">Affiliates</a>
@@ -452,13 +468,13 @@
     <span class="material-symbols-outlined brandbox-newsletter-modal__icon" aria-hidden="true">mark_email_read</span>
     <h2 id="brandbox-newsletter-thanks-title">You’re subscribed</h2>
     <p>Thanks for joining. Winning products and BrandBox updates will land in your inbox.</p>
-    <button type="button" class="brandbox-btn brandbox-btn--primary" data-brandbox-newsletter-close>Got it</button>
+    <button type="button" class="btn-primary" data-brandbox-newsletter-close>Got it</button>
   </div>
 </div>
 {% endif %}
 
 <script src="{% static 'js/brandbox-hero-typed.js' %}"></script>
-<script src="{% static 'js/brandbox-offer-countdown.js' %}?v=4"></script>
+<script src="{% static 'js/brandbox-offer-countdown.js' %}?v=5"></script>
 <script src="{% static 'js/brandbox-newsletter-modal.js' %}"></script>
 <script>
         // Micro-interactions and subtle scroll effects

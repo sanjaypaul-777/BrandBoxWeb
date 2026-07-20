@@ -1,24 +1,82 @@
 /**
  * home.css — Marketing homepage sections ONLY.
  *
- * Sections (prefix = block; change one without touching login/dashboard):
- *   .brandbox-nav*           top nav
- *   .brandbox-hero*          hero / typed text / countdown
- *   .brandbox-how*           how-it-works
- *   .brandbox-niches*        niches grid
- *   .brandbox-pricing*       pricing
- *   .brandbox-footer*        footer
- *   .brandbox-newsletter*    newsletter modal
- *   .brandbox-glass / glow*  shared homepage helpers
+ * Edit look via --home-* on .brandbox-home and per-section tokens
+ * (--nav-*, --hero-*, …). Never restyle homepage from :root.
+ * Shared .btn-primary uses bridged brand tokens from .brandbox-home.
+ *
+ * Sections: .brandbox-nav* | .brandbox-hero* | .brandbox-how* | .brandbox-niches*
+ *           .brandbox-pricing* / .brandbox-launch* | .brandbox-footer*
+ *           .brandbox-newsletter* | .btn-primary*
  */
 
+/* —— Page shell (wraps entire homepage) —— */
+.brandbox-home {
+  /* —— Section tokens (edit here only) —— */
+  --home-bg: #EEF2F8;
+  --home-text: #06101a;
+  --home-muted: #475569;
+  --home-surface: #ffffff;
+  --home-navy: #ffffff;
+  --home-obsidian: #f8fafc;
+  --home-hairline: rgba(15, 23, 42, 0.1);
+  --home-outline: #94a3b8;
+  --home-primary: #4edea3;
+  --home-on-primary: #003824;
+  --home-primary-container: #10b981;
+  --home-primary-fixed: #6ffbbe;
+  --home-purple: #ad7bff;
+  --home-accent: #ff00e5;
+  --home-glass: #ffffff;
+  --home-logo-height: 60px;
+
+  /* Bridge for Tailwind utilities + section CSS */
+  --background: var(--home-bg);
+  --surface: var(--home-bg);
+  --on-surface: var(--home-text);
+  --on-background: var(--home-text);
+  --on-surface-variant: var(--home-muted);
+  --surface-container: var(--home-surface);
+  --surface-navy: var(--home-navy);
+  --deep-obsidian: var(--home-obsidian);
+  --hairline: var(--home-hairline);
+  --outline-variant: var(--home-outline);
+  --primary: var(--home-primary);
+  --on-primary: var(--home-on-primary);
+  --primary-container: var(--home-primary-container);
+  --primary-fixed: var(--home-primary-fixed);
+  --vibrant-purple: var(--home-purple);
+  --accent-pink: var(--home-accent);
+  --glass: var(--home-glass);
+
+  background: var(--home-bg);
+  color: var(--home-text);
+}
+
+.brandbox-nav {
+  --nav-bg: color-mix(in srgb, var(--home-navy) 60%, transparent);
+  --nav-border: var(--home-hairline);
+  --nav-logo-height: var(--home-logo-height);
+}
+
+.brandbox-hero {
+  --hero-accent: var(--home-primary);
+  --hero-text: var(--home-text);
+  --hero-logo-height: var(--home-logo-height);
+}
+
+.brandbox-footer {
+  --footer-text: var(--home-muted);
+  --footer-logo-height: var(--home-logo-height);
+}
+
 .material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-variation-settings:"FILL" 0,"wght" 400,"GRAD" 0,"opsz" 24;
   vertical-align: middle;
 }
 
 .material-symbols-outlined.filled {
-  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-variation-settings:"FILL" 1,"wght" 400,"GRAD" 0,"opsz" 24;
 }
 
 /* Brand mark (homepage nav + footer only) */
@@ -31,19 +89,17 @@
 
 .brandbox-brand img {
   display: block;
-  height: 2.35rem;
+  height: var(--home-logo-height, 60px);
   width: auto;
-  max-width: 11rem;
   object-fit: contain;
 }
 
 .brandbox-brand--nav img {
-  height: 2.5rem;
+  height: var(--nav-logo-height, var(--home-logo-height, 60px));
 }
 
 .brandbox-brand--footer img {
-  height: 2.75rem;
-  max-width: 12.5rem;
+  height: var(--footer-logo-height, var(--home-logo-height, 60px));
 }
 
 .brandbox-glass {
@@ -51,6 +107,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--hairline);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
 }
 
 .brandbox-glow-primary {
@@ -88,10 +145,10 @@
   position: relative;
   vertical-align: baseline;
   overflow: visible;
-  padding: 0.12em 0.4em 0.2em 0.04em;
-  margin: -0.12em -0.4em -0.2em -0.04em;
+  padding: 1.92px 6.4px 3.2px 0.64px;
+  margin: -1.92px -6.4px -3.2px -0.64px;
   line-height: 1.25;
-  min-height: 1.3em;
+  min-height: 20.8px;
 }
 
 .brandbox-hero__typed-ghost {
@@ -101,17 +158,17 @@
   font-style: italic;
   font-weight: inherit;
   line-height: 1.25;
-  padding-right: 0.28em;
+  padding-right: 4.48px;
 }
 
 .brandbox-hero__typed-text {
   position: absolute;
-  left: 0.04em;
-  top: 0.12em;
+  left: 0.64px;
+  top: 1.92px;
   width: max-content;
   max-width: none;
   white-space: nowrap;
-  padding: 0.06em 0.28em 0.12em 0;
+  padding: 0.96px 4.48px 1.92px 0;
   background: linear-gradient(105deg, #ff00e5 0%, #4edea3 100%);
   background-repeat: no-repeat;
   -webkit-background-clip: text;
@@ -126,19 +183,19 @@
 }
 
 /* Hero CTAs — primary / secondary; gradient border on hover only */
-.brandbox-btn {
+.btn-primary {
   position: relative;
   z-index: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 8px;
   height: 52px;
   width: fit-content;
-  padding: 0 2rem;
+  padding: 0 32px;
   border-radius: 9999px;
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 18px;
   line-height: 1;
   white-space: nowrap;
   text-decoration: none;
@@ -146,46 +203,46 @@
   isolation: isolate;
 }
 
-.brandbox-btn--primary {
+.btn-primary {
   color: var(--on-primary);
   background: var(--primary-container);
   border: 3px solid transparent;
 }
 
 /* Same ghost/outline look everywhere (matches View Demo) */
-.brandbox-btn--secondary {
+.btn-secondary {
   color: var(--on-surface);
   background: transparent;
   border: 3px solid var(--outline-variant);
 }
 
-.brandbox-btn--primary,
-.brandbox-btn--primary:hover,
-.brandbox-btn--primary:focus,
-.brandbox-btn--primary:active,
-.brandbox-btn--primary:visited {
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:visited {
   color: var(--on-primary);
   background: var(--primary-container);
   text-decoration: none;
 }
 
-.brandbox-btn--secondary,
-.brandbox-btn--secondary:hover,
-.brandbox-btn--secondary:focus,
-.brandbox-btn--secondary:active,
-.brandbox-btn--secondary:visited {
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary:visited {
   color: var(--on-surface);
   background: transparent;
   text-decoration: none;
 }
 
-.brandbox-btn--secondary:hover {
+.btn-secondary:hover {
   border-color: transparent;
 }
 
 /* Primary: solid fill + outer gradient ring */
-.brandbox-btn--primary::before {
-  content: "";
+.btn-primary::before {
+  content:"";
   position: absolute;
   inset: -3px;
   z-index: -1;
@@ -197,8 +254,8 @@
   transition: opacity 0.2s ease;
 }
 
-.brandbox-btn--primary::after {
-  content: "";
+.btn-primary::after {
+  content:"";
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -208,8 +265,8 @@
 }
 
 /* Secondary: transparent fill; gradient is border-only via mask */
-.brandbox-btn--secondary::before {
-  content: "";
+.btn-secondary::before {
+  content:"";
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -230,30 +287,30 @@
   mask-composite: exclude;
 }
 
-.brandbox-btn .material-symbols-outlined {
-  font-size: 1.35rem;
+.btn-primary .material-symbols-outlined {
+  font-size: 21.6px;
   color: inherit;
 }
 
 /* Header-sized secondary (fits h-20 nav) — style matches View Demo */
-.brandbox-btn--nav {
+.btn--nav {
   height: 40px;
-  padding: 0 1.5rem;
-  font-size: 0.9375rem;
+  padding: 0 24px;
+  font-size: 15px;
   border-width: 2px;
 }
 
-.brandbox-btn--nav.brandbox-btn--secondary::before {
+.btn--nav.btn-secondary::before {
   padding: 2px;
 }
 
-.brandbox-btn--primary:hover::before,
-.brandbox-btn--secondary:hover::before {
+.btn-primary:hover::before,
+.btn-secondary:hover::before {
   opacity: 1;
-  animation: brandbox-btn-border 2.2s ease infinite;
+  animation: btn-primary-border 2.2s ease infinite;
 }
 
-@keyframes brandbox-btn-border {
+@keyframes btn-primary-border {
   0% {
     background-position: 0% 50%;
   }
@@ -266,8 +323,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .brandbox-btn--primary:hover::before,
-  .brandbox-btn--secondary:hover::before {
+  .btn-primary:hover::before,
+  .btn-secondary:hover::before {
     animation: none;
     background: linear-gradient(120deg, #ff00e5, #4edea3);
     background-size: 100% 100%;
@@ -319,7 +376,7 @@ summary::-webkit-details-marker {
 .brandbox-launch__content,
 .brandbox-footer__grid,
 .brandbox-footer__bottom {
-  padding-inline: 1.5rem;
+  padding-inline: 24px;
 }
 
 @media (min-width: 1024px) {
@@ -353,7 +410,7 @@ summary::-webkit-details-marker {
   z-index: 100;
   display: grid;
   place-items: center;
-  padding: 1.25rem;
+  padding: 20px;
 }
 
 .brandbox-newsletter-modal__backdrop {
@@ -366,36 +423,55 @@ summary::-webkit-details-marker {
 .brandbox-newsletter-modal__card {
   position: relative;
   z-index: 1;
-  width: min(100%, 26rem);
-  padding: 2rem 1.75rem 1.75rem;
-  border-radius: 1.25rem;
+  width: min(100%, 416px);
+  padding: 32px 28px 28px;
+  border-radius: 20px;
   border: 1px solid var(--hairline);
   background: var(--surface-container);
   text-align: center;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
 }
 
 .brandbox-newsletter-modal__icon {
-  font-size: 2.5rem;
+  font-size: 40px;
   color: var(--primary);
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
 }
 
 .brandbox-newsletter-modal__card h2 {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 700;
-  margin: 0 0 0.5rem;
+  margin: 0 0 8px;
   color: var(--on-surface);
 }
 
 .brandbox-newsletter-modal__card p {
-  margin: 0 0 1.5rem;
+  margin: 0 0 24px;
   color: var(--on-surface-variant);
   line-height: 1.55;
-  font-size: 0.98rem;
+  font-size: 15.68px;
 }
 
-.brandbox-newsletter-modal__card .brandbox-btn {
+.brandbox-newsletter-modal__card .btn-primary {
   margin-inline: auto;
+}
+
+
+/* —— Unified button type (canonical) —— */
+.btn-text,
+.btn-primary,
+.btn-secondary,
+a.btn-text,
+button.btn-text,
+a.btn-primary,
+button.btn-primary,
+a.btn-secondary,
+button.btn-secondary {
+  font-family: Inter, var(--font-body), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0;
+  line-height: 1.25;
 }

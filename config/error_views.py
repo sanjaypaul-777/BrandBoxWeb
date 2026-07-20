@@ -53,11 +53,11 @@ def server_error(request):
         logger.exception("Failed rendering 500.html (ref=%s)", ref)
         html = (
             "<!DOCTYPE html><html><head><title>Server error · BrandBox</title></head>"
-            "<body style='background:#0a0a0c;color:#dde4dd;font-family:system-ui;"
-            "display:grid;place-items:center;min-height:100vh;margin:0;padding:2rem;text-align:center'>"
+            "<body style='background:#EEF2F8;color:#06101a;font-family:system-ui;"
+            "display:grid;place-items:center;min-height:100vh;margin:0;padding:32px;text-align:center'>"
             "<div><h1>Something went wrong on our end</h1>"
             f"<p>Error reference: {ref}</p>"
-            "<p><a href='/dashboard/' style='color:#4edea3'>Back to Dashboard</a></p>"
+            "<p><a href='/dashboard/' style='color:#10b981'>Back to Dashboard</a></p>"
             "</div></body></html>"
         )
     return HttpResponseServerError(html)

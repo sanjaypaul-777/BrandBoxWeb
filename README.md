@@ -24,22 +24,23 @@ They share **one Shopify Partner app**. In production they should share **one Po
 
 **Rule:** change copy in `templates/…`. Change behavior in `apps/…`. Talk to Node only via `config/brandbox_client.py`.
 
-**CSS rule (page → section → block):** do not style pages from `base.css`. Each page loads its own file; every section uses a unique class prefix so changing one block does not affect another page.
+**CSS rule (page → section → block):** `base.css` `:root` is **shared primitives only** (body, cards, buttons, brand accents, fonts). Never restyle one page from `:root`. Each page/section owns `--prefix-*` tokens on its root class — change those, and only that section updates. **Sizing units are px only** (no rem/em) across CSS, Tailwind theme, and inline styles.
 
-| Page | CSS file | Section prefixes |
-|------|----------|------------------|
-| Homepage | `static/css/home.css` | `.brandbox-hero*`, `.brandbox-nav*`, … |
-| Login / signup | `static/css/auth.css` | `.auth-page`, `.auth-card`, … |
-| Dashboard shell | `static/css/dashboard.css` | `.dash`, `.dash-sidebar*`, `.brandbox-btn*` |
-| Product Finder / Imports | `static/css/catalog.css` | `.catalog`, finder / import blocks |
-| My Stores | `static/css/stores.css` | `.ms-*` |
-| Settings | `static/css/settings.css` | `.st-*` |
-| Builder | `static/css/builder.css` | `.build-*`, `.ab-*` |
-| Checkout | `static/css/checkout.css` | `.checkout*` |
-| Contact | `static/css/contact.css` | `.contact-*` |
-| 404 / 500 / failed | `static/css/status.css` | `.status-*` |
+| Page | CSS file | Section root → tokens |
+|------|----------|----------------------|
+| Homepage | `static/css/home.css` | `.brandbox-home` → `--home-*`; `.brandbox-hero` → `--hero-*` |
+| Login / signup | `static/css/auth.css` | `.auth-page` → `--auth-*` |
+| Dashboard shell | `static/css/dashboard.css` | `.dash` → `--dash-*`; `.dash-sidebar` → `--sidebar-*` |
+| Overview / Connect | `static/css/dashboard.css` | `.ov` → `--ov-*`; `.nc` → `--nc-*`; `.flow-wrap` → `--flow-*` |
+| Product Hunter / Imports | `static/css/catalog.css` | `.catalog` → `--cat-*` |
+| My Stores | `static/css/stores.css` | `.ms` → `--ms-*` |
+| Settings | `static/css/settings.css` | `.st` → `--st-*` |
+| Builder | `static/css/builder.css` | `.ab` → `--ab-*`; `.build-page` → `--build-*` |
+| Checkout | `static/css/checkout.css` | `.checkout` → `--checkout-*` |
+| Contact | `static/css/contact.css` | `.contact-page` → `--contact-*` |
+| 404 / 500 / failed | `static/css/status.css` | `.status-page` → `--status-*` |
 
-`base.css` = color names + reset only (~100 lines). Never load `home.css` on dashboard pages.
+Example: left panel background → `--sidebar-bg` on `.dash-sidebar` in `dashboard.css`. Shared `.brandbox-btn` keeps using bridged `--primary` from the nearest section.
 
 ## Who can see what
 
@@ -56,7 +57,7 @@ AFTER LOGIN
   /dashboard/builder/       AI Store Builder niche wizard
   /builder/building/<id>/   build progress
   /builder/success/<id>/    build success
-  /dashboard/product-finder/  Winning Product Vault browse + Import
+  /dashboard/product-hunter/  Winning Product Vault browse + Import
   /dashboard/imports/         My Imports edit / remove / Push
   /dashboard/stores/          My Stores
   /dashboard/settings/        account + prefs
@@ -72,7 +73,7 @@ STAFF / SUPERUSER
   /admin/ … Winning Product Vault  CatalogProduct rows
 ```
 
-> **Product Finder** reads Django SQL (`CatalogProduct`). **My Imports** are shop drafts
+> **Product Hunter** reads Django SQL (`CatalogProduct`). **My Imports** are shop drafts
 > (`ShopImport`). **Push to Shopify** calls the Node app (Admin token stays in Node).
 >
 > **Errors:** never show raw exceptions to users. 500 pages show a `BBX-500-…`
@@ -175,7 +176,7 @@ flowchart TD
 
   Hub --> Overview[Overview]
   Hub --> Builder[AI Store Builder]
-  Hub --> Finder[Product Finder]
+  Hub --> Finder[Product Hunter]
   Hub --> Imports[My Imports]
 ```
 
@@ -247,7 +248,7 @@ flowchart TD
 flowchart TD
   Hub{Connected shop} --> OV[Overview]
   Hub --> BD[Builder — see chart above]
-  Hub --> PF[Product Finder]
+  Hub --> PF[Product Hunter]
   Hub --> MI[My Imports]
 
   OV --> OV1[(Read jobs + connection)]
@@ -424,14 +425,14 @@ Other modes:
   --clean-dupes / --fill-ids
 ```
 
-**Merchant Product Finder never reads the Sheet.** It reads `CatalogProduct` SQL only.
+**Merchant Product Hunter never reads the Sheet.** It reads `CatalogProduct` SQL only.
 
 ---
 
-### 6) Product Finder → Import draft
+### 6) Product Hunter → Import draft
 
 ```text
-1. /dashboard/product-finder/
+1. /dashboard/product-hunter/
 2. DB READ CatalogProduct via search_vault() (q / country / niche / page)
 3. Import click → POST /dashboard/api/imports/
      → DB WRITE ShopImport (status=imported) for this shop+sourceId

@@ -173,6 +173,40 @@ class NotificationPreferences(models.Model):
         return prefs
 
 
+class MerchantProfile(models.Model):
+    """Customer profile under Settings → Account."""
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="merchant_profile",
+    )
+    company = models.CharField(max_length=255, blank=True)
+    address = models.TextField(blank=True)
+    phone = models.CharField(max_length=64, blank=True)
+    vertical_industry = models.CharField(max_length=255, blank=True)
+    desired_niche = models.CharField(max_length=255, blank=True)
+    bio = models.TextField(blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"profile · user {self.user_id}"
+
+    @classmethod
+    def for_user(cls, user) -> "MerchantProfile":
+        profile, _ = cls.objects.get_or_create(user=user)
+        return profile
+
+    @property
+    def display_name(self) -> str:
+        full = (self.user.get_full_name() or "").strip()
+        if full:
+            return full
+        if self.user.first_name:
+            return self.user.first_name
+        return "—"
+
+
 class ActivityEvent(models.Model):
     class EventType(models.TextChoices):
         STORE = "store", "Store"

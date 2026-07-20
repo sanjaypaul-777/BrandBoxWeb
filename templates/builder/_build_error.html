@@ -4,7 +4,7 @@
 <section class="build-error" role="alert">
   <div class="status-card">
     <div class="status-icon" aria-hidden="true">
-      <span class="material-symbols-outlined">power</span>
+      <span class="material-symbols-outlined">error</span>
     </div>
     <h1>{{ build_error_headline|default:"We hit a snag building your store" }}</h1>
     <p class="status-body">{{ build_error_body }}</p>
@@ -12,11 +12,11 @@
       {% if retry_url %}
       <form method="post" action="{{ retry_url }}" class="build-retry-form">
         {% csrf_token %}
-        <button type="submit" class="brandbox-btn brandbox-btn--primary">Try again →</button>
+        <button type="submit" class="btn-primary">Try again →</button>
       </form>
       {% endif %}
       <a
-        class="brandbox-btn brandbox-btn--secondary"
+        class="btn-secondary"
         href="mailto:{{ support_email|default:'help@brandbox.co' }}"
       >
         Contact support

@@ -12,7 +12,7 @@
 <div class="build-page">
   <header class="build-page__top">
     <a href="{% url 'dashboard:home' %}" class="build-page__brand" aria-label="BrandBox">
-      <img src="{% static 'images/logo-mark.png' %}?v=3" alt="" width="48" height="48" />
+      <img src="{% static 'images/favicon.png' %}?v=5" alt="" width="48" height="48" />
     </a>
   </header>
 
@@ -72,16 +72,16 @@
     if (label) label.textContent = data.progress_label || "";
 
     steps.forEach(function (li, i) {
-      li.classList.remove("is-done", "is-current");
+      li.classList.remove("is-done","is-current");
       var icon = li.querySelector(".material-symbols-outlined");
       if (data.done || i < data.progress_step) {
         li.classList.add("is-done");
-        if (icon) icon.textContent = "check_circle";
+        if (icon) icon.textContent ="check_circle";
       } else if (i === data.progress_step) {
         li.classList.add("is-current");
-        if (icon) icon.textContent = "progress_activity";
+        if (icon) icon.textContent ="progress_activity";
       } else if (icon) {
-        icon.textContent = "radio_button_unchecked";
+        icon.textContent ="radio_button_unchecked";
       }
     });
   }
@@ -99,7 +99,7 @@
   requestAnimationFrame(animateBar);
 
   function tick() {
-    fetch(url, { headers: { Accept: "application/json" }, credentials: "same-origin" })
+    fetch(url, { headers: { Accept:"application/json" }, credentials:"same-origin" })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         paint(data);

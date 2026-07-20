@@ -215,13 +215,13 @@ def builder_page(request):
 @login_required
 @require_http_methods(["GET", "POST"])
 def winning_products_page(request):
-    """Legacy URL — dummy WinningProduct catalog removed; use Product Finder."""
-    return redirect("dashboard:product_finder")
+    """Legacy URL — dummy WinningProduct catalog removed; use Product Hunter."""
+    return redirect("dashboard:product_hunter")
 
 
 @login_required
 def product_finder_page(request):
-    """Product Finder — Winning Product Vault (Django SQL). Import needs a real shop."""
+    """Product Hunter — Winning Product Vault (Django SQL). Import needs a real shop."""
     from .catalog import connected_shop_for_user, search_vault
     from .models import ShopConnection
 
@@ -240,6 +240,7 @@ def product_finder_page(request):
     q = (request.GET.get("q") or "").strip()
     country = (request.GET.get("country") or "").strip()
     niche = (request.GET.get("niche") or "").strip()
+    is_ai_picks = (request.GET.get("picks") or "").strip() in ("1", "true", "yes")
     try:
         page = max(1, int(request.GET.get("page") or "1"))
     except ValueError:
@@ -291,7 +292,7 @@ def product_finder_page(request):
     return _page(
         request,
         "dashboard/product_finder.html",
-        "product_finder",
+        "ai_picks" if is_ai_picks else "product_hunter",
         products=products,
         countries=countries,
         niches=niches,
@@ -309,6 +310,7 @@ def product_finder_page(request):
         has_next=has_next,
         has_prev=has_prev,
         import_api_url=reverse("dashboard:api_imports_create"),
+        is_ai_picks=is_ai_picks,
     )
 
 
@@ -572,46 +574,67 @@ def store_disconnect(request, pk: int):
 
 
 @login_required
+def schedule_page(request):
+    """Schedule — upcoming live sessions."""
+    return _page(request, "dashboard/schedule.html", "schedule")
+
+
+@login_required
+def training_page(request):
+    """Training — on-demand merchant lessons."""
+    return _page(request, "dashboard/training.html", "training")
+
+
+@login_required
 def settings_page(request):
-    from apps.builder.models import NichePack
-    from apps.builder.niches import ensure_niche_packs
-    from .models import NotificationPreferences
+    from .models import MerchantProfile, NotificationPreferences
     from .stores import connected_shops_for_user
 
-    ensure_niche_packs()
-    plan = get_or_create_plan(request.user)
     prefs = NotificationPreferences.for_user(request.user)
+    profile = MerchantProfile.for_user(request.user)
     stores_count = connected_shops_for_user(request.user).count()
-    niches = list(NichePack.objects.filter(is_active=True))
-
-    billing_url = ""
-    primary = ShopConnection.active_for_user(request.user)
-    if primary and not primary.is_preview:
-        handle = primary.shop.replace(".myshopify.com", "")
-        billing_url = f"https://admin.shopify.com/store/{handle}/settings/billing"
-
-    display_name = (
-        request.user.get_full_name()
-        or request.user.first_name
-        or request.user.username
-        or "—"
-    )
     email = request.user.email or request.user.username or "—"
 
     return _page(
         request,
         "dashboard/settings.html",
         "settings",
-        plan=plan,
         prefs=prefs,
+        profile=profile,
         stores_count=stores_count,
-        niches=niches,
-        billing_url=billing_url,
         account_email=email,
-        account_name=display_name,
+        account_name=profile.display_name,
+        account_username=request.user.username or "—",
         password_change_url=reverse("accounts:password_change"),
+        profile_edit_url=reverse("dashboard:settings_profile"),
         stores_url=reverse("dashboard:stores"),
-        upgrade_url=reverse("dashboard:upgrade"),
+    )
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def settings_profile_page(request):
+    """Edit customer profile — Account section grows here over time."""
+    from apps.accounts.forms import ProfileForm
+
+    from .models import MerchantProfile
+
+    profile = MerchantProfile.for_user(request.user)
+    form = ProfileForm(
+        request.POST or None,
+        user=request.user,
+        profile=profile,
+    )
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Your profile was updated.")
+        return redirect("dashboard:settings")
+
+    return _page(
+        request,
+        "dashboard/settings_profile.html",
+        "settings",
+        form=form,
     )
 
 

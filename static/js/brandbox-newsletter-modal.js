@@ -10,7 +10,7 @@
     if (window.history && window.history.replaceState) {
       var url = new URL(window.location.href);
       url.searchParams.delete("newsletter");
-      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+      window.history.replaceState({},"", url.pathname + url.search + url.hash);
     }
   }
 

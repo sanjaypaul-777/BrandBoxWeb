@@ -1,7 +1,6 @@
 {% extends "dashboard/base_dashboard.html" %}
 
 {% block dash_title %}Create store{% endblock %}
-{% block dash_header_title %}<h1 class="dash-page-heading">Create store</h1>{% endblock %}
 
 {% block dash_content %}
 <div class="flow-wrap">
@@ -41,7 +40,7 @@
 
     <div class="flow-actions" style="flex-direction: column; align-items: stretch;">
       <a
-        class="btn-flow btn-flow--primary btn-flow--block"
+        class="btn-primary btn--block"
         href="{{ signup_url }}"
         target="_blank"
         rel="noopener noreferrer"
@@ -79,8 +78,8 @@
       <p class="field-error is-hidden" id="shop-url-error" role="alert" hidden></p>
       {% endif %}
 
-      <div class="flow-actions" style="margin-top: 1rem;">
-        <button type="submit" class="btn-flow btn-flow--primary btn-flow--block">
+      <div class="flow-actions" style="margin-top: 16px;">
+        <button type="submit" class="btn-primary btn--block">
           Continue to install &amp; build
           <span aria-hidden="true">→</span>
         </button>
@@ -103,7 +102,7 @@
     if (!v) return null;
     var admin = v.match(/admin\.shopify\.com\/store\/([a-z0-9][a-z0-9-]*)/);
     if (admin) return admin[1] + ".myshopify.com";
-    v = v.replace(/^https?:\/\//, "").split("/")[0].replace(/\.$/, "");
+    v = v.replace(/^https?:\/\//,"").split("/")[0].replace(/\.$/,"");
     if (v.indexOf(".") === -1) v = v + ".myshopify.com";
     return /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(v) ? v : null;
   }
@@ -112,15 +111,15 @@
     if (normalizeHint(input.value)) {
       err.hidden = true;
       err.classList.add("is-hidden");
-      err.textContent = "";
-      input.setAttribute("aria-invalid", "false");
+      err.textContent ="";
+      input.setAttribute("aria-invalid","false");
       return;
     }
     e.preventDefault();
     err.hidden = false;
     err.classList.remove("is-hidden");
-    err.textContent = "Paste a valid admin URL or yourstore.myshopify.com domain";
-    input.setAttribute("aria-invalid", "true");
+    err.textContent ="Paste a valid admin URL or yourstore.myshopify.com domain";
+    input.setAttribute("aria-invalid","true");
     input.focus();
   });
 })();

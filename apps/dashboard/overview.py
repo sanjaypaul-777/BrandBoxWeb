@@ -16,7 +16,7 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from apps.builder.models import BuildJob, NichePack
+from apps.builder.models import BuildJob
 
 from .models import ActivityEvent, ShopConnection, UserPlan
 
@@ -36,6 +36,130 @@ SPOTLIGHT_COLORS = (
     "#6861f2",
     "#6ffbbe",
 )
+
+# Spotlight niches: (label, category allowlist, title word-boundary fallbacks, title exclude substrings).
+# Category match is preferred. Never use broad terms like "home" (pulls wall art).
+TOP_SPOTLIGHT_NICHES = (
+    (
+        "Kids & Baby",
+        ("baby onesie", "onesie"),
+        ("onesie",),
+        (),
+    ),
+    (
+        "Electronics",
+        ("phone case", "watch winder", "electronics", "electronic", "gadget"),
+        ("electronics", "gadget", "earbuds", "headphones"),
+        (),
+    ),
+    (
+        "Home & Kitchen",
+        ("mug", "cookware", "brass hardware", "kitchenware"),
+        ("cookware", "kitchenware", "kitchen drawer"),
+        (
+            "power strip",
+            "usb",
+            "charger",
+            "outlet",
+            "electronic",
+            "gadget",
+            "hdmi",
+            "led ",
+            "wifi",
+            "bluetooth",
+        ),
+    ),
+    (
+        "Beauty",
+        ("wax melt", "wax warmer", "scent", "skincare", "beauty", "cosmetic"),
+        ("skincare", "beauty", "serum", "moisturizer"),
+        (),
+    ),
+    (
+        "Fitness",
+        ("fitness",),
+        ("fitness", "workout", "dumbbell"),
+        (),
+    ),
+    (
+        "Pet",
+        ("pet supplies", "shop dogs", "pet bed"),
+        ("pet", "dog", "cat", "puppy", "kitten"),
+        (),
+    ),
+)
+
+
+def _spotlight_product_image(product) -> str:
+    image = (product.feature_image or "").strip()
+    if not image and product.product_images:
+        image = product.product_images.split(",")[0].strip()
+    return image
+
+
+def _wb(field: str, keyword: str):
+    """Word-boundary match so 'pet' does not hit 'Petty' / 'petty knife'."""
+    from django.db.models import Q
+
+    pattern = rf"(^|[^A-Za-z0-9]){keyword}([^A-Za-z0-9]|$)"
+    return Q(**{f"{field}__iregex": pattern})
+
+
+def spotlight_niches() -> list[dict]:
+    """Top niche product picks — category-first, image required, no false niche hits."""
+    from django.db.models import Case, IntegerField, Q, Value, When
+
+    from apps.catalog.models import CatalogProduct
+
+    items: list[dict] = []
+    used_ids: set[str] = set()
+    has_image = Q(feature_image__gt="") | Q(product_images__gt="")
+
+    for i, (label, cat_terms, title_terms, title_exclude) in enumerate(TOP_SPOTLIGHT_NICHES):
+        cat_query = Q()
+        for term in cat_terms:
+            cat_query |= Q(category__icontains=term.strip())
+
+        title_query = Q()
+        for term in title_terms:
+            title_query |= _wb("title", term)
+            if " " not in term:
+                cat_query |= _wb("category", term)
+
+        exclude_q = Q()
+        for term in title_exclude:
+            exclude_q |= Q(title__icontains=term)
+
+        qs = (
+            CatalogProduct.objects.filter(archived=False)
+            .filter(has_image)
+            .filter(cat_query | title_query)
+            .exclude(source_id__in=used_ids)
+            .exclude(category__iexact="Petty")
+        )
+        if title_exclude:
+            qs = qs.exclude(exclude_q)
+        qs = qs.annotate(
+            _cat_hit=Case(
+                When(cat_query, then=Value(0)),
+                default=Value(1),
+                output_field=IntegerField(),
+            ),
+        ).order_by("_cat_hit", "-updated_at")
+        product = qs.first()
+
+        color = SPOTLIGHT_COLORS[i % len(SPOTLIGHT_COLORS)]
+        items.append(
+            {
+                "name": label,
+                "image": _spotlight_product_image(product) if product else "",
+                "color": color,
+            }
+        )
+        if product:
+            used_ids.add(str(product.source_id))
+
+    return items
 
 
 @dataclass
@@ -73,33 +197,6 @@ def readiness_summary(readiness: list[ReadinessItem], pct: int) -> str:
             "products, set menu & policy."
         )
     return f"✓ {done} of {total} setup steps complete — keep going to finish launch."
-
-
-def spotlight_niches() -> list[dict]:
-    packs = list(NichePack.objects.filter(is_active=True).order_by("name")[:6])
-    if len(packs) < 6:
-        defaults = (
-            "Tech Wearables",
-            "Beauty Tech",
-            "Smart Kitchen",
-            "Fitness Tech",
-            "Pet Gadgets",
-            "Home Wellness",
-        )
-        names = [p.name for p in packs]
-        for name in defaults:
-            if len(names) >= 6:
-                break
-            if name not in names:
-                names.append(name)
-        return [
-            {"name": name, "color": SPOTLIGHT_COLORS[i % len(SPOTLIGHT_COLORS)]}
-            for i, name in enumerate(names[:6])
-        ]
-    return [
-        {"name": p.name, "color": SPOTLIGHT_COLORS[i % len(SPOTLIGHT_COLORS)]}
-        for i, p in enumerate(packs)
-    ]
 
 
 def build_overview_context(user) -> dict:
@@ -240,8 +337,8 @@ def build_overview_context(user) -> dict:
             ),
             ActivityEvent(
                 user=user,
-                event_type=ActivityEvent.EventType.BILLING,
-                message="You’re on the Free plan.",
+                event_type=ActivityEvent.EventType.SYSTEM,
+                message="Your Shopify store is ready for the next niche build.",
                 created_at=now - timedelta(days=1),
             ),
         ]
@@ -313,4 +410,18 @@ def build_overview_context(user) -> dict:
         "readiness": readiness,
         "spotlight": spotlight_niches(),
         "pro_features": PRO_FEATURES,
+        "coach_messages": [
+            {
+                "role": "coach",
+                "text": "Hi — I’m your BrandBox coach. Ask me about builds, products, or readiness.",
+            },
+            {
+                "role": "coach",
+                "text": (
+                    f"You’re at {readiness_pct}% store readiness"
+                    if snapshot
+                    else "Build your first AI store and I’ll help you score readiness."
+                ),
+            },
+        ],
     }

@@ -13,7 +13,7 @@
   <div class="auth-glow auth-glow--purple" aria-hidden="true"></div>
   <div class="auth-inner">
     <a href="{% url 'dashboard:home' %}" class="auth-logo" aria-label="BrandBox">
-      <img src="{% static 'images/logo-mark.png' %}?v=3" alt="" width="48" height="48" />
+      <img src="{% static 'images/favicon.png' %}?v=5" alt="" width="48" height="48" />
     </a>
 
     <p class="auth-eyebrow">Success</p>
@@ -21,11 +21,11 @@
     <p class="subtitle">{{ success_lede }}</p>
 
     <div class="build-success-actions">
-      <a class="brandbox-btn brandbox-btn--primary" href="{% url 'dashboard:product_finder' %}">
+      <a class="btn-primary" href="{% url 'dashboard:product_hunter' %}">
         Find Trending Products
       </a>
       {% if store_url %}
-      <a class="brandbox-btn brandbox-btn--secondary" href="{{ store_url }}" target="_blank" rel="noopener noreferrer">
+      <a class="btn-secondary" href="{{ store_url }}" target="_blank" rel="noopener noreferrer">
         Start selling now
       </a>
       {% endif %}

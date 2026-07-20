@@ -18,13 +18,13 @@
   }
 
   function pad(n) {
-    return String(n).padStart(2, "0");
+    return String(n).padStart(2,"0");
   }
 
   function render() {
     var remaining = endAt - Date.now();
     if (remaining <= 0) {
-      root.textContent = "Summer Offer Ended";
+      root.textContent ="Summer Offer Ended";
       return false;
     }
 

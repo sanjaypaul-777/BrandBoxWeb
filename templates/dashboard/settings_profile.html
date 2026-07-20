@@ -1,0 +1,47 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block dash_extra_css %}
+<link rel="stylesheet" href="{% static 'css/settings.css' %}" />
+{% endblock %}
+
+{% block dash_title %}Edit Profile{% endblock %}
+
+{% block dash_content %}
+<section class="st" data-settings-profile>
+  <a class="btn-text st-back" href="{% url 'dashboard:settings' %}">
+    <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+    Back To Settings
+  </a>
+
+  <section class="st-card" aria-labelledby="st-profile">
+    <header class="st-card__head">
+      <h2 id="st-profile" class="st-card__title st-card__title--flush">Edit Profile</h2>
+    </header>
+
+    <form method="post" class="st-profile-form" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+      <p class="st-profile-form__error" role="alert">{{ form.non_field_errors|striptags }}</p>
+      {% endif %}
+
+      <div class="st-profile-form__grid">
+        {% for field in form %}
+        <div class="st-field{% if field.name == 'address' or field.name == 'bio' or field.name == 'email' %} st-profile-form__full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+          <p class="st-profile-form__error">{{ field.errors|striptags }}</p>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="st-profile-form__actions">
+        <button type="submit" class="btn-primary">Save Profile</button>
+        <a class="btn-secondary" href="{% url 'dashboard:settings' %}">Cancel</a>
+      </div>
+    </form>
+  </section>
+</section>
+{% endblock %}

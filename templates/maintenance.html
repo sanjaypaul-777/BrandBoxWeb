@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/status.css" />
-    <link rel="icon" href="{{ STATIC_URL }}images/favicon.ico?v=3" sizes="any" />
+    <link rel="icon" href="{{ STATIC_URL }}images/favicon.png?v=5" type="image/png" />
   </head>
   <body>
     <main class="status-page">
@@ -20,7 +20,7 @@
       <div class="status-glow status-glow--purple" aria-hidden="true"></div>
       <div class="status-inner">
         <div class="status-logo" aria-hidden="true">
-          <img src="{{ STATIC_URL }}images/logo-mark.png?v=3" alt="" width="48" height="48" />
+          <img src="{{ STATIC_URL }}images/favicon.png?v=5" alt="" width="48" height="48" />
         </div>
         <div class="status-card">
           <div class="status-icon" aria-hidden="true">
@@ -36,7 +36,7 @@
           {% endif %}
           {% if status_page_url %}
           <div class="status-actions">
-            <a class="brandbox-btn brandbox-btn--primary" href="{{ status_page_url }}" target="_blank" rel="noopener noreferrer">
+            <a class="btn-primary" href="{{ status_page_url }}" target="_blank" rel="noopener noreferrer">
               Check status page
             </a>
           </div>

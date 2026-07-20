@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/status.css" />
-    <link rel="icon" href="{{ STATIC_URL }}images/favicon.ico?v=3" sizes="any" />
+    <link rel="icon" href="{{ STATIC_URL }}images/favicon.png?v=5" type="image/png" />
   </head>
   <body>
     <main class="status-page">
@@ -20,7 +20,7 @@
       <div class="status-glow status-glow--magenta" aria-hidden="true"></div>
       <div class="status-inner">
         <a href="/" class="status-logo" aria-label="BrandBox">
-          <img src="{{ STATIC_URL }}images/logo-mark.png?v=3" alt="" width="48" height="48" />
+          <img src="{{ STATIC_URL }}images/favicon.png?v=5" alt="" width="48" height="48" />
         </a>
         <div class="status-card">
           <p class="status-code status-code--magenta" aria-hidden="true">500</p>
@@ -33,10 +33,10 @@
             Try again in a moment.
           </p>
           <div class="status-actions">
-            <a class="brandbox-btn brandbox-btn--primary" href="javascript:location.reload()">
+            <a class="btn-primary" href="javascript:location.reload()">
               Try again →
             </a>
-            <a class="brandbox-btn brandbox-btn--secondary" href="/dashboard/">
+            <a class="btn-secondary" href="/dashboard/">
               Back to Dashboard
             </a>
           </div>

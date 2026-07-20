@@ -83,8 +83,6 @@ def _products_summary(request, niche: NichePack) -> dict:
         return {
             "skip": False,
             "count": count,
-            "label": f"{count} winning products included",
-            "link_label": "Browse Product Finder →",
             "mode": mode,
             "ids": [],
         }
@@ -92,8 +90,6 @@ def _products_summary(request, niche: NichePack) -> dict:
     return {
         "skip": True,
         "count": 0,
-        "label": "No products yet",
-        "link_label": "Browse Product Finder →",
         "mode": "none",
         "ids": [],
     }
@@ -186,7 +182,6 @@ def wizard(request):
 
     niches = list(NichePack.objects.filter(is_active=True))
     summary = _products_summary(request, niche) if niche and step == 2 else None
-    finder_url = reverse("dashboard:product_finder")
 
     ctx = {
         "nav_active": "builder",
@@ -198,6 +193,5 @@ def wizard(request):
         "selected_niche": niche,
         "summary": summary,
         "connection": connection,
-        "finder_url": finder_url,
     }
     return render(request, "dashboard/builder.html", ctx)

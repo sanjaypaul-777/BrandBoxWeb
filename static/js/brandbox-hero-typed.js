@@ -8,7 +8,7 @@
   var el = root.querySelector("[data-brandbox-hero-typed-text]");
   if (!el) return;
 
-  var phrase = "Knows What Sells";
+  var phrase ="Knows What Sells";
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     el.textContent = phrase;
@@ -54,6 +54,6 @@
     window.setTimeout(tick, DELETE_MS);
   }
 
-  el.textContent = "";
+  el.textContent ="";
   tick();
 })();

@@ -1,21 +1,62 @@
 /**
  * checkout.css — Checkout page ONLY.
  *
- * Sections (all under .checkout*):
- *   .checkout             page shell
- *   .checkout-form*       left form column
- *   .checkout-summary*    right order summary
+ * Edit look via --checkout-* on .checkout (never :root for this page).
+ *
+ * Sections: .checkout | .checkout-form* | .checkout-summary*
  */
 
 .checkout {
+
+  /* —— Section tokens (edit here only) —— */
+  --checkout-bg: #EEF2F8;
+  --checkout-text: #06101a;
+  --checkout-muted: #475569;
+  --checkout-surface: #ffffff;
+  --checkout-surface-high: #f8fafc;
+  --checkout-input-bg: #ffffff;
+  --checkout-hairline: rgba(15, 23, 42, 0.1);
+  --checkout-outline: #94a3b8;
+  --checkout-outline-soft: #64748b;
+  --checkout-primary: #4edea3;
+  --checkout-on-primary: #003824;
+  --checkout-primary-container: #10b981;
+  --checkout-primary-fixed: #6ffbbe;
+  --checkout-error: #b91c1c;
+  --checkout-glass: #ffffff;
+  --checkout-navy: #06101a;
+  --checkout-accent: #ff00e5;
+  --checkout-purple: #ad7bff;
+
+  /* Bridge: children using shared names stay section-scoped */
+  --background: var(--checkout-bg);
+  --on-surface: var(--checkout-text);
+  --on-background: var(--checkout-text);
+  --on-surface-variant: var(--checkout-muted);
+  --surface-container: var(--checkout-surface);
+  --surface-container-high: var(--checkout-surface-high);
+  --deep-obsidian: var(--checkout-input-bg);
+  --surface-navy: var(--checkout-navy);
+  --hairline: var(--checkout-hairline);
+  --outline-variant: var(--checkout-outline);
+  --outline: var(--checkout-outline-soft);
+  --primary: var(--checkout-primary);
+  --on-primary: var(--checkout-on-primary);
+  --primary-container: var(--checkout-primary-container);
+  --primary-fixed: var(--checkout-primary-fixed);
+  --error: var(--checkout-error);
+  --glass: var(--checkout-glass);
+  --accent-pink: var(--checkout-accent);
+  --vibrant-purple: var(--checkout-purple);
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background:
     radial-gradient(ellipse at 50% -10%, rgba(16, 185, 129, 0.12), transparent 50%),
-    var(--deep-obsidian);
-  color: var(--on-surface);
-  padding: 1.5rem 1rem 2.5rem;
+    var(--checkout-bg);
+  color: var(--checkout-text);
+  padding: 24px 16px 40px;
 }
 
 .checkout-shell {
@@ -30,18 +71,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 1.25rem;
-  padding: 0 0.25rem;
+  margin-bottom: 20px;
+  padding: 0 4px;
 }
 
 .checkout-brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 6.4px;
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 22.4px;
   font-weight: 800;
   color: var(--on-surface);
   text-decoration: none;
@@ -50,9 +91,8 @@
 
 .checkout-brand img {
   display: block;
-  height: 2.25rem;
+  height: 60px;
   width: auto;
-  max-width: 10rem;
   object-fit: contain;
 }
 
@@ -62,21 +102,21 @@
 
 .checkout-brand .material-symbols-outlined {
   color: var(--primary);
-  font-size: 1.35rem;
+  font-size: 21.6px;
 }
 
 .trust-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem 1rem;
+  gap: 10.4px 16px;
   align-items: center;
 }
 
 .trust-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.75rem;
+  gap: 5.6px;
+  font-size: 12px;
   color: var(--on-surface-variant);
 }
 
@@ -87,19 +127,19 @@
 
 .trust-badge .stars {
   color: var(--primary);
-  letter-spacing: -0.05em;
-  font-size: 0.7rem;
+  letter-spacing: -0.8px;
+  font-size: 11.2px;
 }
 
 .checkout-panel {
   display: grid;
   background: var(--surface-container);
   border: 1px solid var(--hairline);
-  border-radius: 1.25rem;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 16px 40px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   flex: 1;
 }
 
@@ -110,35 +150,35 @@
 }
 
 .checkout-pay {
-  padding: 2rem 1.75rem 2.25rem;
+  padding: 32px 28px 36px;
   background: var(--surface-container-low);
 }
 
 @media (min-width: 900px) {
   .checkout-pay {
-    padding: 2.5rem 2.25rem 2.75rem;
+    padding: 40px 36px 44px;
   }
 }
 
 .checkout-pay h1 {
-  margin: 0 0 1.5rem;
+  margin: 0 0 24px;
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 3vw, 1.65rem);
+  font-size: clamp(21.6px, 3vw, 26.4px);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.32px;
   color: var(--on-surface);
 }
 
 .checkout-form {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 3.2px;
 }
 
 .checkout-form .label {
   display: block;
-  margin: 0.85rem 0 0.4rem;
-  font-size: 0.875rem;
+  margin: 13.6px 0 6.4px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--on-surface-variant);
 }
@@ -151,13 +191,13 @@
 .checkout-form select {
   width: 100%;
   min-height: 48px;
-  padding: 0.7rem 0.9rem;
-  border-radius: 0.55rem;
+  padding: 11.2px 14.4px;
+  border-radius: 8.8px;
   border: 1px solid var(--outline-variant);
   background: var(--deep-obsidian);
   color: var(--on-surface);
   font: inherit;
-  font-size: 0.95rem;
+  font-size: 15.2px;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
@@ -178,8 +218,8 @@
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23bbcabf' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 1rem center;
-  padding-right: 2.5rem;
+  background-position: right 16px center;
+  padding-right: 40px;
   cursor: pointer;
 }
 
@@ -188,16 +228,16 @@
 }
 
 .field-card input {
-  padding-right: 7.5rem;
+  padding-right: 120px;
 }
 
 .card-brands {
   position: absolute;
-  right: 0.75rem;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
-  gap: 0.25rem;
+  gap: 4px;
   pointer-events: none;
 }
 
@@ -205,14 +245,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.7rem;
-  height: 1.15rem;
-  padding: 0 0.2rem;
-  border-radius: 0.2rem;
+  min-width: 27.2px;
+  height: 18.4px;
+  padding: 0 3.2px;
+  border-radius: 3.2px;
   background: #fff;
-  font-size: 0.55rem;
+  font-size: 8.8px;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.32px;
   color: #1a1a1a;
 }
 
@@ -224,17 +264,17 @@
 }
 .card-brands .amex {
   color: #2e77bb;
-  font-size: 0.45rem;
+  font-size: 7.2px;
 }
 .card-brands .disc {
   color: #ff6000;
-  font-size: 0.45rem;
+  font-size: 7.2px;
 }
 
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.85rem;
+  gap: 13.6px;
 }
 
 @media (max-width: 520px) {
@@ -248,22 +288,22 @@
 }
 
 .field-cvc input {
-  padding-right: 2.5rem;
+  padding-right: 40px;
 }
 
 .field-cvc .material-symbols-outlined {
   position: absolute;
-  right: 0.75rem;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--outline);
-  font-size: 1.15rem;
+  font-size: 18.4px;
   pointer-events: none;
 }
 
 .pay-legal {
-  margin: 1.25rem 0 0;
-  font-size: 0.75rem;
+  margin: 20px 0 0;
+  font-size: 12px;
   line-height: 1.5;
   color: var(--outline);
 }
@@ -279,14 +319,14 @@
 }
 
 .form-error {
-  margin: 0.35rem 0 0.15rem;
-  font-size: 0.85rem;
+  margin: 5.6px 0 2.4px;
+  font-size: 13.6px;
   color: var(--error);
 }
 
 .field-hint {
-  margin: 0.4rem 0 0;
-  font-size: 0.8rem;
+  margin: 6.4px 0 0;
+  font-size: 12.8px;
   line-height: 1.4;
   color: var(--outline);
 }
@@ -294,9 +334,9 @@
 .agree-check {
   display: flex;
   align-items: flex-start;
-  gap: 0.65rem;
-  margin-top: 1.15rem;
-  font-size: 0.88rem;
+  gap: 10.4px;
+  margin-top: 18.4px;
+  font-size: 14.08px;
   line-height: 1.45;
   color: var(--on-surface-variant);
   cursor: pointer;
@@ -305,7 +345,7 @@
 .agree-check input {
   width: auto;
   min-height: auto;
-  margin-top: 0.2rem;
+  margin-top: 3.2px;
   accent-color: var(--primary-container);
 }
 
@@ -321,7 +361,7 @@
 
 /* —— Summary column —— */
 .checkout-summary {
-  padding: 2rem 1.5rem 2.25rem;
+  padding: 32px 24px 36px;
   background: var(--surface-container-highest);
   border-top: 1px solid var(--hairline);
   display: flex;
@@ -332,24 +372,24 @@
   .checkout-summary {
     border-top: none;
     border-left: 1px solid var(--hairline);
-    padding: 2.25rem 1.75rem 2.5rem;
+    padding: 36px 28px 40px;
   }
 }
 
 .checkout-summary h2 {
-  margin: 0 0 1.25rem;
+  margin: 0 0 20px;
   text-align: center;
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 18.4px;
   font-weight: 700;
   color: var(--on-surface);
 }
 
 .summary-visual {
   position: relative;
-  border-radius: 0.85rem;
+  border-radius: 13.6px;
   overflow: hidden;
-  margin-bottom: 1.15rem;
+  margin-bottom: 18.4px;
   aspect-ratio: 16 / 10;
   background:
     radial-gradient(circle at 70% 40%, rgba(16, 185, 129, 0.35), transparent 50%),
@@ -372,45 +412,45 @@
   place-items: center;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 17.6px;
   color: var(--primary);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.32px;
 }
 
 .summary-product-name {
-  margin: 0 0 1rem;
+  margin: 0 0 16px;
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 16.8px;
   font-weight: 700;
   color: var(--on-surface);
 }
 
 .summary-features {
   list-style: none;
-  margin: 0 0 1.35rem;
+  margin: 0 0 21.6px;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 11.2px;
 }
 
 .summary-features li {
   display: flex;
   align-items: flex-start;
-  gap: 0.65rem;
-  font-size: 0.88rem;
+  gap: 10.4px;
+  font-size: 14.08px;
   line-height: 1.35;
   color: var(--on-surface);
 }
 
 .feature-icon {
   flex-shrink: 0;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.4rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 6.4px;
   display: grid;
   place-items: center;
-  font-size: 0.95rem;
+  font-size: 15.2px;
 }
 
 .feature-icon--emerald {
@@ -435,16 +475,16 @@
 
 .pricing-block {
   margin-top: auto;
-  padding-top: 0.5rem;
+  padding-top: 8px;
 }
 
 .pricing-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 0.75rem;
-  margin-bottom: 0.35rem;
-  font-size: 0.9rem;
+  gap: 12px;
+  margin-bottom: 5.6px;
+  font-size: 14.4px;
   color: var(--on-surface-variant);
 }
 
@@ -454,8 +494,8 @@
 }
 
 .pricing-discount {
-  margin: 0 0 0.85rem;
-  font-size: 0.8rem;
+  margin: 0 0 13.6px;
+  font-size: 12.8px;
   color: var(--primary);
   font-weight: 500;
 }
@@ -464,21 +504,21 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 1.25rem;
-  gap: 0.75rem;
+  margin-bottom: 20px;
+  gap: 12px;
 }
 
 .pricing-total span {
-  font-size: 0.95rem;
+  font-size: 15.2px;
   font-weight: 600;
   color: var(--on-surface);
 }
 
 .pricing-total strong {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.48px;
   color: var(--primary);
 }
 
@@ -488,13 +528,13 @@
   justify-content: center;
   width: 100%;
   min-height: 52px;
-  padding: 0.85rem 1.25rem;
+  padding: 13.6px 20px;
   border: none;
-  border-radius: 0.65rem;
+  border-radius: 10.4px;
   background: var(--primary-container);
   color: var(--on-primary);
   font: inherit;
-  font-size: 1.05rem;
+  font-size: 16.8px;
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
@@ -534,66 +574,66 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  margin: 1rem 0 0.85rem;
-  font-size: 0.8rem;
+  gap: 6.4px;
+  margin: 16px 0 13.6px;
+  font-size: 12.8px;
   color: var(--on-surface-variant);
 }
 
 .summary-reassure .material-symbols-outlined {
-  font-size: 1rem;
+  font-size: 16px;
   color: var(--primary);
 }
 
 .summary-mini-trust {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
 .summary-mini-trust .trust-badge {
-  font-size: 0.7rem;
+  font-size: 11.2px;
 }
 
 .checkout-done {
   grid-column: 1 / -1;
-  max-width: 28rem;
-  margin: 3rem auto;
-  padding: 2rem;
+  max-width: 448px;
+  margin: 48px auto;
+  padding: 32px;
   text-align: center;
   background: var(--surface-container);
   border: 1px solid var(--hairline);
-  border-radius: 1rem;
+  border-radius: 16px;
 }
 
 .checkout-done .ok {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  font-size: 1.15rem;
+  gap: 6.4px;
+  font-size: 18.4px;
   font-weight: 600;
   color: var(--primary);
-  margin: 0 0 0.75rem;
+  margin: 0 0 12px;
 }
 
 .checkout-done .muted {
   color: var(--on-surface-variant);
-  margin: 0 0 1.5rem;
+  margin: 0 0 24px;
   line-height: 1.5;
 }
 
 .checkout-foot {
-  margin-top: 1.5rem;
+  margin-top: 24px;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--outline);
 }
 
 .checkout-foot a {
   color: var(--on-surface-variant);
-  margin: 0 0.5rem;
+  margin: 0 8px;
   text-decoration: none;
 }
 

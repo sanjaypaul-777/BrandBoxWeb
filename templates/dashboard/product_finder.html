@@ -5,8 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/catalog.css' %}" />
 {% endblock %}
 
-{% block dash_title %}Product Finder{% endblock %}
-{% block dash_header_title %}<h1 class="dash-page-heading">Product Finder</h1>{% endblock %}
+{% block dash_title %}{% if is_ai_picks %}AI Picks Product{% else %}Product Hunter{% endif %}{% endblock %}
 
 {% block dash_content %}
 <section
@@ -19,11 +18,14 @@
   data-csrf="{{ csrf_token }}"
 >
   {% if needs_shop_connect %}
-  <div class="cat-empty" role="status" style="margin-bottom: 1rem; padding: 1rem 1.25rem;">
-    <h2 style="font-size: 1rem; margin: 0 0 0.35rem;">Connect a Shopify store to import</h2>
+  <div class="cat-empty" role="status" style="margin-bottom: 16px; padding: 16px 20px;">
+    <h2 style="font-size: 16px; margin: 0 0 6px;">Connect a Shopify store to import</h2>
     <p style="margin: 0;">
       You can browse the Winning Product Vault below.
-      <a href="{% url 'dashboard:connect' %}">Connect store →</a>
+      <a class="btn-text" href="{% url 'dashboard:connect' %}">
+        Connect store
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+      </a>
       to import and push products.
     </p>
   </div>
@@ -36,7 +38,8 @@
   </div>
   {% endif %}
 
-  <form class="cat-filters" method="get" action="{% url 'dashboard:product_finder' %}" role="search">
+  <form class="cat-filters" method="get" action="{% url 'dashboard:product_hunter' %}" role="search">
+    {% if is_ai_picks %}<input type="hidden" name="picks" value="1" />{% endif %}
     <div class="cat-field">
       <label for="pf-search">Search by product name</label>
       <input
@@ -113,7 +116,7 @@
       </div>
     </div>
     <div class="cat-filters__actions">
-      <button type="submit" class="cat-btn cat-btn--primary">Search</button>
+      <button type="submit" class="btn-primary">Search</button>
     </div>
   </form>
 
@@ -130,7 +133,6 @@
   </div>
   {% elif products %}
   <div class="cat-toolbar">
-    <p class="cat-toolbar__meta">{{ total }} products · page {{ page }} of {{ total_pages }}</p>
     <div class="cat-view-toggle" data-view-toggle role="group" aria-label="Result layout">
       <button type="button" data-view="grid" aria-pressed="true">
         <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
@@ -188,8 +190,9 @@
           </div>
         </div>
         <div class="cat-card__actions">
-          <button type="button" class="cat-btn cat-btn--secondary cat-btn--sm" data-open-details>
+          <button type="button" class="btn-text" data-open-details>
             View details
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
           </button>
           {% if p.status == "imported" %}
           <a class="cat-badge cat-badge--imported" href="{% url 'dashboard:imports' %}">
@@ -198,9 +201,9 @@
           {% elif p.status == "in_store" %}
           <span class="cat-badge cat-badge--live">In store</span>
           {% else %}
-          <button type="button" class="cat-btn cat-btn--primary cat-btn--sm" data-import-product>
+          <button type="button" class="btn-primary btn--sm" data-import-product>
             Import
-            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
           </button>
           {% endif %}
         </div>
@@ -212,20 +215,20 @@
   <nav class="cat-pager" aria-label="Pagination">
     {% if has_prev %}
     <a
-      class="cat-btn cat-btn--secondary cat-btn--sm"
-      href="?q={{ q|urlencode }}&country={{ country|urlencode }}&niche={{ niche|urlencode }}&page={{ page|add:'-1' }}"
+      class="btn-secondary btn--sm"
+      href="?{% if is_ai_picks %}picks=1&{% endif %}q={{ q|urlencode }}&country={{ country|urlencode }}&niche={{ niche|urlencode }}&page={{ page|add:'-1' }}"
     >Previous</a>
     {% else %}
-    <button type="button" class="cat-btn cat-btn--secondary cat-btn--sm" disabled>Previous</button>
+    <button type="button" class="btn-secondary btn--sm" disabled>Previous</button>
     {% endif %}
     <span class="cat-pager__label">Page {{ page }} of {{ total_pages }}</span>
     {% if has_next %}
     <a
-      class="cat-btn cat-btn--secondary cat-btn--sm"
-      href="?q={{ q|urlencode }}&country={{ country|urlencode }}&niche={{ niche|urlencode }}&page={{ page|add:'1' }}"
+      class="btn-secondary btn--sm"
+      href="?{% if is_ai_picks %}picks=1&{% endif %}q={{ q|urlencode }}&country={{ country|urlencode }}&niche={{ niche|urlencode }}&page={{ page|add:'1' }}"
     >Next</a>
     {% else %}
-    <button type="button" class="cat-btn cat-btn--secondary cat-btn--sm" disabled>Next</button>
+    <button type="button" class="btn-secondary btn--sm" disabled>Next</button>
     {% endif %}
   </nav>
   {% endif %}
@@ -259,7 +262,10 @@
       </div>
       <div class="cat-source">
         <p class="cat-source__label">Product source</p>
-        <a data-m-source-link href="#" target="_blank" rel="noopener noreferrer">Open product page</a>
+        <a class="btn-text" data-m-source-link href="#" target="_blank" rel="noopener noreferrer">
+          Open product page
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+        </a>
         <p class="cat-source__url" data-m-source-url></p>
       </div>
       <div class="cat-modal__actions" data-m-actions></div>

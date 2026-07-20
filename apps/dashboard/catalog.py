@@ -1,5 +1,5 @@
 """
-Product Finder + My Imports — local vault + Node Shopify bridge adapters.
+Product Hunter + My Imports — local vault + Node Shopify bridge adapters.
 """
 
 from __future__ import annotations
@@ -173,7 +173,7 @@ def search_vault(
     published_ids: set[str] | None = None,
 ) -> dict[str, Any]:
     """
-    Product Finder catalog from Django SQL (Winning Product Vault).
+    Product Hunter catalog from Django SQL (Winning Product Vault).
     Does not call Node / Cloudflare.
     """
     from apps.catalog.models import CatalogProduct

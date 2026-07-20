@@ -2,12 +2,10 @@
 {% load static %}
 
 {% block dash_extra_css %}
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'css/builder.css' %}" />
 {% endblock %}
 
 {% block dash_title %}AI Store Builder{% endblock %}
-{% block dash_header_title %}<h1 class="dash-page-heading">AI Store Builder</h1>{% endblock %}
 
 {% block dash_content %}
 <section class="ab" data-step="{{ wizard_step }}">
@@ -16,7 +14,7 @@
     <div class="ab-progress__meta">
       <span class="ab-progress__step">Step {{ wizard_step }} of {{ wizard_total|default:2 }}</span>
       <span class="ab-progress__eta">
-        {% if wizard_step == 1 %}About 1 minute{% else %}Ready to launch{% endif %}
+        {% if wizard_step == 1 %}A few minutes remains{% else %}Ready to launch{% endif %}
       </span>
     </div>
     <div class="ab-bar ab-bar--2" aria-hidden="true">
@@ -48,16 +46,19 @@
         data-slug="{{ n.slug }}"
       >
         <span class="ab-niche__thumb" style="--ab-accent: {{ n.accent }}"></span>
-        <span class="ab-niche__code">{{ n.display_codename }}</span>
-        <span class="ab-niche__cat">{{ n.name }}</span>
+        <span class="ab-niche__meta">
+          <span class="ab-niche__code">{{ n.display_codename }}</span>
+          <span class="ab-niche__cat">{{ n.name }}</span>
+        </span>
       </button>
       {% endfor %}
     </div>
 
     <div class="ab-footer">
       <p class="ab-reassure">You can edit everything after it’s built</p>
-      <button type="submit" class="ab-btn ab-btn--primary" id="ab-niche-continue" {% if not selected_niche %}disabled{% endif %}>
-        Continue →
+      <button type="submit" class="btn-primary" id="ab-niche-continue" {% if not selected_niche %}disabled{% endif %}>
+        Next
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
       </button>
     </div>
   </form>
@@ -73,18 +74,18 @@
 
   <div class="ab-summary">
     <div class="ab-summary__row">
-      <span class="ab-summary__label">Niche</span>
-      <span class="ab-summary__value">{{ selected_niche.display_codename }} · {{ selected_niche.name }}</span>
+      <span class="ab-summary__label">Selected Niche</span>
+      <span class="ab-summary__value ab-summary__value--niche">
+        <span class="ab-summary__niche-name">
+          <span class="material-symbols-outlined ab-summary__niche-icon" aria-hidden="true">{{ selected_niche.display_icon }}</span>
+          {{ selected_niche.display_codename }}
+        </span>
+      </span>
     </div>
     <div class="ab-summary__row">
-      <span class="ab-summary__label">Products</span>
-      <span class="ab-summary__value ab-summary__value--products">
-        {% if summary.count > 0 %}
-          {{ summary.count }} winning products included
-        {% else %}
-          No products yet
-        {% endif %}
-        <a class="ab-summary__link" href="{{ finder_url }}">{{ summary.link_label }}</a>
+      <span class="ab-summary__label">Products Included (AI Picks)</span>
+      <span class="ab-summary__value">
+        {% if summary.count > 0 %}{{ summary.count }}{% else %}0{% endif %}
       </span>
     </div>
     <div class="ab-summary__row">
@@ -98,9 +99,13 @@
     <input type="hidden" name="action" value="confirm_build" />
     {% if connection %}<input type="hidden" name="shop" value="{{ connection.shop }}" />{% endif %}
     <div class="ab-footer ab-footer--split">
-      <a class="ab-back" href="{% url 'dashboard:builder' %}?step=1{% if connection %}&shop={{ connection.shop }}{% endif %}">← Back</a>
-      <button type="submit" class="ab-btn ab-btn--primary ab-btn--lg">
-        Build my AI store now →
+      <a class="ab-back" href="{% url 'dashboard:builder' %}?step=1{% if connection %}&shop={{ connection.shop }}{% endif %}">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+        Back
+      </a>
+      <button type="submit" class="btn-primary">
+        Start Building
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
       </button>
     </div>
   </form>
@@ -121,10 +126,10 @@
     card.addEventListener("click", function () {
       form.querySelectorAll(".ab-niche").forEach(function (c) {
         c.classList.remove("is-selected");
-        c.setAttribute("aria-selected", "false");
+        c.setAttribute("aria-selected","false");
       });
       card.classList.add("is-selected");
-      card.setAttribute("aria-selected", "true");
+      card.setAttribute("aria-selected","true");
       hidden.value = card.getAttribute("data-slug") || "";
       btn.disabled = !hidden.value;
     });

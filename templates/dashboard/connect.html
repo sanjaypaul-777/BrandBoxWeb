@@ -1,7 +1,6 @@
 {% extends "dashboard/base_dashboard.html" %}
 
 {% block dash_title %}Connect store{% endblock %}
-{% block dash_header_title %}<h1 class="dash-page-heading">Connect store</h1>{% endblock %}
 
 {% block dash_content %}
 <div class="flow-wrap">
@@ -54,7 +53,7 @@
       {% endif %}
 
       <div class="flow-actions">
-        <button type="submit" class="btn-flow btn-flow--primary">
+        <button type="submit" class="btn-primary">
           Continue
           <span aria-hidden="true">→</span>
         </button>
@@ -97,7 +96,7 @@
     <form method="post" action="{% url 'dashboard:install' %}" class="flow-actions">
       {% csrf_token %}
       <input type="hidden" name="shop" value="{{ pending_shop.shop }}" />
-      <button type="submit" class="btn-flow btn-flow--primary btn-flow--block">
+      <button type="submit" class="btn-primary btn--block">
         Install BrandBox
         <span aria-hidden="true">→</span>
       </button>
@@ -124,7 +123,7 @@
   function normalizeHint(raw) {
     var v = (raw || "").trim().toLowerCase();
     if (!v) return null;
-    v = v.replace(/^https?:\/\//, "").split("/")[0].replace(/\.$/, "");
+    v = v.replace(/^https?:\/\//,"").split("/")[0].replace(/\.$/,"");
     if (v.indexOf(".") === -1) v = v + ".myshopify.com";
     return /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(v) ? v : null;
   }
@@ -133,15 +132,15 @@
     if (normalizeHint(input.value)) {
       err.hidden = true;
       err.classList.add("is-hidden");
-      err.textContent = "";
-      input.setAttribute("aria-invalid", "false");
+      err.textContent ="";
+      input.setAttribute("aria-invalid","false");
       return;
     }
     e.preventDefault();
     err.hidden = false;
     err.classList.remove("is-hidden");
-    err.textContent = "Enter a valid store domain like yourstorename.myshopify.com";
-    input.setAttribute("aria-invalid", "true");
+    err.textContent ="Enter a valid store domain like yourstorename.myshopify.com";
+    input.setAttribute("aria-invalid","true");
     input.focus();
   });
 })();

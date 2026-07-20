@@ -14,12 +14,16 @@
   <aside class="dash-sidebar" id="dash-sidebar" aria-label="Workspace">
     <a href="{% url 'home:index' %}" class="dash-sidebar__brand" aria-label="BrandBox home">
       <img
-        class="dash-sidebar__logo"
-        src="{% static 'images/logo.png' %}?v=3"
-        alt="BrandBox"
-        width="140"
-        height="40"
+        class="dash-sidebar__mark-img"
+        src="{% static 'images/favicon.png' %}?v=5"
+        alt=""
+        width="36"
+        height="36"
       />
+      <span class="dash-sidebar__brand-copy">
+        <span class="dash-sidebar__name">BrandBox AI</span>
+        <span class="dash-sidebar__tagline">Merchant Dashboard</span>
+      </span>
     </a>
 
     <nav class="dash-sidebar__nav" aria-label="Primary">
@@ -38,11 +42,18 @@
         AI Store Builder
       </a>
       <a
-        class="dash-nav-item {% if nav_active == 'product_finder' %}is-active{% endif %}"
-        href="{% url 'dashboard:product_finder' %}"
+        class="dash-nav-item {% if nav_active == 'product_hunter' %}is-active{% endif %}"
+        href="{% url 'dashboard:product_hunter' %}"
       >
-        <span class="material-symbols-outlined" aria-hidden="true">travel_explore</span>
-        Product Finder
+        <span class="material-symbols-outlined" aria-hidden="true">search</span>
+        Product Hunter
+      </a>
+      <a
+        class="dash-nav-item {% if nav_active == 'ai_picks' %}is-active{% endif %}"
+        href="{% url 'dashboard:product_hunter' %}?picks=1"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">trending_up</span>
+        AI Picks Product
       </a>
       <a
         class="dash-nav-item {% if nav_active == 'imports' %}is-active{% endif %}"
@@ -55,12 +66,33 @@
         class="dash-nav-item {% if nav_active == 'stores' %}is-active{% endif %}"
         href="{% url 'dashboard:stores' %}"
       >
-        <span class="material-symbols-outlined" aria-hidden="true">storefront</span>
+        <span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
         My Stores
+      </a>
+      <a
+        class="dash-nav-item {% if nav_active == 'schedule' %}is-active{% endif %}"
+        href="{% url 'dashboard:schedule' %}"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">event_available</span>
+        Schedule
+      </a>
+      <a
+        class="dash-nav-item {% if nav_active == 'training' %}is-active{% endif %}"
+        href="{% url 'dashboard:training' %}"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">school</span>
+        Training
       </a>
     </nav>
 
     <div class="dash-sidebar__foot">
+      <a
+        class="dash-nav-item {% if nav_active == 'contact' %}is-active{% endif %}"
+        href="{% url 'home:contact' %}"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">headset_mic</span>
+        Contact Us
+      </a>
       <a
         class="dash-nav-item {% if nav_active == 'settings' %}is-active{% endif %}"
         href="{% url 'dashboard:settings' %}"
@@ -81,38 +113,15 @@
   <div class="dash-backdrop" id="dash-backdrop" hidden></div>
 
   <div class="dash-body">
-    <header class="dash-header">
-      <button
-        type="button"
-        class="dash-header__menu"
-        id="dash-menu"
-        aria-label="Open menu"
-        aria-controls="dash-sidebar"
-      >
-        <span class="material-symbols-outlined" aria-hidden="true">menu</span>
-      </button>
-
-      <div class="dash-header__title">
-        {% block dash_header_title %}{% endblock %}
-      </div>
-
-      <div class="dash-header__actions">
-        {% if plan_label %}
-          <span class="dash-plan-badge {% if is_free_plan %}dash-plan-badge--free{% else %}dash-plan-badge--pro{% endif %}">
-            {{ plan_label }}
-          </span>
-        {% endif %}
-        {% if user.is_staff %}
-          <a class="dash-header__admin" href="/admin/">Admin</a>
-        {% endif %}
-        <div
-          class="dash-avatar"
-          title="{{ user.first_name|default:user.email|default:user.username }}"
-        >
-          {{ user.first_name|default:user.email|default:user.username|slice:":1"|upper }}
-        </div>
-      </div>
-    </header>
+    <button
+      type="button"
+      class="dash-menu-btn"
+      id="dash-menu"
+      aria-label="Open menu"
+      aria-controls="dash-sidebar"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+    </button>
 
     <main class="dash-main">
       {% if messages %}
@@ -138,7 +147,7 @@
     function setOpen(open) {
       document.body.classList.toggle("dash-nav-open", open);
       if (backdrop) backdrop.hidden = !open;
-      menu.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      menu.setAttribute("aria-label", open ?"Close menu" :"Open menu");
     }
 
     menu.addEventListener("click", function () {

@@ -7,7 +7,9 @@ app_name = "dashboard"
 urlpatterns = [
     path("", views.dashboard_home, name="home"),
     path("builder/", views.builder_page, name="builder"),
-    path("product-finder/", views.product_finder_page, name="product_finder"),
+    path("product-hunter/", views.product_finder_page, name="product_hunter"),
+    # Legacy URLs — redirect to Product Hunter
+    path("product-finder/", views.winning_products_page, name="product_finder"),
     path("winning-products/", views.winning_products_page, name="winning_products"),
     path("imports/", views.imports_page, name="imports"),
     path("my-imports/", views.imports_page, name="my_imports"),
@@ -20,7 +22,10 @@ urlpatterns = [
     path("stores/", views.stores_page, name="stores"),
     path("stores/<int:pk>/", views.store_detail_page, name="store_detail"),
     path("stores/<int:pk>/disconnect/", views.store_disconnect, name="store_disconnect"),
+    path("schedule/", views.schedule_page, name="schedule"),
+    path("training/", views.training_page, name="training"),
     path("settings/", views.settings_page, name="settings"),
+    path("settings/profile/", views.settings_profile_page, name="settings_profile"),
     path(
         "settings/notifications/",
         views.settings_notification_toggle,

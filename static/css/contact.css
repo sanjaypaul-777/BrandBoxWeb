@@ -1,13 +1,19 @@
 /**
- * contact.css — Contact page ONLY (uses auth.css for shared form shell).
+ * contact.css — Contact page ONLY (shell from auth.css).
  *
- * Sections:
- *   .contact-page*        page tweaks
- *   .contact-form*        form rows / fields
+ * Edit look via --contact-* on .contact-page (never :root for this page).
  */
 
+
+.contact-page {
+  /* —— Section tokens (edit here only) —— */
+  --contact-success-border: color-mix(in srgb, var(--primary) 40%, transparent);
+  --contact-success-bg: color-mix(in srgb, var(--primary) 12%, transparent);
+  --contact-success-text: var(--primary);
+}
+
 .contact-page .auth-inner {
-  max-width: 36rem;
+  max-width: 576px;
 }
 
 .contact-form__row {
@@ -19,7 +25,7 @@
 @media (min-width: 640px) {
   .contact-form__row {
     grid-template-columns: 1fr 1fr;
-    gap: 0.85rem;
+    gap: 13.6px;
   }
 }
 
@@ -28,19 +34,19 @@
 }
 
 .contact-form textarea {
-  min-height: 8.5rem;
+  min-height: 136px;
   resize: vertical;
   line-height: 1.5;
 }
 
 .contact-success {
-  margin: 0 0 1.25rem;
-  padding: 0.85rem 1rem;
-  border-radius: 0.75rem;
-  border: 1px solid color-mix(in srgb, var(--primary) 40%, transparent);
-  background: color-mix(in srgb, var(--primary) 12%, transparent);
-  color: var(--primary);
-  font-size: 0.95rem;
+  margin: 0 0 20px;
+  padding: 13.6px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--contact-success-border);
+  background: var(--contact-success-bg);
+  color: var(--contact-success-text);
+  font-size: 15.2px;
   font-weight: 600;
   text-align: left;
 }
