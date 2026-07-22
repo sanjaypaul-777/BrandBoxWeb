@@ -61,6 +61,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "config.context_processors.brandbox_settings",
+                "config.context_processors.seo_meta",
             ],
         },
     },

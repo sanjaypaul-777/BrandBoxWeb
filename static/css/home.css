@@ -5,9 +5,10 @@
  * (--nav-*, --hero-*, …). Never restyle homepage from :root.
  * Shared .btn-primary uses bridged brand tokens from .brandbox-home.
  *
- * Sections: .brandbox-nav* | .brandbox-hero* | .brandbox-how* | .brandbox-products*
- *           .brandbox-pricing* / .brandbox-launch* | .brandbox-footer*
- *           .brandbox-newsletter* | .btn-primary* | .brandbox-testimonial*
+ * Sections: .brandbox-nav* | .brandbox-hero* | .brandbox-how* | .brandbox-agent* (coach)
+ *           .brandbox-offer* | .brandbox-compare* | .brandbox-products*
+ *           .brandbox-testimonial* | .brandbox-faq* | .brandbox-launch* | .brandbox-footer*
+ *           .brandbox-newsletter*
  */
 
 /* —— Page shell (wraps entire homepage) —— */
@@ -20,8 +21,6 @@
   --home-muted-on-dark: #b6b6b6;
   --home-muted: var(--home-muted-on-light);
   --home-surface: #ffffff;
-  --home-navy: #ffffff;
-  --home-obsidian: #f8fafc;
   --home-hairline: rgba(15, 23, 42, 0.1);
   --home-outline: #94a3b8;
   --home-primary: #4edea3;
@@ -42,8 +41,8 @@
   --on-background: var(--home-text);
   --on-surface-variant: var(--home-muted);
   --surface-container: var(--home-surface);
-  --surface-navy: var(--home-navy);
-  --deep-obsidian: var(--home-obsidian);
+  --surface-navy: var(--home-surface);
+  --deep-obsidian: #f8fafc;
   --hairline: var(--home-hairline);
   --outline-variant: var(--home-outline);
   --primary: var(--home-primary);
@@ -231,7 +230,6 @@
   --hero-accent: var(--home-primary);
   --hero-text: #f0f0f1;
   --hero-muted: var(--home-muted-on-dark);
-  --hero-logo-height: var(--home-logo-height);
   --on-surface-variant: var(--hero-muted);
   height: 791px;
   box-sizing: border-box;
@@ -251,9 +249,7 @@
 .brandbox-home h1,
 .brandbox-home h2,
 .brandbox-hero h1,
-.brandbox-hero .font-display-hero,
-.brandbox-home .font-headline-lg,
-.brandbox-home .font-headline-md {
+.brandbox-hero .font-display-hero {
   font-family: Inter, system-ui, sans-serif;
 }
 
@@ -276,7 +272,7 @@
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -313,7 +309,7 @@
   color: #111111;
   font-family: Inter, system-ui, sans-serif;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.2px;
   line-height: 1;
   white-space: nowrap;
@@ -487,7 +483,7 @@
   background: #000000;
   color: #fefefe;
   margin-top: 0;
-  padding-top: 120px;
+  padding-top: var(--section-gap);
   padding-bottom: 48px;
 }
 
@@ -717,10 +713,6 @@
   vertical-align: middle;
 }
 
-.material-symbols-outlined.filled {
-  font-variation-settings:"FILL" 1,"wght" 400,"GRAD" 0,"opsz" 24;
-}
-
 /* Brand mark (homepage nav + footer only) */
 .brandbox-brand {
   display: inline-flex;
@@ -829,34 +821,40 @@
   gap: 24px;
 }
 
-/* Black base border + magenta / #ffcb6b sweep */
+/* How cards — clockwise border spin (transform) + transparent art */
 .brandbox-how__card {
-  --gb-speed: 5s;
+  --gb-speed: 10s;
+  --how-media-ratio: 928 / 1152;
+  --how-card-bg: #05070a;
   position: relative;
   width: 360px;
   max-width: 100%;
-  height: 550px;
+  height: 620px;
   padding: 2px;
-  border-radius: 12px;
+  border-radius: 20px;
   box-sizing: border-box;
   overflow: hidden;
   isolation: isolate;
-  /* Always-on border color */
   background: #000000;
+  border: 0;
   box-shadow: 0 0 0 1px #000000;
 }
 
 .brandbox-how__card::before {
   content: "";
   position: absolute;
-  inset: -40%;
+  top: 50%;
+  left: 50%;
+  width: 220%;
+  height: 220%;
   z-index: 0;
   background: conic-gradient(
     from 0deg,
     #000000 0%,
-    #000000 52%,
-    #ff00e5 68%,
+    #000000 58%,
+    #ff00e5 72%,
     #ffcb6b 82%,
+    #ff00e5 90%,
     #000000 100%
   );
   animation: brandbox-gb-spin var(--gb-speed) linear infinite;
@@ -864,36 +862,36 @@
   will-change: transform;
 }
 
-.brandbox-how__card-inner {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-  padding: 48px 24px 40px;
-  border-radius: 10px;
-  background: #121212;
-  color: #f1f3f8;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
 @keyframes brandbox-gb-spin {
   from {
-    transform: rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .brandbox-how__card::before {
     animation: none;
-    opacity: 0;
+    background: #000000;
   }
+}
+
+.brandbox-how__card-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  padding: 12px 22px 28px;
+  border-radius: 18px;
+  background: var(--how-card-bg);
+  color: #f1f3f8;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .brandbox-how__media {
@@ -902,26 +900,64 @@
   align-items: center;
   justify-content: center;
   flex: 1 1 auto;
-  min-height: 200px;
-  margin: 0;
+  min-height: 0;
+  width: calc(100% + 16px);
+  margin: 0 -8px;
   padding: 0;
   border: 0;
-  border-radius: 0;
   background: transparent;
   overflow: visible;
 }
 
+.brandbox-how__media::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 78%;
+  height: 70%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(139, 92, 246, 0.38) 0%,
+    rgba(168, 85, 247, 0.18) 36%,
+    rgba(59, 130, 246, 0.06) 58%,
+    transparent 72%
+  );
+  filter: blur(18px);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .brandbox-how__media img {
-  width: 100%;
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 100%;
   height: 100%;
-  max-height: 280px;
+  max-height: 100%;
+  aspect-ratio: var(--how-media-ratio);
   object-fit: contain;
-  object-position: center;
+  object-position: center center;
   display: block;
   background: transparent;
   border: 0;
-  border-radius: 0;
   box-shadow: none;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 72%,
+    rgba(0, 0, 0, 0.5) 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 72%,
+    rgba(0, 0, 0, 0.5) 90%,
+    transparent 100%
+  );
   transition: transform 0.45s ease;
 }
 
@@ -930,23 +966,32 @@
 }
 
 .brandbox-how__body {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   flex-shrink: 0;
-  padding: 24px 0 0;
+  padding: 8px 0 0;
   text-align: left;
+  background: linear-gradient(
+    to top,
+    var(--how-card-bg) 55%,
+    rgba(5, 7, 10, 0.92) 82%,
+    transparent 100%
+  );
 }
 
 .brandbox-how__chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   padding: 7px 14px;
   border-radius: 9999px;
   background: #0d172f;
-  border: 1px solid color-mix(in srgb, #f1f3f8 18%, transparent);
+  border: 1px solid color-mix(in srgb, #f1f3f8 14%, transparent);
+  box-shadow: none;
   color: #f1f3f8;
   font-size: 13px;
   font-weight: 600;
@@ -956,6 +1001,7 @@
   font-size: 15px;
   width: 15px;
   height: 15px;
+  color: inherit;
   font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 20;
 }
 
@@ -970,7 +1016,7 @@
 
 .brandbox-how__card-text {
   margin: 0;
-  color: var(--home-muted-on-dark);
+  color: #9ca3af;
   font-size: 15px;
   line-height: 1.55;
 }
@@ -1493,7 +1539,6 @@
   --offer-muted: #b6b6b6;
   --offer-accent: #0d172f;
   --offer-line: rgba(254, 254, 254, 0.1);
-  --offer-glow: color-mix(in srgb, #ffcb6b 22%, transparent);
   --on-surface-variant: var(--offer-muted);
   background: var(--offer-bg);
   color: var(--offer-text);
@@ -1527,7 +1572,7 @@
   margin: 0 auto;
   padding: 44px 48px 40px;
   border-radius: 24px;
-  border: 1px solid var(--Color-Neutral-600, #727272);
+  border: 1px solid #727272;
   background: linear-gradient(340deg, rgba(120, 89, 244, 0) 79.67%, #7859f4 198.01%);
   overflow: hidden;
   box-sizing: border-box;
@@ -1833,23 +1878,20 @@
   }
 }
 
-.brandbox-glow-primary {
-  filter: blur(100px);
-  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-  opacity: 0.15;
+/* Scroll reveal — visible by default; JS only enhances */
+.brandbox-reveal {
+  opacity: 1;
+  transition: opacity 0.8s ease;
 }
 
-.brandbox-glow-purple {
-  filter: blur(100px);
-  background: radial-gradient(circle, var(--vibrant-purple) 0%, transparent 70%);
-  opacity: 0.15;
-}
+@media (prefers-reduced-motion: no-preference) {
+  .brandbox-reveal:not(.is-visible) {
+    opacity: 0.01;
+  }
 
-.brandbox-text-gradient {
-  background: linear-gradient(to right, var(--accent-pink), var(--vibrant-purple));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  .brandbox-reveal.is-visible {
+    opacity: 1;
+  }
 }
 
 /* Hero typed accent — fixed width so typewriter doesn't shift layout */
@@ -2007,7 +2049,15 @@
   text-decoration: none;
 }
 
-.btn-secondary:hover {
+.btn-secondary:visited,
+a.btn-secondary:visited {
+  border-color: var(--outline-variant);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible,
+a.btn-secondary:hover,
+a.btn-secondary:focus-visible {
   border-color: transparent;
 }
 
@@ -2222,28 +2272,6 @@ summary::-webkit-details-marker {
   border-bottom: 1px solid rgba(254, 254, 254, 0.14);
 }
 
-.brandbox-launch__glow {
-  display: none;
-}
-
-.brandbox-launch__scene {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.35;
-}
-
-.brandbox-launch__scene canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.brandbox-launch__scene.is-static {
-  opacity: 0;
-}
-
 .brandbox-launch__panel {
   position: relative;
   z-index: 1;
@@ -2252,7 +2280,7 @@ summary::-webkit-details-marker {
   margin: 0 auto;
   padding: 64px 40px;
   border-radius: 24px;
-  border: 1px solid var(--Color-Neutral-600, #727272);
+  border: 1px solid #727272;
   background: linear-gradient(340deg, rgba(120, 89, 244, 0) 79.67%, #7859f4 198.01%);
   box-sizing: border-box;
   overflow: hidden;
@@ -2283,20 +2311,30 @@ summary::-webkit-details-marker {
   gap: 16px;
 }
 
-.brandbox-launch .btn-secondary {
+.brandbox-launch .btn-secondary,
+.brandbox-launch a.btn-secondary,
+.brandbox-launch .btn-secondary:visited,
+.brandbox-launch a.btn-secondary:visited {
   color: #fefefe;
-  border-color: rgba(254, 254, 254, 0.35);
+  background: transparent;
+  border: 3px solid rgba(254, 254, 254, 0.55);
 }
 
 .brandbox-launch .btn-secondary:hover,
-.brandbox-launch .btn-secondary:focus,
-.brandbox-launch .btn-secondary:visited {
+.brandbox-launch .btn-secondary:focus-visible,
+.brandbox-launch a.btn-secondary:hover,
+.brandbox-launch a.btn-secondary:focus-visible {
   color: #fefefe;
+  border-color: transparent;
 }
 
 .brandbox-faq__wrap {
-  padding-inline: 24px;
+  padding-inline: 0;
   box-sizing: border-box;
+}
+
+.brandbox-faq__list {
+  padding-bottom: var(--section-gap);
 }
 
 .brandbox-launch__content {
@@ -2354,11 +2392,6 @@ summary::-webkit-details-marker {
   overflow: hidden;
 }
 
-.brandbox-honeypot__field {
-  position: absolute;
-  left: -10000px;
-}
-
 /* Newsletter thank-you popup */
 .brandbox-newsletter-modal {
   position: fixed;
@@ -2411,23 +2444,4 @@ summary::-webkit-details-marker {
 
 .brandbox-newsletter-modal__card .btn-primary {
   margin-inline: auto;
-}
-
-
-/* —— Unified button type (canonical) —— */
-.btn-text,
-.btn-primary,
-.btn-secondary,
-a.btn-text,
-button.btn-text,
-a.btn-primary,
-button.btn-primary,
-a.btn-secondary,
-button.btn-secondary {
-  font-family: Inter, var(--font-body), sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0;
-  line-height: 1.25;
 }

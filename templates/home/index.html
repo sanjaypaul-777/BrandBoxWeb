@@ -4,14 +4,14 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BrandBox AI | The AI Store That Knows What Sells</title>
-<meta name="description" content="Build a store by typing. Run it from a chat window. Make ads in minutes."/>
+<title>{{ seo.title|default:"BrandBox AI | The AI Store That Knows What Sells" }}</title>
+{% include "includes/seo_meta.html" %}
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet"/>
 <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
-<link rel="stylesheet" href="{% static 'css/home.css' %}?v=launch-panel-1"/>
+<link rel="stylesheet" href="{% static 'css/home.css' %}?v=how-cards-7"/>
 <link rel="icon" href="{% static 'images/favicon.png' %}?v=5" type="image/png" />
 <link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}?v=5" />
 <script>
@@ -54,8 +54,6 @@
 </nav>
 <!-- Hero Section -->
 <header class="brandbox-hero relative overflow-hidden">
-<div class="absolute top-0 left-1/4 w-[600px] h-[600px] brandbox-glow-primary -z-10"></div>
-<div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] brandbox-glow-purple -z-10"></div>
 <div class="brandbox-hero__inner max-w-container-max mx-auto relative z-10">
   <div class="brandbox-hero__copy">
     <div
@@ -89,13 +87,28 @@
     </div>
   </div>
 
-  <div class="brandbox-hero__spotlight" aria-label="Theme mockups">
+  <div class="brandbox-hero__spotlight" aria-label="Theme samples">
     <div class="brandbox-hero__themes">
       <article class="brandbox-hero__theme">
         <div class="brandbox-hero__theme-frame">
           <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNBfvgFY9nNMPOD1zScY-QS7yYF5QJ06Ih0rmzuJQyBij_C9QIrvYRHFQFowF7Id1Z8L0X0vBUkrdYFc8meCyjB5Af7BGphH1_qgV86a9yEbdM5k9Z0hoOkOopkCBl2cVDCVoOs0K4aM9vWvNPE43MHyp703xS8TrQXlYox5XqZ_tGxDfjDLwRqY9SKVI_FRWYKaptxAX1H2f_JNdBOuaONQtayCuh2blrsAYXGDcKkK_OCgtZ18vB3HtekqC9VocZhS2oChx-AVk3"
-            alt=""
+            src="{% static 'images/theme_sample1.jpg' %}"
+            alt="Theme sample 1"
+            width="468"
+            height="592"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </article>
+      <article class="brandbox-hero__theme">
+        <div class="brandbox-hero__theme-frame">
+          <img
+            src="{% static 'images/theme_sample2.jpg' %}"
+            alt="Theme sample 2"
+            width="468"
+            height="592"
             loading="lazy"
             decoding="async"
           />
@@ -104,8 +117,10 @@
       <article class="brandbox-hero__theme">
         <div class="brandbox-hero__theme-frame">
           <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWj4WP3Gl1fA7dFGuki7nVfo3Sg9HJNcXFsEjecnQY0Gv3M7MugeQIP8Tlw_cBtLadozf0T_mIv7alIQtoxu7EkG1hjvD9OaPwY1eAwIQ4R_Odhi1-jmfeIck073MiBYlWwL83BlzSE0U7n6raS3wcZQMBhlo5RcS6BiwEYksmXCgLyU3x9SCzYdI4czeE_KCeMSrFLSBM3e_xDUfJq3Q2ZpymxtR1ew77pcANVdHw9fUdFxy_bD8iIHzEgqjZtNR17s9YTgXeFZrU"
-            alt=""
+            src="{% static 'images/theme_sample3.jpg' %}"
+            alt="Theme sample 3"
+            width="468"
+            height="592"
             loading="lazy"
             decoding="async"
           />
@@ -114,8 +129,10 @@
       <article class="brandbox-hero__theme">
         <div class="brandbox-hero__theme-frame">
           <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBpnmZmG2cXibZMfVZMtyahmdk27f-CaZYyNqiVJPvMDf0at5LEQ5_V81odh-TAkJNCCokcIiHsi7-XAdBnUHGG0K__oG5Otyimv7tN5WR7ZWRS4S7x_oNqwvKgedK-ebWcsn2GbxrH60Xxkl9w8WlsMNMiWOToxJPYb5a3tSQAi4rDA2qRA6_a5sf3X5GoiDbRlVDfVrscvg2lb46ev1kic7X9J8gwogyrNaJRHAZ5JmNFyNzQXAM5q2LS00RE1o7VnU4SA_z_dsf"
-            alt=""
+            src="{% static 'images/theme_sample4.jpg' %}"
+            alt="Theme sample 4"
+            width="468"
+            height="592"
             loading="lazy"
             decoding="async"
           />
@@ -124,18 +141,10 @@
       <article class="brandbox-hero__theme">
         <div class="brandbox-hero__theme-frame">
           <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4GlxSUI_rg3lZFJDMQLiqhfxjPtKU1KucHqrc8t7qjXwlGGho3V3OkuZX18_0MTNmb_fBMZnvVk1ojU0BcsnLl2tvX1Uz995nEcJU1gOK2ATICjrWZ4lKIVzKcUF69t8V8k3lJZRqBSgy3PUi9UC8hmyIHGoLHfCepuHKHRC749ya07N6C3-uuZiImgVHNjHZqVUUQhr930929A6ghVSA-0TqNJpp4IUmgGcd-3z2qClpMbLRQ_rdjHyK6zcJCuTp___5Qg6aPvC"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-      </article>
-      <article class="brandbox-hero__theme">
-        <div class="brandbox-hero__theme-frame">
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOHdkSIfjutpDa6kLqqGdQ49y4fK3ZoFogK6NKJnznZnT3OntbaG9y0gNdP25_Se-3UwqBo8UKnGicgJVv5G6oHylawRrb0b3jWin6zuXJL0iZErC27LnxUCAMpE9DvOwYMNmTV4wGDLqjVAAAA0D1jH6dHd58TGVw77HYt48E1Wh6XYG014xZem-3qQZPDANuDWcBdkMl0Ku6eUMTn22INgpk_qIbZulg6IhpPzgw73ThW49JVs810A2vvXtWycMZrI9ahuGHhbjl"
-            alt=""
+            src="{% static 'images/theme_sample5.jpg' %}"
+            alt="Theme sample 5"
+            width="468"
+            height="592"
             loading="lazy"
             decoding="async"
           />
@@ -146,8 +155,8 @@
 </div>
 </header>
 <!-- How it works -->
-<section id="brandbox-how" class="brandbox-how relative overflow-hidden">
-  <div class="brandbox-how__inner max-w-container-max mx-auto px-gutter">
+<section id="brandbox-how" class="brandbox-how brandbox-reveal relative overflow-hidden">
+  <div class="brandbox-how__inner max-w-container-max mx-auto">
     <div class="brandbox-how__intro">
       <span class="brandbox-how__eyebrow">
         <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
@@ -164,8 +173,10 @@
         <div class="brandbox-how__card-inner">
           <div class="brandbox-how__media">
             <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWj4WP3Gl1fA7dFGuki7nVfo3Sg9HJNcXFsEjecnQY0Gv3M7MugeQIP8Tlw_cBtLadozf0T_mIv7alIQtoxu7EkG1hjvD9OaPwY1eAwIQ4R_Odhi1-jmfeIck073MiBYlWwL83BlzSE0U7n6raS3wcZQMBhlo5RcS6BiwEYksmXCgLyU3x9SCzYdI4czeE_KCeMSrFLSBM3e_xDUfJq3Q2ZpymxtR1ew77pcANVdHw9fUdFxy_bD8iIHzEgqjZtNR17s9YTgXeFZrU"
+              src="{% static 'images/connect.png' %}?v=cut-4"
               alt=""
+              width="928"
+              height="1152"
               loading="lazy"
               decoding="async"
             />
@@ -185,8 +196,10 @@
         <div class="brandbox-how__card-inner">
           <div class="brandbox-how__media">
             <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOHdkSIfjutpDa6kLqqGdQ49y4fK3ZoFogK6NKJnznZnT3OntbaG9y0gNdP25_Se-3UwqBo8UKnGicgJVv5G6oHylawRrb0b3jWin6zuXJL0iZErC27LnxUCAMpE9DvOwYMNmTV4wGDLqjVAAAA0D1jH6dHd58TGVw77HYt48E1Wh6XYG014xZem-3qQZPDANuDWcBdkMl0Ku6eUMTn22INgpk_qIbZulg6IhpPzgw73ThW49JVs810A2vvXtWycMZrI9ahuGHhbjl"
+              src="{% static 'images/build.png' %}?v=cut-4"
               alt=""
+              width="928"
+              height="1152"
               loading="lazy"
               decoding="async"
             />
@@ -206,8 +219,10 @@
         <div class="brandbox-how__card-inner">
           <div class="brandbox-how__media">
             <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAe64pszu9KBBCXduTOkMFTwzowDEJrVHMxitZzYnfJRO9WY10dL5NOshbtStQcn2TiKU69Uqqjeo2PkTkBckozaBNPOJ-4JcsrbCBnWTb9hL8iN60CNgU2Zw_fTY7L3L1R8dX8yp7IWdxEbu0Orqb51nWgwRCtQCs0Yoc-6tFcH8HDXnNNJzTeKe5ICx0KocQ2qDdKugjw6q7stEoMXJQdxawDdC5mV4WalRUSLdhrxeOoDr0UFpPltY18EMEwwxHYzwLvMpDvSGA4"
+              src="{% static 'images/grow.png' %}?v=cut-4"
               alt=""
+              width="928"
+              height="1152"
               loading="lazy"
               decoding="async"
             />
@@ -226,7 +241,7 @@
   </div>
 </section>
 <!-- Chat with Coach -->
-<section id="brandbox-features" class="brandbox-agent">
+<section id="brandbox-coach" class="brandbox-agent brandbox-reveal">
 <div class="brandbox-agent__inner max-w-container-max mx-auto">
 <div class="brandbox-agent__grid">
 <div class="brandbox-agent__copy">
@@ -234,7 +249,7 @@
   <span class="material-symbols-outlined" aria-hidden="true">volunteer_activism</span>
   You're not alone
 </span>
-<h2 class="brandbox-agent__title">Someone is always beside you — so you never fail midway.</h2>
+<h2 class="brandbox-agent__title">Someone is always beside you</h2>
 <p class="brandbox-agent__lede">
   Building a store is hard enough without going solo. Your BrandBox coach mentors you whenever they're online — and when they're offline, our trained AI helps you set up, import products, and grow without losing momentum.
 </p>
@@ -288,7 +303,7 @@
 </div>
 </section>
 <!-- Summer offer → checkout -->
-<section id="brandbox-offer" class="brandbox-offer">
+<section id="brandbox-offer" class="brandbox-offer brandbox-reveal">
   <div class="brandbox-offer__inner">
     <div class="brandbox-offer__grid">
       <article class="brandbox-offer__card">
@@ -353,11 +368,11 @@
   </div>
 </section>
 <!-- Comparison -->
-<section class="brandbox-compare">
+<section id="brandbox-compare" class="brandbox-compare brandbox-reveal">
 <div class="brandbox-compare__inner max-w-container-max mx-auto">
 <h2 class="brandbox-compare__title">The BrandBox Difference</h2>
 <div class="brandbox-compare__grid">
-<div class="brandbox-compare__card brandbox-compare__card--alone">
+<div class="brandbox-compare__card brandbox-compare__card--muted">
 <p class="brandbox-compare__label brandbox-compare__label--muted">Doing it alone</p>
 <ul class="brandbox-compare__list">
 <li class="brandbox-compare__item brandbox-compare__item--muted">
@@ -404,7 +419,7 @@
 </div>
 </section>
 <!-- Product spotlight -->
-<section id="brandbox-products" class="brandbox-products">
+<section id="brandbox-products" class="brandbox-products brandbox-reveal">
 <div class="brandbox-products__inner max-w-container-max mx-auto">
 <div class="brandbox-products__header">
 <div class="brandbox-products__intro">
@@ -473,8 +488,8 @@
 </div>
 </section>
 <!-- Testimonials -->
-<section class="brandbox-testimonial">
-<div class="brandbox-testimonial__intro max-w-container-max mx-auto px-gutter">
+<section id="brandbox-testimonial" class="brandbox-testimonial brandbox-reveal">
+<div class="brandbox-testimonial__intro max-w-container-max mx-auto">
 <span class="brandbox-testimonial__eyebrow">Founders using BrandBox</span>
 <h2 class="brandbox-testimonial__title">What merchants say</h2>
 </div>
@@ -556,11 +571,36 @@
 <blockquote>“Finally one place for niche build, products, and help — less tab chaos.”</blockquote>
 <figcaption><strong>Elena V.</strong><span>Kids &amp; baby</span></figcaption>
 </figure>
+<figure class="brandbox-testimonial__card" aria-hidden="true">
+<img class="brandbox-testimonial__avatar" src="https://i.pravatar.cc/96?img=68" alt="" width="48" height="48" loading="lazy"/>
+<blockquote>“I connected Shopify, ran the builder, and had a storefront worth iterating on.”</blockquote>
+<figcaption><strong>Chris T.</strong><span>Gadgets</span></figcaption>
+</figure>
+<figure class="brandbox-testimonial__card" aria-hidden="true">
+<img class="brandbox-testimonial__avatar" src="https://i.pravatar.cc/96?img=20" alt="" width="48" height="48" loading="lazy"/>
+<blockquote>“Importing vault products beat building every listing by hand.”</blockquote>
+<figcaption><strong>Aisha N.</strong><span>Skincare</span></figcaption>
+</figure>
+<figure class="brandbox-testimonial__card" aria-hidden="true">
+<img class="brandbox-testimonial__avatar" src="https://i.pravatar.cc/96?img=52" alt="" width="48" height="48" loading="lazy"/>
+<blockquote>“When the coach was busy, AI still unblocked my next step.”</blockquote>
+<figcaption><strong>Noah P.</strong><span>Outdoor</span></figcaption>
+</figure>
+<figure class="brandbox-testimonial__card" aria-hidden="true">
+<img class="brandbox-testimonial__avatar" src="https://i.pravatar.cc/96?img=9" alt="" width="48" height="48" loading="lazy"/>
+<blockquote>“Cleaner than piecing together themes, research sheets, and random plugins.”</blockquote>
+<figcaption><strong>Sofia L.</strong><span>Fashion accessories</span></figcaption>
+</figure>
+<figure class="brandbox-testimonial__card" aria-hidden="true">
+<img class="brandbox-testimonial__avatar" src="https://i.pravatar.cc/96?img=60" alt="" width="48" height="48" loading="lazy"/>
+<blockquote>“BrandBox got me from idea to a connected store without a full agency.”</blockquote>
+<figcaption><strong>Daniel W.</strong><span>Smart home</span></figcaption>
+</figure>
 </div>
 </div>
 </section>
 <!-- FAQ -->
-<section id="brandbox-faq" class="brandbox-faq">
+<section id="brandbox-faq" class="brandbox-faq brandbox-reveal">
 <div class="brandbox-faq__wrap max-w-3xl mx-auto">
 <div class="brandbox-faq__intro">
 <span class="brandbox-faq__eyebrow">Knowledge Base</span>
@@ -643,12 +683,7 @@
 </div>
 </section>
 <!-- Launch CTA -->
-<section id="brandbox-pricing" class="brandbox-launch relative overflow-hidden">
-<div
-  id="brandbox-launch-scene"
-  class="brandbox-launch__scene"
-  aria-hidden="true"
-></div>
+<section id="brandbox-launch" class="brandbox-launch brandbox-reveal relative overflow-hidden">
 <div class="brandbox-launch__content max-w-container-max mx-auto text-center relative z-10">
 <div class="brandbox-launch__panel relative overflow-hidden">
 <h2 class="brandbox-launch__title">Ready to launch your empire?</h2>
@@ -690,9 +725,9 @@
     <div class="brandbox-footer__column">
       <h4 class="brandbox-footer__heading">Services</h4>
       <ul class="brandbox-footer__list">
-        <li><a href="#brandbox-how">Features</a></li>
-        <li><a href="#brandbox-pricing">Pricing</a></li>
-        <li><a href="#brandbox-features">Coach chat</a></li>
+        <li><a href="#brandbox-how">How it works</a></li>
+        <li><a href="#brandbox-offer">Pricing</a></li>
+        <li><a href="#brandbox-coach">Coach chat</a></li>
         <li><a href="#brandbox-products">Product vault</a></li>
       </ul>
     </div>
@@ -725,7 +760,7 @@
   </div>
 </div>
 <div class="brandbox-footer__bottom">
-  <p class="brandbox-footer__copy">© 2024 <a href="{% url 'home:index' %}" class="brandbox-footer__brand-link">BrandBox</a> - All rights reserved.</p>
+  <p class="brandbox-footer__copy">© 2026 <a href="{% url 'home:index' %}" class="brandbox-footer__brand-link">BrandBox</a> - All rights reserved.</p>
   <nav class="brandbox-footer__legal" aria-label="Footer links">
     <a class="brandbox-footer__legal-link" href="{% url 'home:about' %}">About Us</a>
     <a class="brandbox-footer__legal-link" href="#">Affiliate</a>
@@ -756,30 +791,25 @@
 <script src="{% static 'js/brandbox-offer-countdown.js' %}?v=5"></script>
 <script src="{% static 'js/brandbox-newsletter-modal.js' %}"></script>
 <script>
-        // Micro-interactions and subtle scroll effects
+        // Subtle scroll fade-in (sections stay visible if JS is delayed/blocked)
         document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                threshold: 0.1
-            };
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduceMotion) return;
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('opacity-100');
-                        entry.target.classList.remove('opacity-0');
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
                     }
                 });
-            }, observerOptions);
+            }, { threshold: 0.1 });
 
-            // Fade-in only — no translate (translate fakes extra section gap)
-            document.querySelectorAll('section').forEach(section => {
-                section.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+            document.querySelectorAll('section.brandbox-reveal').forEach(section => {
                 observer.observe(section);
             });
         });
     </script>
-<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
-<script src="{% static 'js/brandbox-launch-3d.js' %}"></script>
 
 </body>
 </html>

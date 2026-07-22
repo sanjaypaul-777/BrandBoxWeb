@@ -17,10 +17,14 @@ from apps.dashboard.views import (
     geo_states,
     onboarding_page,
 )
+from apps.home.robots import robots_txt
+from apps.home.sitemaps import sitemap_xml
 from config import error_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("robots.txt", robots_txt, name="robots_txt"),
+    path("sitemap.xml", sitemap_xml, name="sitemap_xml"),
     path("", include("apps.home.urls")),
     path("", include("apps.accounts.urls")),
     path("onboarding/", onboarding_page, name="onboarding"),

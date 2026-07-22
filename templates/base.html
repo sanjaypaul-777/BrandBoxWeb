@@ -4,11 +4,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}BrandBox{% endblock %}</title>
-    <meta
-      name="description"
-      content="Connect your store, pick a niche, and BrandBox loads it with a professional theme and real products — ready to sell today."
-    />
+    <title>{% block title %}{{ seo.title|default:"BrandBox" }}{% endblock %}</title>
+    {% include "includes/seo_meta.html" %}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
