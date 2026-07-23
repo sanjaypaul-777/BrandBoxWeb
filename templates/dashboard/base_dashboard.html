@@ -4,7 +4,7 @@
 {% block title %}{% block dash_title %}Dashboard{% endblock %} · BrandBox{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=sidebar-2" />
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=collapse-edge-5" />
 {% block dash_extra_css %}{% endblock %}
 {% endblock %}
 
@@ -26,18 +26,18 @@
           <span class="dash-sidebar__tagline">Merchant Dashboard</span>
         </span>
       </a>
-      <button
-        type="button"
-        class="dash-sidebar__collapse"
-        id="dash-sidebar-collapse"
-        aria-label="Collapse sidebar"
-        aria-expanded="true"
-        aria-controls="dash-sidebar"
-        title="Collapse sidebar"
-      >
-        <span class="material-symbols-outlined dash-sidebar__collapse-icon" aria-hidden="true">left_panel_close</span>
-      </button>
     </div>
+    <button
+      type="button"
+      class="dash-sidebar__collapse"
+      id="dash-sidebar-collapse"
+      aria-label="Collapse sidebar"
+      aria-expanded="true"
+      aria-controls="dash-sidebar"
+      title="Collapse sidebar"
+    >
+      <span class="material-symbols-outlined dash-sidebar__collapse-icon" aria-hidden="true">chevron_left</span>
+    </button>
 
     <nav class="dash-sidebar__nav" aria-label="Primary">
       <a
@@ -261,7 +261,7 @@
         );
       }
       if (collapseIcon) {
-        collapseIcon.textContent = collapsed ? "left_panel_open" : "left_panel_close";
+        collapseIcon.textContent = collapsed ? "chevron_right" : "chevron_left";
       }
     }
 
@@ -299,7 +299,7 @@
       if (backdrop) backdrop.hidden = !open;
       menu.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       if (isMobile() && collapseIcon) {
-        collapseIcon.textContent = "close";
+        collapseIcon.textContent = "\u00d7";
       }
     }
 
