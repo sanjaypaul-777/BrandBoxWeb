@@ -34,6 +34,8 @@
   --home-outline: #94a3b8;
   --home-logo-height: 48px;
   --section-gap: 120px;
+  /* Edge inset for narrow viewports only (not the old 24/32 page gutter) */
+  --home-inset-x: 0;
 
   /* Bridges for shared buttons / Tailwind (shared names only — not brand tokens) */
   --background: var(--home-canvas);
@@ -90,10 +92,10 @@
   margin-bottom: 0;
 }
 
-.brandbox-footer {
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-bottom: 0;
+@media (max-width: 899px) {
+  .brandbox-home {
+    --home-inset-x: 16px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -252,7 +254,7 @@
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 var(--home-inset-x);
   box-sizing: border-box;
 }
 
@@ -356,7 +358,7 @@
 
 .brandbox-home h1,
 .brandbox-hero h1 {
-  font-size: 48px;
+  font-size: clamp(32px, 8vw, 48px);
   line-height: 1.15;
 }
 
@@ -373,7 +375,7 @@
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 var(--home-inset-x);
   box-sizing: border-box;
 }
 
@@ -653,27 +655,18 @@
     flex-shrink: 0;
   }
 
-  .brandbox-nav__signup.btn-secondary {
+  .brandbox-nav a.brandbox-nav__signup.btn-secondary {
     height: 36px;
     padding: 0 12px;
     font-size: 13px;
     white-space: nowrap;
     flex-shrink: 0;
   }
-}
 
-@media (max-width: 640px) {
   .brandbox-hero {
     padding-top: 24px;
   }
 
-  .brandbox-home h1,
-  .brandbox-hero h1 {
-    font-size: 34px;
-    line-height: 1.12;
-  }
-
-  /* Keep offer pill as one row — just scale down */
   .brandbox-hero__offer {
     margin-bottom: 20px;
     max-width: 100%;
@@ -719,6 +712,12 @@
   .brandbox-hero__themes {
     height: clamp(210px, 56vw, 280px);
   }
+
+  .brandbox-hero__typed,
+  .brandbox-hero__typed-ghost,
+  .brandbox-hero__typed-text {
+    white-space: normal;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -739,7 +738,7 @@
   margin-top: 0;
   padding-top: var(--section-gap);
   padding-bottom: 48px;
-  padding-inline: 0;
+  padding-inline: var(--home-inset-x);
 }
 
 .brandbox-footer .text-on-surface {
@@ -1063,6 +1062,14 @@
   --on-surface-variant: var(--how-muted);
   background: var(--how-bg);
   color: var(--how-text);
+}
+
+.brandbox-how__inner {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 var(--home-inset-x);
+  box-sizing: border-box;
 }
 
 .brandbox-how__intro {
@@ -1890,7 +1897,7 @@
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 var(--home-inset-x);
   box-sizing: border-box;
 }
 
@@ -2233,10 +2240,6 @@
 }
 
 @media (min-width: 900px) {
-  .brandbox-offer__inner {
-    padding: 0;
-  }
-
   .brandbox-offer__grid {
     grid-template-columns: minmax(320px, 380px) minmax(0, 520px);
     grid-template-areas:
@@ -2299,27 +2302,7 @@
 
   .brandbox-offer__visual {
     margin-bottom: 0;
-  }
-}
-
-@media (max-width: 640px) {
-  .brandbox-offer__price {
-    flex-wrap: wrap;
-    gap: 6px 10px;
-  }
-
-  .brandbox-offer__price-was,
-  .brandbox-offer__price-now {
-    font-size: 34px;
-  }
-
-  .brandbox-offer__price-period {
-    margin-left: 6px;
-    font-size: 16px;
-  }
-
-  .brandbox-offer__card {
-    padding: 28px 20px 24px;
+    width: 100%;
   }
 }
 
@@ -2525,7 +2508,9 @@ summary::-webkit-details-marker {
   flex-direction: column;
   align-items: center;
   margin-bottom: 48px;
+  padding-inline: var(--home-inset-x);
   text-align: center;
+  box-sizing: border-box;
 }
 
 .brandbox-testimonial__eyebrow {
@@ -2702,22 +2687,8 @@ summary::-webkit-details-marker {
   border-color: transparent;
 }
 
-.brandbox-faq__wrap {
-  padding-inline: 0;
-  box-sizing: border-box;
-}
-
 .brandbox-faq__list {
   padding-bottom: var(--section-gap);
-}
-
-.brandbox-launch__content {
-  width: 100%;
-  max-width: 1320px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-inline: 0;
-  box-sizing: border-box;
 }
 
 .brandbox-agent__inner,
@@ -2727,7 +2698,21 @@ summary::-webkit-details-marker {
   max-width: 1320px;
   margin-left: auto;
   margin-right: auto;
-  padding-inline: 0;
+  padding-inline: var(--home-inset-x);
+  box-sizing: border-box;
+}
+
+.brandbox-faq__wrap {
+  padding-inline: var(--home-inset-x);
+  box-sizing: border-box;
+}
+
+.brandbox-launch__content {
+  width: 100%;
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: var(--home-inset-x);
   box-sizing: border-box;
 }
 
@@ -2748,16 +2733,8 @@ summary::-webkit-details-marker {
     right: 20px;
   }
 
-  .brandbox-products__grid {
-    grid-template-columns: 1fr;
-  }
-
   .brandbox-testimonial__card {
     flex-basis: 280px;
-  }
-
-  .brandbox-faq__wrap {
-    padding-inline: 0;
   }
 
   .brandbox-launch__panel {
@@ -2766,6 +2743,29 @@ summary::-webkit-details-marker {
 
   .brandbox-launch__lede {
     margin-bottom: 32px;
+  }
+
+  .brandbox-offer__visual {
+    width: 100%;
+  }
+
+  .brandbox-offer__card {
+    padding: 28px 20px 24px;
+  }
+
+  .brandbox-offer__price {
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+
+  .brandbox-offer__price-was,
+  .brandbox-offer__price-now {
+    font-size: 34px;
+  }
+
+  .brandbox-offer__price-period {
+    margin-left: 6px;
+    font-size: 16px;
   }
 }
 
