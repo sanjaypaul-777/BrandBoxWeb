@@ -1,3 +1,4 @@
+{# templates/accounts/login.html — Login page. #}
 {% extends "base.html" %}
 {% load static %}
 
@@ -49,11 +50,7 @@
       </a>
     </p>
 
-    <nav class="auth-legal" aria-label="Legal">
-      <a href="{% url 'home:privacy' %}">Privacy Policy</a>
-      <a href="{% url 'home:terms' %}">Terms of Service</a>
-      <a href="{% url 'home:refund' %}">Refund Policy</a>
-    </nav>
+    {% include "accounts/_auth_legal_nav.html" %}
   </div>
 </main>
 {% endblock %}

@@ -1,3 +1,7 @@
+"""
+apps/accounts/urls.py — URL routes for /accounts/.
+"""
+
 from django.urls import path
 
 from .views import (

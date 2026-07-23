@@ -5,7 +5,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from apps.catalog.models import CatalogProduct, ShopImport
-from apps.catalog.services.money import money_or_default, normalize_compare_usd, normalize_price_usd, normalize_usd
+from apps.catalog.services.money import money_or_default, normalize_compare_usd, normalize_price_usd
 
 
 def _money_str(value, default: str = "10") -> str:

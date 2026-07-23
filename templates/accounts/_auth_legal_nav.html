@@ -1,6 +1,11 @@
-{% comment %}Shared legal links for auth and legal pages.{% endcomment %}
+{# templates/accounts/_auth_legal_nav.html — Shared Privacy · Terms · Refund links for auth shells. #}
+{% comment %}
+Single legal strip for auth / contact / error / legal pages.
+Edit links here only — Privacy · Terms · Refund.
+(Full Legal column in the site footer still lists Disclaimer too.)
+{% endcomment %}
 <nav class="auth-legal" aria-label="Legal">
   <a href="{% url 'home:privacy' %}">Privacy Policy</a>
   <a href="{% url 'home:terms' %}">Terms of Service</a>
-  <a href="{% url 'home:disclaimer' %}">Disclaimer</a>
+  <a href="{% url 'home:refund' %}">Refund Policy</a>
 </nav>

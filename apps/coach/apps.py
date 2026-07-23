@@ -1,3 +1,7 @@
+"""
+apps/coach/apps.py — Coach AppConfig.
+"""
+
 from django.apps import AppConfig
 
 

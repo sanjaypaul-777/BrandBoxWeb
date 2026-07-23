@@ -1,5 +1,8 @@
 """
-Custom error views — keep 500 path extremely simple (no DB / heavy context).
+config/error_views.py — Custom Django 404 / 500 handlers.
+
+Keeps the 500 path minimal (no DB / heavy context) so failures still render.
+Uses config.palette for inline fallback HTML colors if templates break.
 """
 
 from __future__ import annotations
@@ -13,6 +16,8 @@ from django.http import HttpResponse, HttpResponseServerError
 from django.shortcuts import render
 from django.template import Context, Engine
 from django.template.loader import render_to_string
+
+from config.palette import CANVAS, INK, MIDNIGHT
 
 logger = logging.getLogger("brandbox.errors")
 
@@ -53,11 +58,11 @@ def server_error(request):
         logger.exception("Failed rendering 500.html (ref=%s)", ref)
         html = (
             "<!DOCTYPE html><html><head><title>Server error · BrandBox</title></head>"
-            "<body style='background:#EEF2F8;color:#06101a;font-family:system-ui;"
+            f"<body style='background:{CANVAS};color:{INK};font-family:system-ui;"
             "display:grid;place-items:center;min-height:100vh;margin:0;padding:32px;text-align:center'>"
             "<div><h1>Something went wrong on our end</h1>"
             f"<p>Error reference: {ref}</p>"
-            "<p><a href='/dashboard/' style='color:#10b981'>Back to Dashboard</a></p>"
+            f"<p><a href='/dashboard/' style='color:{MIDNIGHT}'>Back to Dashboard</a></p>"
             "</div></body></html>"
         )
     return HttpResponseServerError(html)

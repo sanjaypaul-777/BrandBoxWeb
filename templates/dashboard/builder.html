@@ -1,8 +1,9 @@
+{# templates/dashboard/builder.html — AI Store Builder wizard page. #}
 {% extends "dashboard/base_dashboard.html" %}
 {% load static %}
 
 {% block dash_extra_css %}
-<link rel="stylesheet" href="{% static 'css/builder.css' %}?v=dark-3" />
+<link rel="stylesheet" href="{% static 'css/builder.css' %}?v=btn-unify-1" />
 {% endblock %}
 
 {% block dash_title %}AI Store Builder{% endblock %}
@@ -14,7 +15,7 @@
     <div class="ab-progress__meta">
       <span class="ab-progress__step">Step {{ wizard_step }} of {{ wizard_total|default:2 }}</span>
       <span class="ab-progress__eta">
-        {% if wizard_step == 1 %}A few minutes remains{% else %}Ready to launch{% endif %}
+        {% if wizard_step == 1 %}A few minutes remain{% else %}Ready to launch{% endif %}
       </span>
     </div>
     <div class="ab-bar ab-bar--2" aria-hidden="true">

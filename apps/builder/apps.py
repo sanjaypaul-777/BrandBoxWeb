@@ -1,3 +1,7 @@
+"""
+apps/builder/apps.py — Builder AppConfig.
+"""
+
 from django.apps import AppConfig
 
 

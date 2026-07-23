@@ -1,10 +1,11 @@
+{# templates/dashboard/base_dashboard.html — Logged-in dashboard shell (sidebar + main). #}
 {% extends "base.html" %}
 {% load static %}
 
 {% block title %}{% block dash_title %}Dashboard{% endblock %} · BrandBox{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=collapse-edge-5" />
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=palette-3" />
 {% block dash_extra_css %}{% endblock %}
 {% endblock %}
 

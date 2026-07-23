@@ -15,7 +15,7 @@ def brandbox_settings(request):
 
 
 def product_settings(request):
-    """Homepage offer % and affiliate % — edit config/product.py."""
+    """Homepage offer % / countdown + affiliate % — edit in Django admin."""
     from config.product import as_template_context
 
     return {"product": as_template_context()}

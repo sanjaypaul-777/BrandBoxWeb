@@ -1,3 +1,7 @@
+"""
+apps/builder/admin.py — Django admin for NichePack / BuildJob.
+"""
+
 from django.contrib import admin
 
 from .models import BuildJob, NichePack

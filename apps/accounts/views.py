@@ -81,15 +81,23 @@ class SignupView(View):
 
 
 class ForgotView(View):
-    """UI placeholder — wire email reset later."""
+    """LEGACY STUB — password reset email is not wired yet."""
 
     template_name = "accounts/forgot.html"
 
     def get(self, request):
-        return render(request, self.template_name)
+        return render(request, self.template_name, {"stub": True})
 
     def post(self, request):
-        return render(request, self.template_name, {"sent": True})
+        # Do not pretend a reset email was sent.
+        return render(
+            request,
+            self.template_name,
+            {
+                "stub": True,
+                "stub_notice": True,
+            },
+        )
 
 
 class BrandBoxPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
@@ -102,10 +110,7 @@ class BrandBoxPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
 
 
 class SocialOAuthStartView(View):
-    """
-    Entry point for Google / Apple / Facebook.
-    UI is live; provider OAuth apps + callbacks wire in next.
-    """
+    """LEGACY STUB — Google / Apple / Facebook OAuth apps are not connected yet."""
 
     def get(self, request, provider: str):
         label = SOCIAL_PROVIDERS.get(provider)
@@ -116,8 +121,7 @@ class SocialOAuthStartView(View):
 
         messages.info(
             request,
-            f"{label} sign-in is almost ready — connect your {label} app "
-            "credentials in settings to enable it.",
+            f"{label} sign-in is coming soon — OAuth is not connected yet.",
         )
         if next_path.startswith("/signup"):
             return redirect("accounts:signup")

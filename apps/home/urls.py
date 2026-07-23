@@ -1,3 +1,7 @@
+"""
+apps/home/urls.py — URL routes for marketing pages.
+"""
+
 from django.urls import path
 
 from .views import (

@@ -1,3 +1,7 @@
+"""
+apps/help/admin.py — Django admin for help categories / articles.
+"""
+
 from django.contrib import admin
 
 from .models import (

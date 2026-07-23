@@ -18,76 +18,73 @@
  * Shared names below (--primary, --hairline, …) are defaults for:
  *   body, links, .btn-primary, .btn-secondary, .btn-text, reusable cards. Sections may redeclare
  *   these names on their root so children stay isolated.
+ *
+ * Brand palette (:root): --black --ink --midnight --magenta --green --canvas --off-white --white
+ * Neutrals: --fog (#e5e7eb)
+ * Python mirror: config/palette.py (keep hex values in sync)
  */
 
 :root {
-  /* —— Body (main app chrome) —— */
-  --background: #EEF2F8;
-  --on-background: #06101a;
-  --on-surface: #06101a;
-  --on-surface-variant: #475569;
+  /* —— Brand palette (edit colors here) —— */
+  --black: #000000;
+  --ink: #06101a;
+  --midnight: #0d172f;
+  --magenta: #ff00e5;
+  --green: #4edea3;
+  --canvas: #EEF2F8;
+  --off-white: #fefefe; /* near-white text/surfaces — never hardcode #fefefe */
+  --white: #ffffff;
 
-  /* —— Card / surface primitives (reusable) —— */
-  --surface: #EEF2F8;
+  /* —— Named neutrals (no raw hex in components) —— */
+  --fog: #e5e7eb; /* light border / input chrome (Tailwind gray-200) */
+
+  /* —— App chrome —— */
+  --background: var(--canvas);
+  --on-background: var(--ink);
+  --on-surface: var(--ink);
+  --on-surface-variant: #475569;
+  --surface: var(--canvas);
   --surface-dim: #E2E8F0;
-  --surface-bright: #ffffff;
-  --surface-container-lowest: #ffffff;
-  --surface-container-low: #f8fafc;
-  --surface-container: #ffffff;
-  --surface-container-high: #f8fafc;
+  --surface-bright: var(--white);
+  --surface-container-lowest: var(--white);
+  --surface-container-low: color-mix(in srgb, var(--canvas) 70%, var(--white));
+  --surface-container: var(--white);
+  --surface-container-high: color-mix(in srgb, var(--canvas) 70%, var(--white));
   --surface-container-highest: #f1f5f9;
   --surface-variant: #e2e8f0;
-  --deep-obsidian: #ffffff;
-  --surface-navy: #0d172f;
-  --deep-navy: #06101a;
-  --midnight-blue: #0d172f;
-  --glass: #ffffff;
+  --deep-obsidian: var(--white);
+  --surface-navy: var(--midnight);
+  --deep-navy: var(--ink);
+  --midnight-blue: var(--midnight);
+  --glass: var(--white);
   --hairline: rgba(15, 23, 42, 0.1);
   --hairline-soft: rgba(15, 23, 42, 0.06);
   --outline: #64748b;
   --outline-variant: #94a3b8;
 
-  /* —— Button / brand accents (reusable .btn-primary)
-     Rule: primary button background = midnight blue #0d172f */
-  --primary: #0d172f;
-  --on-primary: #fefefe;
-  --primary-container: #0d172f;
-  --on-primary-container: #fefefe;
+  /* —— Buttons / accents —— */
+  --primary: var(--midnight);
+  --on-primary: var(--off-white);
+  --primary-container: var(--midnight);
+  --on-primary-container: var(--off-white);
   --primary-fixed: #1a2740;
-  --primary-fixed-dim: #0d172f;
-  --surface-tint: #0d172f;
-  --inverse-primary: #c5d0e8;
-  --inverse-surface: #06101a;
-  --inverse-on-surface: #dde4dd;
-  --accent-mint: #4edea3;
-
-  --secondary: #c3c0ff;
-  --on-secondary: #1f00a5;
-  --secondary-container: #392cc4;
-  --on-secondary-container: #b3b0ff;
-  --secondary-color: #6861f2;
-  --vibrant-purple: #ad7bff;
-  --accent-pink: #ff00e5;
+  --accent-green: var(--green);
+  --accent-pink: var(--magenta);
+  --vibrant-purple: var(--magenta);
   --electric-blue: #3b82f6;
 
   --tertiary: #ffb3af;
   --tertiary-container: #fc7c78;
   --error: #ffb4ab;
   --on-error: #690005;
-  --error-container: #93000a;
 
-  /* —— Layout + type (shared) —— */
-  --container-max: 1320px;
-  --gutter: 24px;
-  --radius-sm: 4px;
-  --radius-DEFAULT: 8px;
+  /* —— Layout + type —— */
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
-  --radius-full: 9999px;
   --font-display: Inter, system-ui, sans-serif;
   --font-body: Inter, system-ui, sans-serif;
-  --font-mono:"JetBrains Mono", ui-monospace, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 *,
@@ -110,6 +107,25 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* Tailwind forms plugin defaults to gray-200 (#e5e7eb) — use named --fog */
+[type="text"],
+[type="email"],
+[type="url"],
+[type="password"],
+[type="number"],
+[type="date"],
+[type="datetime-local"],
+[type="month"],
+[type="search"],
+[type="tel"],
+[type="time"],
+[type="week"],
+[multiple],
+textarea,
+select {
+  border-color: var(--fog);
 }
 
 h1,
@@ -260,8 +276,8 @@ button.btn-secondary {
 .btn-primary,
 a.btn-primary,
 button.btn-primary {
-  color: #fefefe;
-  background: #0d172f;
+  color: var(--off-white);
+  background: var(--midnight);
   border: 0;
   overflow: visible;
   box-shadow: none;
@@ -283,8 +299,8 @@ button.btn-secondary {
 a.btn-primary:hover,
 a.btn-primary:focus,
 a.btn-primary:visited {
-  color: #fefefe;
-  background: #0d172f;
+  color: var(--off-white);
+  background: var(--midnight);
   text-decoration: none;
   border: 0;
   box-shadow: none;
@@ -304,14 +320,14 @@ a.btn-secondary:visited {
   border-color: transparent;
 }
 
-/* Midnight fill + inset rings; hover = magenta↔mint animated ring */
+/* Primary fill = midnight; hover ring = magenta ↔ green */
 .btn-primary::before {
   content: "";
   position: absolute;
   inset: -3px;
   z-index: -2;
   border-radius: inherit;
-  background: linear-gradient(120deg, #ff00e5, #4edea3, #ff00e5, #4edea3);
+  background: linear-gradient(120deg, var(--magenta), var(--green), var(--magenta), var(--green));
   background-size: 300% 300%;
   opacity: 0;
   pointer-events: none;
@@ -324,11 +340,11 @@ a.btn-secondary:visited {
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: #0d172f;
+  background: var(--midnight);
   pointer-events: none;
   box-shadow:
-    inset 0 0 0 1.5px color-mix(in srgb, #000000 45%, transparent),
-    inset 0 0 0 3px #212121;
+    inset 0 0 0 1.5px color-mix(in srgb, var(--black) 45%, transparent),
+    inset 0 0 0 3px var(--ink);
 }
 
 .btn-secondary::before {
@@ -338,7 +354,7 @@ a.btn-secondary:visited {
   z-index: -1;
   border-radius: inherit;
   padding: 3px;
-  background: linear-gradient(120deg, #ff00e5, #4edea3, #ff00e5, #4edea3);
+  background: linear-gradient(120deg, var(--magenta), var(--green), var(--magenta), var(--green));
   background-size: 300% 300%;
   opacity: 0;
   pointer-events: none;
@@ -403,25 +419,12 @@ a.btn-secondary:visited {
   }
 }
 
-/* Alias for older selectors still using this name */
-@keyframes btn-border-spin {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .btn-primary:hover::before,
   .btn-primary:focus-visible::before,
   .btn-secondary:hover::before {
     animation: none;
-    background: linear-gradient(120deg, #ff00e5, #4edea3);
+    background: linear-gradient(120deg, var(--magenta), var(--green));
     background-size: 100% 100%;
   }
 }

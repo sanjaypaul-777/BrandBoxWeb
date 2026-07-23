@@ -11,7 +11,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_GET, require_http_methods
 
-from apps.builder.models import BuildJob
 from config.shopify import build_shopify_install_url, normalize_shop_domain
 from config.brandbox_client import check_app_installed, sync_connection_install_flag
 
@@ -1099,7 +1098,7 @@ def schedule_book(request):
 
 @login_required
 def training_page(request):
-    """Training — on-demand merchant lessons."""
+    """LEGACY STUB — on-demand training lessons are not shipped yet."""
     return _page(request, "dashboard/training.html", "training")
 
 

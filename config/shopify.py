@@ -6,7 +6,7 @@ OAuth itself runs in the sibling BrandBox (Node) app.
 from __future__ import annotations
 
 import re
-from urllib.parse import urlencode, urljoin
+from urllib.parse import urlencode
 
 from django.conf import settings
 

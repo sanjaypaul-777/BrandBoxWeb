@@ -1,3 +1,7 @@
+"""
+apps/help/management/commands/seed_help.py — CLI: seed Help Center from seed_data.
+"""
+
 from django.core.management.base import BaseCommand
 
 from apps.help.models import HelpArticle, HelpCategory

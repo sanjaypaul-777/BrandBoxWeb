@@ -1,3 +1,7 @@
+"""
+apps/home/admin.py — Django admin for legal pages, SEO, offers, affiliates.
+"""
+
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
@@ -8,6 +12,7 @@ from .models import (
     LegalPage,
     NewsletterSubscriber,
     SeoPage,
+    SiteOfferSettings,
     SiteSeoSettings,
 )
 
@@ -101,6 +106,37 @@ class LegalPageAdmin(admin.ModelAdmin):
             {"fields": ("created_at", "updated_at")},
         ),
     )
+
+
+@admin.register(SiteOfferSettings)
+class SiteOfferSettingsAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (
+            "Homepage offer",
+            {
+                "fields": ("offer_percent", "offer_ends_at"),
+                "description": (
+                    "Controls the homepage badge (“65% Off”), CTAs, and the hero countdown timer. "
+                    "Change anytime — no code deploy."
+                ),
+            },
+        ),
+        (
+            "Affiliate",
+            {
+                "fields": ("affiliate_percent",),
+                "description": "Controls affiliate page commission labels (“30%+”).",
+            },
+        ),
+        ("Timestamps", {"fields": ("updated_at",)}),
+    )
+    readonly_fields = ("updated_at",)
+
+    def has_add_permission(self, request):
+        return not SiteOfferSettings.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(SiteSeoSettings)

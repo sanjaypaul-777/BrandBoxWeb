@@ -10,12 +10,12 @@
   --aff-sm: 720px;
   --aff-gutter: 20px;
   --aff-band: 120px;
-  --aff-ink: #06101a;
+  --aff-ink: var(--ink);
   --aff-muted: #64748b;
-  --aff-midnight: #0d172f;
-  --aff-dark: #030303;
+  --aff-midnight: var(--midnight);
+  --aff-dark: var(--black);
   --aff-soft: #f4f6f9;
-  --aff-page: #eef2f8;
+  --aff-page: var(--canvas);
   background: var(--aff-page);
   color: var(--aff-ink);
   font-family: Inter, system-ui, sans-serif;
@@ -162,12 +162,12 @@
 
 .aff-band--dark {
   background: var(--aff-dark);
-  color: #fefefe;
+  color: var(--off-white);
 }
 
 /* —— Opportunity: editorial copy + inline photo —— */
 .aff-opportunity-band {
-  background: #ffffff;
+  background: var(--white);
 }
 
 .aff-opportunity {
@@ -378,7 +378,7 @@
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1.1;
-  color: #fefefe;
+  color: var(--off-white);
 }
 
 @media (max-width: 767px) {
@@ -419,7 +419,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #fefefe;
+  color: var(--off-white);
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
@@ -429,12 +429,12 @@
 }
 
 .aff-signin-link:visited {
-  color: #fefefe;
+  color: var(--off-white);
 }
 
 .aff-signin-link:hover,
 .aff-signin-link:focus-visible {
-  color: #ffffff;
+  color: var(--white);
   text-decoration: none;
 }
 
@@ -449,7 +449,7 @@
 
 .aff-signin-link:hover .material-symbols-outlined,
 .aff-signin-link:focus-visible .material-symbols-outlined {
-  color: #ffffff;
+  color: var(--white);
   transform: translateX(3px);
 }
 
@@ -528,7 +528,7 @@
   padding: 22px 20px;
   border-radius: 16px;
   border: 1px solid rgba(13, 23, 47, 0.08);
-  background: #ffffff;
+  background: var(--white);
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
   transform: translateZ(0);
   transition:
@@ -555,7 +555,7 @@
   margin-bottom: 14px;
   border-radius: 11px;
   background: var(--aff-midnight);
-  color: #fefefe;
+  color: var(--off-white);
   font-size: 20px;
 }
 
@@ -600,7 +600,7 @@
   height: 100%;
   padding: 24px 20px;
   border-radius: 16px;
-  background: #ffffff;
+  background: var(--white);
   border: 1px solid rgba(13, 23, 47, 0.08);
   text-align: center;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
@@ -801,7 +801,7 @@
 /* —— Final CTA + footer match homepage (launch separator → full footer) —— */
 .brandbox-affiliate-page .brandbox-launch {
   --section-gap: var(--aff-band);
-  background: #000000;
+  background: var(--black);
   border-bottom: 1px solid rgba(254, 254, 254, 0.14);
   padding-bottom: var(--section-gap);
 }
@@ -814,14 +814,14 @@
 
 .brandbox-affiliate-page .brandbox-launch .btn-secondary,
 .brandbox-affiliate-page .brandbox-launch a.btn-secondary {
-  color: #fefefe;
+  color: var(--off-white);
   background: transparent;
   border: 3px solid rgba(254, 254, 254, 0.55);
 }
 
 .brandbox-affiliate-page .brandbox-footer {
   width: 100%;
-  background: #000000;
+  background: var(--black);
   padding-top: var(--aff-band);
   padding-bottom: 48px;
   padding-inline: var(--aff-gutter);
@@ -924,7 +924,7 @@
   background-repeat: no-repeat;
   background-position: right 16px center;
   background-size: 16px 16px;
-  color: #fefefe;
+  color: var(--off-white);
   font: inherit;
   font-size: 15px;
   line-height: 1.4;
@@ -934,13 +934,13 @@
 
 .aff-apply-page .auth-card select:focus {
   outline: none;
-  border-color: #fefefe;
-  box-shadow: 0 0 0 3px color-mix(in srgb, #7859f4 35%, transparent);
+  border-color: var(--off-white);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--magenta) 35%, transparent);
 }
 
 .aff-apply-page .auth-card select option {
-  background: #111111;
-  color: #fefefe;
+  background: var(--black);
+  color: var(--off-white);
 }
 
 .aff-apply-page .contact-form__field,
@@ -995,7 +995,7 @@
   border: 1px solid #727272;
   border-radius: 12px;
   background: rgba(0, 0, 0, 0.35);
-  color: #fefefe;
+  color: var(--off-white);
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
@@ -1045,7 +1045,7 @@
   height: 6px;
   margin-top: -3px;
   border-radius: 50%;
-  background: #fefefe;
+  background: var(--off-white);
   opacity: 0;
   transform: scale(0.6);
   transition:
@@ -1059,13 +1059,13 @@
 
 .aff-apply__choice-option:has(input:checked),
 .aff-apply__choice-option:has(input:focus-visible) {
-  border-color: #fefefe;
+  border-color: var(--off-white);
   background: rgba(254, 254, 254, 0.08);
-  box-shadow: 0 0 0 3px color-mix(in srgb, #0d172f 55%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--midnight) 55%, transparent);
 }
 
 .aff-apply__choice-option:has(input:checked) span::before {
-  border-color: #fefefe;
+  border-color: var(--off-white);
 }
 
 .aff-apply__choice-option:has(input:checked) span::after {
@@ -1094,24 +1094,24 @@
   width: 18px;
   height: 18px;
   margin: 2px 0 0;
-  accent-color: #0d172f;
+  accent-color: var(--midnight);
   cursor: pointer;
 }
 
 .aff-apply__agree a {
-  color: #fefefe;
+  color: var(--off-white);
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .aff-apply__agree a:hover {
-  color: #ffffff;
+  color: var(--white);
 }
 
 .aff-apply__agree:has(input:focus-visible) {
-  border-color: #fefefe;
-  box-shadow: 0 0 0 3px color-mix(in srgb, #7859f4 35%, transparent);
+  border-color: var(--off-white);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--magenta) 35%, transparent);
 }
 
 /* Footer sits on dark after CTA */

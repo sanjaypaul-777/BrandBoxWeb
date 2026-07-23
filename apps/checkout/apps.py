@@ -1,3 +1,7 @@
+"""
+apps/checkout/apps.py — Checkout AppConfig.
+"""
+
 from django.apps import AppConfig
 
 

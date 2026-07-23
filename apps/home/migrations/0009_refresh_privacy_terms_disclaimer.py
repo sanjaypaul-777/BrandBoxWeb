@@ -1,3 +1,7 @@
+"""
+apps/home/migrations/0009_refresh_privacy_terms_disclaimer.py — Django migration: 0009_refresh_privacy_terms_disclaimer.
+"""
+
 # Refresh Privacy, Terms, and Disclaimer copy (cookies, sessions, promos, affiliates)
 
 from django.db import migrations

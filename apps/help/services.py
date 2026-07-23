@@ -1,3 +1,7 @@
+"""
+apps/help/services.py — Help search / article lookup helpers.
+"""
+
 from __future__ import annotations
 
 import re

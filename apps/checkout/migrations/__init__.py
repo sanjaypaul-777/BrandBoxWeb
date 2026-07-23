@@ -1,0 +1,4 @@
+"""
+apps/checkout/migrations/__init__.py — Migrations package for this app.
+"""
+

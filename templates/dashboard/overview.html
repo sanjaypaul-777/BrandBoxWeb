@@ -1,3 +1,4 @@
+{# overview.html — Dashboard Overview page markup. Connected: hero + Pro features + product spotlight (images). Not connected: connect-existing vs create-new path cards. Styles: static/css/dashboard.css (.ov-* / .nc-*). Context: apps/dashboard/overview.py #}
 {% extends "dashboard/base_dashboard.html" %}
 
 {% block dash_extra_css %}
@@ -29,7 +30,7 @@
 
   <div class="nc__grid">
     <article class="nc-card">
-      <div class="nc-card__icon nc-card__icon--mint" aria-hidden="true">
+      <div class="nc-card__icon nc-card__icon--midnight" aria-hidden="true">
         <span class="material-symbols-outlined">link</span>
       </div>
       <h3 class="nc-card__title">Connect Shopify</h3>
@@ -196,7 +197,7 @@
           {% if item.image %}
           <img class="ov-spot__img" src="{{ item.image }}" alt="" loading="lazy" />
           {% else %}
-          <span class="ov-spot__ph" style="background: {{ item.color }}"></span>
+          <span class="ov-spot__ph" aria-hidden="true"></span>
           {% endif %}
         </span>
         <span class="ov-spot__name">{{ item.name }}</span>

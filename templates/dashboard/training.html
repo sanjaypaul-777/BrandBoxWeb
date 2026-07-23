@@ -1,3 +1,4 @@
+{# templates/dashboard/training.html — LEGACY STUB: on-demand lessons not shipped yet. #}
 {% extends "dashboard/base_dashboard.html" %}
 
 {% block dash_title %}Training{% endblock %}
@@ -13,9 +14,12 @@
 
   <div class="sch-grid">
     <article class="sch-card">
-      <span class="material-symbols-outlined sch-card__icon" aria-hidden="true">play_circle</span>
-      <h2 class="sch-card__title">On-demand lessons</h2>
-      <p class="sch-card__body">Quick trainings on AI Store Builder, AI Picks, and pushing products to Shopify.</p>
+      <span class="material-symbols-outlined sch-card__icon" aria-hidden="true">schedule</span>
+      <h2 class="sch-card__title">Coming soon</h2>
+      <p class="sch-card__body">
+        Training videos are not available yet. This page is a placeholder until lessons ship.
+        Meanwhile, see the <a href="{% url 'help:home' %}">Help Center</a>.
+      </p>
     </article>
   </div>
 </section>

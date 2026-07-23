@@ -1,3 +1,7 @@
+"""
+apps/home/migrations/0010_affiliate_register_seo.py — Django migration: 0010_affiliate_register_seo.
+"""
+
 # Update affiliate register SEO title/description for /affiliate/register/
 
 from django.db import migrations

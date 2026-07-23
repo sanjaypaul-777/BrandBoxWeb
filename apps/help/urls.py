@@ -1,3 +1,7 @@
+"""
+apps/help/urls.py — URL routes for /help/.
+"""
+
 from django.urls import path
 
 from . import views

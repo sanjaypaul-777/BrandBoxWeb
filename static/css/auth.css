@@ -14,27 +14,28 @@
 .auth-page {
 
   /* —— Section tokens (edit here only) —— */
-  --auth-bg: #000000;
+  --auth-black: var(--black);
   --auth-text: #f1f3f8;
   --auth-muted: #b6b6b6;
-  --auth-surface: #111111;
+  --auth-surface: var(--black);
   --auth-surface-high: #1a1a1a;
   --auth-input-bg: #161616;
   --auth-hairline: rgba(241, 243, 248, 0.12);
   --auth-outline: #3a3a3a;
   --auth-outline-soft: #64748b;
-  --auth-primary: #0d172f;
-  --auth-on-primary: #fefefe;
-  --auth-primary-container: #0d172f;
+  --auth-primary: var(--midnight);
+  --auth-on-primary: var(--white, var(--off-white));
+  --auth-primary-container: var(--midnight);
   --auth-primary-fixed: #1a2740;
   --auth-error: #f87171;
-  --auth-glass: #111111;
+  --auth-glass: var(--black);
   --auth-navy: #f1f3f8;
-  --auth-accent: #ff00e5;
-  --auth-purple: #0d172f;
+  --auth-magenta: var(--magenta);
+  --auth-green: var(--green);
+  --auth-midnight: var(--midnight);
 
   /* Bridge: children using shared names stay section-scoped */
-  --background: var(--auth-bg);
+  --background: var(--auth-black);
   --on-surface: var(--auth-text);
   --on-background: var(--auth-text);
   --on-surface-variant: var(--auth-muted);
@@ -51,8 +52,8 @@
   --primary-fixed: var(--auth-primary-fixed);
   --error: var(--auth-error);
   --glass: var(--auth-glass);
-  --accent-pink: var(--auth-accent);
-  --vibrant-purple: var(--auth-purple);
+  --accent-pink: var(--auth-magenta);
+  --vibrant-purple: var(--auth-midnight);
 
   position: relative;
   min-height: 100vh;
@@ -61,7 +62,7 @@
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background: var(--auth-bg);
+  background: var(--auth-black);
   color: var(--auth-text);
   /* Avoid overflow:hidden — it mispositions browser autofill on mobile */
   overflow-x: hidden;
@@ -89,17 +90,17 @@
   background:
     radial-gradient(
       circle at 38% 46%,
-      color-mix(in srgb, var(--auth-primary, #0d172f) 80%, transparent) 0%,
+      color-mix(in srgb, var(--auth-primary, var(--midnight)) 80%, transparent) 0%,
       transparent 52%
     ),
     radial-gradient(
       circle at 62% 54%,
-      color-mix(in srgb, var(--auth-accent, #ff00e5) 55%, transparent) 0%,
+      color-mix(in srgb, var(--auth-magenta, var(--magenta)) 55%, transparent) 0%,
       transparent 54%
     ),
     radial-gradient(
       circle,
-      color-mix(in srgb, var(--auth-accent, #ff00e5) 35%, #0d172f) 0%,
+      color-mix(in srgb, var(--auth-magenta, var(--magenta)) 35%, var(--midnight)) 0%,
       transparent 68%
     );
   will-change: transform, opacity, filter;
@@ -130,35 +131,27 @@
 }
 
 .auth-glow-ripple--magenta {
-  border-color: color-mix(
-    in srgb,
-    color-mix(in srgb, var(--auth-accent, #ff00e5) 70%, var(--auth-primary, #4edea3)) 50%,
-    transparent
-  );
+  border-color: color-mix(in srgb, var(--auth-magenta) 50%, transparent);
   box-shadow:
-    0 0 28px color-mix(in srgb, var(--auth-accent, #ff00e5) 26%, transparent),
-    inset 0 0 32px color-mix(in srgb, var(--auth-primary, #4edea3) 16%, transparent);
+    0 0 28px color-mix(in srgb, var(--auth-magenta) 26%, transparent),
+    inset 0 0 32px color-mix(in srgb, var(--auth-green) 16%, transparent);
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--auth-accent, #ff00e5) 18%, transparent) 0%,
-    color-mix(in srgb, var(--auth-primary, #4edea3) 10%, transparent) 42%,
+    color-mix(in srgb, var(--auth-magenta) 18%, transparent) 0%,
+    color-mix(in srgb, var(--auth-green) 10%, transparent) 42%,
     transparent 68%
   );
 }
 
 .auth-glow-ripple--green {
-  border-color: color-mix(
-    in srgb,
-    color-mix(in srgb, var(--auth-primary, #4edea3) 70%, var(--auth-accent, #ff00e5)) 50%,
-    transparent
-  );
+  border-color: color-mix(in srgb, var(--auth-green) 50%, transparent);
   box-shadow:
-    0 0 28px color-mix(in srgb, var(--auth-primary, #4edea3) 26%, transparent),
-    inset 0 0 32px color-mix(in srgb, var(--auth-accent, #ff00e5) 14%, transparent);
+    0 0 28px color-mix(in srgb, var(--auth-green) 26%, transparent),
+    inset 0 0 32px color-mix(in srgb, var(--auth-magenta) 14%, transparent);
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--auth-primary, #4edea3) 18%, transparent) 0%,
-    color-mix(in srgb, var(--auth-accent, #ff00e5) 10%, transparent) 42%,
+    color-mix(in srgb, var(--auth-green) 18%, transparent) 0%,
+    color-mix(in srgb, var(--auth-magenta) 10%, transparent) 42%,
     transparent 68%
   );
 }
@@ -214,13 +207,13 @@
   font-size: 24px;
   font-weight: 800;
   letter-spacing: -0.32px;
-  color: #fefefe;
+  color: var(--off-white);
   text-decoration: none;
   margin-bottom: 28px;
 }
 
 .auth-brand:hover {
-  color: #ffffff;
+  color: var(--white);
 }
 
 .auth-logo {
@@ -262,7 +255,7 @@
   letter-spacing: -0.03em;
   line-height: 1.1;
   margin: 0 0 10px;
-  color: #fefefe;
+  color: var(--off-white);
 }
 
 .subtitle {
@@ -279,9 +272,9 @@
   margin: 0 0 16px;
   padding: 7px 14px;
   border-radius: 9999px;
-  background: #0d172f;
+  background: var(--midnight);
   border: 0;
-  color: color-mix(in srgb, #fefefe 70%, #fefefe);
+  color: color-mix(in srgb, var(--off-white) 70%, var(--off-white));
   font-family: Inter, system-ui, sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -303,7 +296,7 @@
   background: linear-gradient(
     340deg,
     rgba(120, 89, 244, 0) 79.67%,
-    #7859f4 198.01%
+    var(--magenta) 198.01%
   );
   overflow: hidden;
   box-sizing: border-box;
@@ -334,7 +327,7 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  color: #fefefe;
+  color: var(--off-white);
 }
 
 /* —— Social auth: same design/behavior as .btn-primary (icon-only row) —— */
@@ -357,8 +350,8 @@
   padding: 0 16px;
   border-radius: 9999px;
   border: 0;
-  background: #0d172f;
-  color: #fefefe;
+  background: var(--midnight);
+  color: var(--off-white);
   text-decoration: none;
   box-sizing: border-box;
   isolation: isolate;
@@ -373,8 +366,8 @@
 .social-btn:focus-visible,
 .social-btn:active,
 .social-btn:visited {
-  color: #fefefe;
-  background: #0d172f;
+  color: var(--off-white);
+  background: var(--midnight);
   text-decoration: none;
   border: 0;
   outline: none;
@@ -386,7 +379,7 @@
   inset: -3px;
   z-index: -2;
   border-radius: inherit;
-  background: linear-gradient(120deg, #ff00e5, #4edea3, #ff00e5, #4edea3);
+  background: linear-gradient(120deg, var(--magenta), var(--green), var(--magenta), var(--green));
   background-size: 300% 300%;
   opacity: 0;
   pointer-events: none;
@@ -399,11 +392,11 @@
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: #0d172f;
+  background: var(--midnight);
   pointer-events: none;
   box-shadow:
-    inset 0 0 0 1.5px color-mix(in srgb, #000000 45%, transparent),
-    inset 0 0 0 3px #212121;
+    inset 0 0 0 1.5px color-mix(in srgb, var(--black) 45%, transparent),
+    inset 0 0 0 3px var(--ink);
 }
 
 .social-btn:hover::before,
@@ -429,20 +422,20 @@
 .social-btn--apple:hover,
 .social-btn--apple:focus,
 .social-btn--apple:visited {
-  background: #0d172f;
-  color: #fefefe;
+  background: var(--midnight);
+  color: var(--off-white);
   border-color: transparent;
 }
 
 .social-btn--apple .social-btn__icon {
-  color: #fefefe;
+  color: var(--off-white);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .social-btn:hover::before,
   .social-btn:focus-visible::before {
     animation: none;
-    background: linear-gradient(120deg, #ff00e5, #4edea3);
+    background: linear-gradient(120deg, var(--magenta), var(--green));
     background-size: 100% 100%;
   }
 }
@@ -492,6 +485,18 @@
   color: var(--primary);
 }
 
+.auth-banner--info {
+  background: color-mix(in srgb, var(--midnight) 10%, transparent);
+  border-color: color-mix(in srgb, var(--midnight) 28%, transparent);
+  color: var(--on-surface);
+}
+
+.auth-social-stub {
+  margin: 0 0 10px;
+  text-align: center;
+  font-size: 12.8px;
+}
+
 .card-title {
   font-family: var(--font-display);
   font-size: 16.8px;
@@ -525,7 +530,7 @@
   font-weight: 500;
   letter-spacing: -0.01em;
   text-transform: none;
-  color: #fefefe;
+  color: var(--off-white);
   margin-top: 14px;
   margin-bottom: 8px;
 }
@@ -550,7 +555,7 @@
 }
 
 .label-row a:hover {
-  color: #ffffff;
+  color: var(--white);
 }
 
 .auth-form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="submit"]):not([type="button"]),
@@ -566,7 +571,7 @@
   border-radius: 12px;
   border: 1px solid #727272;
   background: rgba(0, 0, 0, 0.35);
-  color: #fefefe;
+  color: var(--off-white);
   font: inherit;
   font-size: 16px;
   box-sizing: border-box;
@@ -590,8 +595,8 @@
 .auth-card input[type="url"]:focus,
 .auth-card textarea:focus {
   outline: none;
-  border-color: #fefefe;
-  box-shadow: 0 0 0 3px color-mix(in srgb, #7859f4 35%, transparent);
+  border-color: var(--off-white);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--magenta) 35%, transparent);
 }
 
 /* Full-width primary CTA — same chrome as homepage .btn-primary */
@@ -626,12 +631,12 @@
 }
 
 .auth-footer a:hover {
-  color: #ffffff;
+  color: var(--white);
 }
 
 .auth-footer a:hover .material-symbols-outlined {
   transform: translateX(3px);
-  color: #ffffff;
+  color: var(--white);
 }
 
 .error {
@@ -641,7 +646,7 @@
 }
 
 .ok {
-  color: #4edea3;
+  color: var(--green);
   font-weight: 600;
   margin: 0 0 8px;
   display: flex;

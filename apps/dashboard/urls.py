@@ -1,3 +1,7 @@
+"""
+apps/dashboard/urls.py — URL routes for /dashboard/.
+"""
+
 from django.urls import include, path
 
 from . import views

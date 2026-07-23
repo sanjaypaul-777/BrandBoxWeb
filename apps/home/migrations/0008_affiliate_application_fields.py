@@ -1,3 +1,7 @@
+"""
+apps/home/migrations/0008_affiliate_application_fields.py — Django migration: 0008_affiliate_application_fields.
+"""
+
 # Affiliate application fields for partner form copy
 
 from django.db import migrations, models

@@ -1,3 +1,7 @@
+"""
+apps/coach/admin.py — Django admin for coach threads / messages.
+"""
+
 import csv
 import json
 

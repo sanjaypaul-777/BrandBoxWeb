@@ -1,3 +1,7 @@
+"""
+apps/coach/context_processors.py — Template context for coach unread / desk flags.
+"""
+
 from .models import CoachProfile
 
 

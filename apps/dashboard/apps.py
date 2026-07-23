@@ -1,3 +1,7 @@
+"""
+apps/dashboard/apps.py — Dashboard AppConfig.
+"""
+
 from django.apps import AppConfig
 
 

@@ -1,3 +1,7 @@
+"""
+apps/home/models.py — LegalPage, SEO, SiteOfferSettings, affiliate models.
+"""
+
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -133,6 +137,55 @@ class SiteSeoSettings(models.Model):
     @classmethod
     def load(cls) -> "SiteSeoSettings":
         obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+
+class SiteOfferSettings(models.Model):
+    """
+    Singleton — homepage offer % / countdown + affiliate commission %.
+    Edit in Django admin (Home → Site offer settings). No code deploy needed.
+    """
+
+    offer_percent = models.PositiveSmallIntegerField(
+        default=65,
+        help_text="Homepage badge number only (e.g. 65 → “65% Off”).",
+    )
+    offer_ends_at = models.DateTimeField(
+        help_text="Hero countdown end. After this time the timer shows “Offer ended”.",
+    )
+    affiliate_percent = models.PositiveSmallIntegerField(
+        default=30,
+        help_text="Affiliate page number only (e.g. 30 → “30%+”).",
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Site offer settings"
+        verbose_name_plural = "Site offer settings"
+
+    def __str__(self) -> str:
+        return "Site offer settings"
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        pass
+
+    @classmethod
+    def load(cls) -> "SiteOfferSettings":
+        from django.utils import timezone
+        from datetime import datetime
+
+        defaults = {
+            "offer_percent": 65,
+            "affiliate_percent": 30,
+            "offer_ends_at": timezone.make_aware(
+                datetime(2026, 7, 31, 23, 59, 59)
+            ),
+        }
+        obj, _ = cls.objects.get_or_create(pk=1, defaults=defaults)
         return obj
 
 

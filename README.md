@@ -219,7 +219,6 @@ BrandBoxWeb/
 │   ├── shopify.py                     # normalize shop + OAuth URL → Node
 │   ├── brandbox_client.py             # all Node internal HTTP (secret header)
 │   ├── middleware.py / context_processors.py
-│   ├── celery.py                      # reserved for long builds
 │   └── wsgi.py / asgi.py
 ├── apps/
 │   ├── home/                          # landing /, affiliate, legal, contact

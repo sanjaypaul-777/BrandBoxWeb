@@ -1,3 +1,4 @@
+{# templates/checkout/index.html — Checkout / pay for Pro page. #}
 {% extends "base.html" %}
 {% load static %}
 
@@ -33,26 +34,34 @@
       </div>
     </header>
 
-    {% if done %}
+    {% if stub_submitted %}
       <div class="checkout-done">
         <p class="ok">
-          <span class="material-symbols-outlined">check_circle</span>
-          Order placed
+          <span class="material-symbols-outlined">schedule</span>
+          Checkout preview only
         </p>
         {% if account_created %}
           <p class="muted">
-            Your BrandBox account was created with <strong>{{ user.email }}</strong>.
-            You’re signed in — continue to your dashboard.
+            Your BrandBox account was created with <strong>{{ user.email }}</strong>
+            and you are signed in. Payment is not connected yet — no charge was made.
           </p>
         {% else %}
-          <p class="muted">Thanks — this is a UI preview. Real payment processing connects later.</p>
+          <p class="muted">
+            No payment was processed. Card checkout is coming soon.
+          </p>
         {% endif %}
         <a class="checkout-cta" href="{% url 'dashboard:home' %}">Go to dashboard</a>
       </div>
     {% else %}
+      {% if payment_stub %}
+        <p class="checkout-stub-banner" role="status">
+          Coming soon — payment is not connected. Submitting will not charge a card.
+        </p>
+      {% endif %}
       <div class="checkout-panel">
         <section class="checkout-pay" aria-labelledby="payment-heading">
           <h1 id="payment-heading">Enter your payment information</h1>
+          <p class="muted">Preview form — billing provider wires in later.</p>
 
           <form method="post" class="checkout-form" id="checkout-form" novalidate>
             {% csrf_token %}

@@ -1,3 +1,7 @@
+"""
+apps/catalog/apps.py — Catalog AppConfig.
+"""
+
 from django.apps import AppConfig
 
 

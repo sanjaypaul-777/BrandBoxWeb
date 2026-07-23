@@ -1,3 +1,4 @@
+{# templates/home/index.html — Marketing homepage. #}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -10,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet"/>
-<link rel="stylesheet" href="{% static 'css/base.css' %}"/>
-<link rel="stylesheet" href="{% static 'css/home.css' %}?v=offer-cta-center-1"/>
+<link rel="stylesheet" href="{% static 'css/base.css' %}?v=nopad-1"/>
+<link rel="stylesheet" href="{% static 'css/home.css' %}?v=nopad-1"/>
 <link rel="icon" href="{% static 'images/favicon.png' %}?v=5" type="image/png" />
 <link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}?v=5" />
 <script>
@@ -31,7 +32,7 @@
 })();
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="{% static 'js/tailwind-theme.js' %}"></script>
+<script src="{% static 'js/tailwind-theme.js' %}?v=palette-5"></script>
 <script>
 (function () {
   try {
@@ -81,7 +82,7 @@
     <div
       class="brandbox-hero__offer"
       data-brandbox-offer-countdown
-      data-end="2026-07-31T23:59:59+05:30"
+      data-end="{{ product.offer_end_iso }}"
     >
       <span class="brandbox-hero__offer-badge">{{ product.offer_badge }}</span>
       <span class="brandbox-hero__offer-timer">
@@ -657,7 +658,7 @@
 <span class="font-bold text-on-surface">What does BrandBox actually include?</span>
 <span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
 </summary>
-<div class="brandbox-faq__answer px-6 pb-6 text-on-surface-variant">
+<div class="brandbox-faq__answer px-6 pb-6">
   AI Store Builder for niche-based Shopify setup, Product Vault with AI-chosen products you can import and push, plus coach chat (AI replies when a coach isn’t available).
 </div>
 </details>
@@ -666,7 +667,7 @@
 <span class="font-bold text-on-surface">Do I need a Shopify store first?</span>
 <span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
 </summary>
-<div class="brandbox-faq__answer px-6 pb-6 text-on-surface-variant">
+<div class="brandbox-faq__answer px-6 pb-6">
   Yes. Create a Shopify store (or use one you already have), then connect it to BrandBox so you can build, import products, and push updates.
 </div>
 </details>
@@ -675,7 +676,7 @@
 <span class="font-bold text-on-surface">Is BrandBox good if I’m new to e-commerce?</span>
 <span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
 </summary>
-<div class="brandbox-faq__answer px-6 pb-6 text-on-surface-variant">
+<div class="brandbox-faq__answer px-6 pb-6">
   Yes. The builder walks you through niche setup, the vault helps you choose products, and coach chat is there when you get stuck.
 </div>
 </details>
@@ -684,7 +685,7 @@
 <span class="font-bold text-on-surface">Does BrandBox create ads for me?</span>
 <span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
 </summary>
-<div class="brandbox-faq__answer px-6 pb-6 text-on-surface-variant">
+<div class="brandbox-faq__answer px-6 pb-6">
   No. BrandBox focuses on store building, product selection, Shopify sync, and coaching — not ad generation.
 </div>
 </details>
@@ -693,7 +694,7 @@
 <span class="font-bold text-on-surface">Do you handle shipping and fulfillment?</span>
 <span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
 </summary>
-<div class="brandbox-faq__answer px-6 pb-6 text-on-surface-variant">
+<div class="brandbox-faq__answer px-6 pb-6">
   No. BrandBox helps you set up and stock your Shopify store. Shipping and fulfillment stay with you and your Shopify / supplier setup.
 </div>
 </details>
@@ -702,7 +703,7 @@
 <span class="font-bold text-on-surface">What’s the difference between a coach and the AI chat?</span>
 <span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
 </summary>
-<div class="brandbox-faq__answer px-6 pb-6 text-on-surface-variant">
+<div class="brandbox-faq__answer px-6 pb-6">
   Coaches are people who help when available. If no coach is free, BrandBox AI answers so you still get guidance on setup, niches, and products.
 </div>
 </details>
@@ -711,7 +712,7 @@
 <span class="font-bold text-on-surface">What is the Summer Promo?</span>
 <span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
 </summary>
-<div class="brandbox-faq__answer px-6 pb-6 text-on-surface-variant">
+<div class="brandbox-faq__answer px-6 pb-6">
   {{ product.offer_faq_blurb }}
 </div>
 </details>
@@ -720,7 +721,7 @@
 <span class="font-bold text-on-surface">Can I change products after the store is built?</span>
 <span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
 </summary>
-<div class="brandbox-faq__answer px-6 pb-6 text-on-surface-variant">
+<div class="brandbox-faq__answer px-6 pb-6">
   Yes. Keep browsing the Product Vault, import more items, and push updates to Shopify whenever you want to refresh your catalog.
 </div>
 </details>

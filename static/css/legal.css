@@ -3,8 +3,8 @@
  */
 
 .legal-page {
-  --legal-bg: #eef2f8;
-  --legal-navy: var(--deep-navy, #06101a);
+  --legal-bg: var(--canvas);
+  --legal-navy: var(--deep-navy, var(--ink));
   --legal-muted: #64748b;
   --legal-font-display: Inter, sans-serif;
   --legal-font-body: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;

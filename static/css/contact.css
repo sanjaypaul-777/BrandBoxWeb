@@ -44,8 +44,8 @@
   padding: 13.6px 16px;
   border-radius: 12px;
   border: 1px solid #727272;
-  background: color-mix(in srgb, #4edea3 12%, transparent);
-  color: #4edea3;
+  background: color-mix(in srgb, var(--green) 12%, transparent);
+  color: var(--green);
   font-size: 15.2px;
   font-weight: 600;
   text-align: left;

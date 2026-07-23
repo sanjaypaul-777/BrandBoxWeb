@@ -9,27 +9,27 @@
 .checkout {
 
   /* —— Section tokens (edit here only) —— */
-  --checkout-bg: #EEF2F8;
-  --checkout-text: #06101a;
+  --checkout-canvas: var(--canvas);
+  --checkout-text: var(--ink);
   --checkout-muted: #475569;
-  --checkout-surface: #ffffff;
-  --checkout-surface-high: #f8fafc;
-  --checkout-input-bg: #ffffff;
+  --checkout-surface: var(--white);
+  --checkout-surface-high: color-mix(in srgb, var(--canvas) 70%, var(--white));
+  --checkout-input-bg: var(--white);
   --checkout-hairline: rgba(15, 23, 42, 0.1);
   --checkout-outline: #94a3b8;
   --checkout-outline-soft: #64748b;
-  --checkout-primary: #4edea3;
-  --checkout-on-primary: #fefefe;
-  --checkout-primary-container: #0d172f;
-  --checkout-primary-fixed: #6ffbbe;
+  --checkout-primary: var(--green);
+  --checkout-on-primary: var(--off-white);
+  --checkout-primary-container: var(--midnight);
+  --checkout-primary-fixed: color-mix(in srgb, var(--green) 55%, var(--white));
   --checkout-error: #b91c1c;
-  --checkout-glass: #ffffff;
-  --checkout-navy: #06101a;
-  --checkout-accent: #ff00e5;
-  --checkout-purple: #ad7bff;
+  --checkout-glass: var(--white);
+  --checkout-navy: var(--ink);
+  --checkout-accent: var(--magenta);
+  --checkout-purple: var(--magenta);
 
   /* Bridge: children using shared names stay section-scoped */
-  --background: var(--checkout-bg);
+  --background: var(--checkout-canvas);
   --on-surface: var(--checkout-text);
   --on-background: var(--checkout-text);
   --on-surface-variant: var(--checkout-muted);
@@ -53,8 +53,8 @@
   display: flex;
   flex-direction: column;
   background:
-    radial-gradient(ellipse at 50% -10%, rgba(16, 185, 129, 0.12), transparent 50%),
-    var(--checkout-bg);
+    radial-gradient(ellipse at 50% -10%, color-mix(in srgb, var(--green) 12%, transparent), transparent 50%),
+    var(--checkout-canvas);
   color: var(--checkout-text);
   padding: 24px 16px 40px;
 }
@@ -392,7 +392,7 @@
   margin-bottom: 18.4px;
   aspect-ratio: 16 / 10;
   background:
-    radial-gradient(circle at 70% 40%, rgba(16, 185, 129, 0.35), transparent 50%),
+    radial-gradient(circle at 70% 40%, color-mix(in srgb, var(--green) 35%, transparent), transparent 50%),
     radial-gradient(circle at 20% 80%, rgba(173, 123, 255, 0.2), transparent 45%),
     linear-gradient(145deg, #0a1a12, #06140e 55%, #12101c);
   border: 1px solid var(--hairline);
@@ -605,6 +605,18 @@
   background: var(--surface-container);
   border: 1px solid var(--hairline);
   border-radius: 16px;
+}
+
+.checkout-stub-banner {
+  grid-column: 1 / -1;
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+  background: color-mix(in srgb, var(--midnight) 8%, var(--white));
+  border: 1px solid color-mix(in srgb, var(--midnight) 22%, transparent);
+  color: var(--ink);
 }
 
 .checkout-done .ok {

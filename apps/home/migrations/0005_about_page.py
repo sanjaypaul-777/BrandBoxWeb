@@ -1,3 +1,7 @@
+"""
+apps/home/migrations/0005_about_page.py — Django migration: 0005_about_page.
+"""
+
 # Generated manually — add About Us legal page
 
 from django.db import migrations, models

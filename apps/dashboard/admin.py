@@ -1,3 +1,7 @@
+"""
+apps/dashboard/admin.py — Django admin for shops, plans, activity.
+"""
+
 from django.contrib import admin
 
 from .models import (

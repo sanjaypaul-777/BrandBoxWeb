@@ -1,3 +1,7 @@
+"""
+apps/home/migrations/0013_refresh_public_seo.py — Django migration: 0013_refresh_public_seo.
+"""
+
 # Refresh public SEO copy + Help Center page tags
 
 from decimal import Decimal

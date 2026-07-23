@@ -10,25 +10,24 @@
 
   /* —— Section tokens (edit here only) —— */
   --st-bg: transparent;
-  --st-text: #06101a;
+  --st-text: var(--ink);
   --st-muted: #475569;
-  --st-surface: #ffffff;
-  --st-surface-high: #f8fafc;
-  --st-input-bg: #ffffff;
+  --st-surface: var(--white);
+  --st-surface-high: color-mix(in srgb, var(--canvas) 70%, var(--white));
+  --st-input-bg: var(--white);
   --st-hairline: rgba(15, 23, 42, 0.1);
   --st-outline: #94a3b8;
   --st-outline-soft: #64748b;
-  --st-primary: #0d172f;
-  --st-on-primary: #fefefe;
-  --st-primary-container: #0d172f;
+  --st-primary: var(--midnight);
+  --st-on-primary: var(--off-white);
+  --st-primary-container: var(--midnight);
   --st-primary-fixed: #f1f3f8;
   --st-error: #b91c1c;
-  --st-glass: #ffffff;
-  --st-navy: #06101a;
-  --st-accent: #ff00e5;
-  --st-purple: #ad7bff;
-  --st-mint: #0d172f;
-  --st-magenta: #ff00e5;
+  --st-glass: var(--white);
+  --st-navy: var(--ink);
+  --st-accent: var(--magenta);
+  --st-midnight: var(--midnight);
+  --st-magenta: var(--magenta);
   --st-max: 700px;
   --st-font-display: Inter, var(--font-body), sans-serif;
   --st-font-body:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -52,7 +51,6 @@
   --error: var(--st-error);
   --glass: var(--st-glass);
   --accent-pink: var(--st-accent);
-  --vibrant-purple: var(--st-purple);
 
   max-width: var(--st-max);
   margin: 0 auto;
@@ -248,7 +246,7 @@
 }
 
 .st-switch input:checked + .st-switch__ui {
-  background: var(--st-mint);
+  background: var(--st-midnight);
   border-color: transparent;
 }
 
@@ -257,7 +255,7 @@
 }
 
 .st-switch input:focus-visible + .st-switch__ui {
-  outline: 2px solid color-mix(in srgb, var(--st-mint) 60%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--st-midnight) 60%, transparent);
   outline-offset: 2px;
 }
 
@@ -265,7 +263,7 @@
   min-height: 19.2px;
   margin: 12px 0 0;
   font-size: 13.12px;
-  color: var(--st-mint);
+  color: var(--st-midnight);
 }
 
 .st-profile-form {
@@ -326,8 +324,8 @@
 
 .st-field input:focus,
 .st-field textarea:focus {
-  outline: 2px solid color-mix(in srgb, var(--st-mint) 45%, transparent);
-  border-color: var(--st-mint);
+  outline: 2px solid color-mix(in srgb, var(--st-midnight) 45%, transparent);
+  border-color: var(--st-midnight);
 }
 
 .st-profile-form__error {
@@ -371,20 +369,3 @@
 }
 
 
-/* —— Unified button type (canonical) —— */
-.btn-text,
-.btn-primary,
-.btn-secondary,
-a.btn-text,
-button.btn-text,
-a.btn-primary,
-button.btn-primary,
-a.btn-secondary,
-button.btn-secondary {
-  font-family: Inter, var(--font-body), sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0;
-  line-height: 1.25;
-}

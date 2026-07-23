@@ -1,10 +1,15 @@
 """
-Builder models — niche packs and build jobs.
+apps/builder/models.py — Builder DB models (NichePack + BuildJob).
+
+NichePack = selectable niche in the wizard (theme image via thumb_static).
+BuildJob = one AI store build run for a user/shop.
 Winning products for builds come from Node/R2, not Django.
 """
 
 from django.conf import settings
 from django.db import models
+
+from config.palette import GREEN
 
 
 class NichePack(models.Model):
@@ -15,8 +20,8 @@ class NichePack(models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField(blank=True)
     theme_name = models.CharField(max_length=120, blank=True)
-    # Placeholder accent for card thumbnail (hex)
-    accent = models.CharField(max_length=16, default="#4edea3")
+    # Legacy hex placeholder; UI uses theme images (thumb_static), not this color.
+    accent = models.CharField(max_length=16, default=GREEN)
     is_active = models.BooleanField(default=True)
     sort_order = models.PositiveSmallIntegerField(default=0)
     # Engine product count (synced from Node GET /api/niches)

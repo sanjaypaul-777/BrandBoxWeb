@@ -1,5 +1,5 @@
 /**
- * brandbox-home-scroll.js — Scroll-driven 3D reveals + hero depth.
+ * brandbox-home-scroll.js — Scroll-driven 3D reveals + top-stage motion.
  */
 (function () {
   "use strict";
@@ -66,10 +66,6 @@
     children.forEach(function (child) {
       childIo.observe(child);
     });
-  }
-
-  function heroDepth() {
-    /* Replaced by brandbox-hero-carousel.js — keep hook for init order. */
   }
 
   function animateTopStage() {
@@ -187,7 +183,6 @@
   function init() {
     animateTopStage();
     revealSections();
-    heroDepth();
     bindCardTilt();
   }
 

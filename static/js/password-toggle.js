@@ -51,6 +51,6 @@
     scan();
   }
 
-  // In case password fields are injected later (e.g. checkout guest flow)
+  // Reserved for late-injected password fields (e.g. checkout guest flow)
   window.BrandBoxPasswordToggle = { scan: scan };
 })();

@@ -1,3 +1,7 @@
+"""
+apps/home/migrations/0014_feature_seo_meta.py — Django migration: 0014_feature_seo_meta.
+"""
+
 # SEO: feature-aware meta for home, affiliate, help + keywords
 
 from django.db import migrations

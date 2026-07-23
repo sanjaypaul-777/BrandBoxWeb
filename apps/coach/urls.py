@@ -1,3 +1,7 @@
+"""
+apps/coach/urls.py — URL routes for coach pages / APIs.
+"""
+
 from django.urls import path
 
 from . import views

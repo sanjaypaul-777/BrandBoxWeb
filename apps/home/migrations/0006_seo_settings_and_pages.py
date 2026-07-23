@@ -1,3 +1,7 @@
+"""
+apps/home/migrations/0006_seo_settings_and_pages.py — Django migration: 0006_seo_settings_and_pages.
+"""
+
 # Generated manually for SiteSeoSettings + SeoPage
 
 from decimal import Decimal

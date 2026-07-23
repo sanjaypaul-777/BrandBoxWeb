@@ -1,3 +1,7 @@
+"""
+apps/home/migrations/0004_seed_legal_pages.py — Django migration: 0004_seed_legal_pages.
+"""
+
 # Generated manually — seed Privacy / Terms / Refund copy
 
 from django.db import migrations

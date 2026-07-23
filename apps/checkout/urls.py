@@ -1,3 +1,7 @@
+"""
+apps/checkout/urls.py — URL routes for /checkout/.
+"""
+
 from django.urls import path
 
 from .views import CheckoutView

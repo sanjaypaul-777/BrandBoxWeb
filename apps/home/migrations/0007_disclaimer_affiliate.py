@@ -1,3 +1,7 @@
+"""
+apps/home/migrations/0007_disclaimer_affiliate.py — Django migration: 0007_disclaimer_affiliate.
+"""
+
 # Disclaimer legal page + affiliate applications + SEO keys
 
 from django.db import migrations, models

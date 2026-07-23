@@ -1,3 +1,7 @@
+"""
+apps/dashboard/migrations/0010_mark_existing_onboarded.py — Django migration: 0010_mark_existing_onboarded.
+"""
+
 # Generated manually — existing merchants skip the new onboarding gate.
 
 from django.db import migrations

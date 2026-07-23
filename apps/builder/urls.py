@@ -1,3 +1,7 @@
+"""
+apps/builder/urls.py — URL routes for builder pages.
+"""
+
 from django.urls import path
 
 from . import views

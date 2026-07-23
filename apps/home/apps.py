@@ -1,3 +1,7 @@
+"""
+apps/home/apps.py — Home AppConfig.
+"""
+
 from django.apps import AppConfig
 
 

@@ -1,3 +1,7 @@
+"""
+apps/builder/migrations/0006_rename_zentra_build_id_to_brandbox_build_id.py — Django migration: 0006_rename_zentra_build_id_to_brandbox_build_id.
+"""
+
 # Rename BuildJob.zentra_build_id → brandbox_build_id (BrandBox rebrand)
 
 from django.db import migrations

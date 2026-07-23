@@ -139,10 +139,6 @@ MAINTENANCE_MODE = env.bool("MAINTENANCE_MODE", default=False)
 MAINTENANCE_ETA = env("MAINTENANCE_ETA", default="")
 STATUS_PAGE_URL = env("STATUS_PAGE_URL", default="")
 
-# Celery (wire broker later — store builds run async via apps.builder)
-CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default=CELERY_BROKER_URL)
-
 # Product catalog scraper (dual-write: Google Sheet for Node + Django DB mirror)
 CATALOG_SPREADSHEET_ID = env(
     "CATALOG_SPREADSHEET_ID",

@@ -48,8 +48,6 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     # Preview status pages while DEBUG=True (Django skips custom handler404/500 in DEBUG)
     urlpatterns += [
-        path("404/", error_views.page_not_found, name="preview_404"),
-        path("500/", error_views.server_error, name="preview_500"),
         path("__debug__/404/", error_views.page_not_found, name="debug_404"),
         path("__debug__/500/", error_views.server_error, name="debug_500"),
         path(

@@ -1,12 +1,9 @@
 """
-Overview page context — real queries with sample fallbacks for empty states.
+apps/dashboard/overview.py — Context builder for the Dashboard Overview page.
 
-Overview cases:
-  not_connected (Case B entry): No shop with a confirmed install / valid token
-      (pending ShopConnection rows do NOT count). Overview shows only the two
-      path cards — connect existing vs create new.
-  connected (Case A / View B): app_installed=True on ShopConnection.
-      Hero modes: "create" (no AI store built yet) or "ready" (≥1 built).
+Builds template vars for connected vs not-connected states, Pro bullets,
+readiness, activity, and spotlight niche product picks (image URLs only).
+Rendered by templates/dashboard/overview.html.
 """
 
 from __future__ import annotations
@@ -28,14 +25,6 @@ PRO_FEATURES = (
     "Push imports to Shopify in one click",
 )
 
-SPOTLIGHT_COLORS = (
-    "#4edea3",
-    "#ff00e5",
-    "#10b981",
-    "#ad7bff",
-    "#6861f2",
-    "#6ffbbe",
-)
 
 # Spotlight niches: (label, category allowlist, title word-boundary fallbacks, title exclude substrings).
 # Category match is preferred. Never use broad terms like "home" (pulls wall art).
@@ -148,12 +137,10 @@ def spotlight_niches() -> list[dict]:
         ).order_by("_cat_hit", "-updated_at")
         product = qs.first()
 
-        color = SPOTLIGHT_COLORS[i % len(SPOTLIGHT_COLORS)]
         items.append(
             {
                 "name": label,
                 "image": _spotlight_product_image(product) if product else "",
-                "color": color,
             }
         )
         if product:

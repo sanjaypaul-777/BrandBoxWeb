@@ -1,3 +1,7 @@
+"""
+apps/accounts/apps.py — Accounts AppConfig.
+"""
+
 from django.apps import AppConfig
 
 

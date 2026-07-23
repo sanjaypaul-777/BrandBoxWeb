@@ -1,12 +1,18 @@
-"""Canonical niche packs for the AI store builder (metadata only — no dummy products).
+"""
+apps/builder/niches.py — Canonical niche pack seed data for the AI Store Builder.
 
-Real niche products live on Node/R2 (care1001…). Django only stores NichePack rows
-and product_count synced from Node GET /api/niches.
+Metadata only (slug, names, theme, sort). Product catalogs live on Node/R2.
+Django stores NichePack rows; product_count syncs from Node GET /api/niches.
+Builder cards use static/images/niches/*.jpg thumbs — not accent colors.
 """
 
 from __future__ import annotations
 
+from config.palette import ACCENTS
+
 # Ten niches — Pod has zero products on the engine.
+# Accents cycle BrandBox palette (config.palette.ACCENTS).
+
 NICHES = (
     {
         "slug": "living",
@@ -14,7 +20,7 @@ NICHES = (
         "name": "Home Decor",
         "theme_name": "BrandBox Living",
         "description": "Warm, editorial spaces built to feel premium.",
-        "accent": "#4edea3",
+        "accent": ACCENTS[0],
         "sort_order": 1,
         "default_product_count": 20,
     },
@@ -24,7 +30,7 @@ NICHES = (
         "name": "Fitness",
         "theme_name": "BrandBox Peak",
         "description": "Gear and essentials built for movers.",
-        "accent": "#10b981",
+        "accent": ACCENTS[1],
         "sort_order": 2,
         "default_product_count": 20,
     },
@@ -34,7 +40,7 @@ NICHES = (
         "name": "Beauty",
         "theme_name": "BrandBox Care",
         "description": "Clean beauty, skincare, and self-care.",
-        "accent": "#6ffbbe",
+        "accent": ACCENTS[2],
         "sort_order": 3,
         "default_product_count": 20,
     },
@@ -44,7 +50,7 @@ NICHES = (
         "name": "Kids & Baby",
         "theme_name": "BrandBox Junior",
         "description": "Soft essentials for little ones.",
-        "accent": "#059669",
+        "accent": ACCENTS[3],
         "sort_order": 4,
         "default_product_count": 20,
     },
@@ -54,7 +60,7 @@ NICHES = (
         "name": "Pet",
         "theme_name": "BrandBox Paws",
         "description": "Products pets (and their people) love.",
-        "accent": "#34d399",
+        "accent": ACCENTS[0],
         "sort_order": 5,
         "default_product_count": 20,
     },
@@ -64,7 +70,7 @@ NICHES = (
         "name": "Jewelry",
         "theme_name": "BrandBox Luxe",
         "description": "Fine pieces with a modern edge.",
-        "accent": "#a7f3d0",
+        "accent": ACCENTS[1],
         "sort_order": 6,
         "default_product_count": 20,
     },
@@ -74,7 +80,7 @@ NICHES = (
         "name": "Electronics",
         "theme_name": "BrandBox Tech",
         "description": "Gadgets and everyday tech.",
-        "accent": "#ff00e5",
+        "accent": ACCENTS[2],
         "sort_order": 7,
         "default_product_count": 20,
     },
@@ -84,7 +90,7 @@ NICHES = (
         "name": "Fashion",
         "theme_name": "BrandBox Vogue",
         "description": "Apparel and accessories that move.",
-        "accent": "#ad7bff",
+        "accent": ACCENTS[3],
         "sort_order": 8,
         "default_product_count": 20,
     },
@@ -94,7 +100,7 @@ NICHES = (
         "name": "General",
         "theme_name": "BrandBox Mart",
         "description": "A broad mix of winning bestsellers.",
-        "accent": "#c3c0ff",
+        "accent": ACCENTS[0],
         "sort_order": 9,
         "default_product_count": 100,
     },
@@ -104,7 +110,7 @@ NICHES = (
         "name": "Print on Demand",
         "theme_name": "BrandBox POD",
         "description": "Print-on-demand ready storefront.",
-        "accent": "#6861f2",
+        "accent": ACCENTS[1],
         "sort_order": 10,
         "default_product_count": 0,
     },
@@ -120,31 +126,19 @@ def ensure_niche_packs():
     keep_slugs = set()
     for item in NICHES:
         keep_slugs.add(item["slug"])
-        meta = {
-            "codename": item["codename"],
-            "name": item["name"],
-            "theme_name": item["theme_name"],
-            "description": item["description"],
-            "accent": item["accent"],
-            "sort_order": item["sort_order"],
-            "is_active": True,
-        }
-        # product_count is seeded once on create; after that only the Node
-        # sync below updates it, so a dead tunnel can't reset live counts.
         NichePack.objects.update_or_create(
             slug=item["slug"],
-            defaults=meta,
-            create_defaults={
-                **meta,
+            defaults={
+                "codename": item["codename"],
+                "name": item["name"],
+                "theme_name": item["theme_name"],
+                "description": item["description"],
+                "accent": item["accent"],
+                "sort_order": item["sort_order"],
+                "is_active": True,
                 "product_count": item["default_product_count"],
             },
         )
 
     NichePack.objects.exclude(slug__in=keep_slugs).update(is_active=False)
-
-    try:
-        sync_niche_product_counts()
-    except Exception:
-        pass
-
-    return list(NichePack.objects.filter(is_active=True))
+    sync_niche_product_counts()
