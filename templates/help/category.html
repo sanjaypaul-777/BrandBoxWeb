@@ -1,14 +1,14 @@
 {% extends "help/base_help.html" %}
 {% load static %}
 
-{% block title %}{{ category.name }} — Help — BrandBox{% endblock %}
+{% block title %}{{ seo.title|default:category.name }}{% endblock %}
 
 {% block help_body %}
 <main class="help-page">
   <div class="help-shell">
     <header class="help-top">
       <a href="{% url 'home:index' %}" class="help-logo" aria-label="BrandBox home">
-        <img src="{% static 'images/favicon.png' %}?v=5" alt="BrandBox" width="36" height="36" />
+        <img src="{% static 'images/favicon.png' %}?v=5" alt="BrandBox Help Center — AI Store Builder guides" width="36" height="36" />
         <span>BrandBox Help</span>
       </a>
       <div class="help-top__actions">

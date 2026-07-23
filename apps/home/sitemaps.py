@@ -19,6 +19,7 @@ PAGE_URL_NAMES: dict[str, str] = {
     "disclaimer": "home:disclaimer",
     "affiliate": "home:affiliate",
     "affiliate_apply": "home:affiliate_register",
+    "help": "help:home",
 }
 
 
@@ -59,6 +60,35 @@ def _sitemap_entries() -> list[dict]:
                 "priority": f"{float(page.sitemap_priority):.1f}",
             }
         )
+
+    # Help Center articles (public knowledge base)
+    try:
+        from apps.help.models import HelpArticle
+
+        for article in (
+            HelpArticle.objects.filter(
+                is_published=True,
+                category__is_published=True,
+                is_coming_soon=False,
+            )
+            .select_related("category")
+            .order_by("category__sort_order", "sort_order")[:500]
+        ):
+            path = article.get_absolute_url()
+            loc = f"{base}{path}" if path.startswith("/") else f"{base}/{path}"
+            entries.append(
+                {
+                    "loc": loc,
+                    "lastmod": article.updated_at.date().isoformat()
+                    if article.updated_at
+                    else "",
+                    "changefreq": "monthly",
+                    "priority": "0.6",
+                }
+            )
+    except Exception:
+        pass
+
     return entries
 
 

@@ -1,14 +1,14 @@
 {% extends "help/base_help.html" %}
 {% load static %}
 
-{% block title %}{{ article.title }} — Help — BrandBox{% endblock %}
+{% block title %}{{ seo.title|default:article.title }}{% endblock %}
 
 {% block help_body %}
 <main class="help-page">
   <div class="help-shell help-shell--article">
     <header class="help-top">
       <a href="{% url 'home:index' %}" class="help-logo" aria-label="BrandBox home">
-        <img src="{% static 'images/favicon.png' %}?v=5" alt="BrandBox" width="36" height="36" />
+        <img src="{% static 'images/favicon.png' %}?v=5" alt="BrandBox Help Center — Product Hunter and Coach articles" width="36" height="36" />
         <span>BrandBox Help</span>
       </a>
       <div class="help-top__actions">
@@ -41,7 +41,7 @@
 
       {% if article.hero_image %}
       <figure class="help-article__hero">
-        <img src="{{ article.hero_image.url }}" alt="" />
+        <img src="{{ article.hero_image.url }}" alt="{{ article.title }} — BrandBox Help guide" />
       </figure>
       {% endif %}
 
@@ -63,7 +63,7 @@
       <div class="help-shots">
         {% for att in article.attachments.all %}
         <figure class="help-shot">
-          <img src="{{ att.image.url }}" alt="{{ att.caption|default:'' }}" />
+          <img src="{{ att.image.url }}" alt="{{ att.caption|default:article.title }} — BrandBox Help screenshot" />
           {% if att.caption %}<figcaption>{{ att.caption }}</figcaption>{% endif %}
         </figure>
         {% endfor %}

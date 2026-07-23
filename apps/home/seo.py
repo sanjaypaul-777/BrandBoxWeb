@@ -27,6 +27,7 @@ PATH_TO_SEO_KEY: dict[str, str] = {
     "/disclaimer/": "disclaimer",
     "/affiliate/": "affiliate",
     "/affiliate/register/": "affiliate_apply",
+    "/help/": "help",
 }
 
 # Paths that should never be indexed (auth, app, admin APIs)
@@ -129,6 +130,10 @@ def _build_json_ld(
     )
     if logo:
         org["logo"] = logo
+    org["sameAs"] = [
+        "https://www.instagram.com/brandboxco/",
+    ]
+    org["email"] = "help@brandbox.co"
     blocks.append(org)
 
     if page_key == "home":
@@ -138,6 +143,68 @@ def _build_json_ld(
                 "@type": "WebSite",
                 "name": site.site_name or "BrandBox",
                 "url": marketing_base_url().rstrip("/"),
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": absolute_url("/help/?q={search_term_string}"),
+                    "query-input": "required name=search_term_string",
+                },
+            }
+        )
+        blocks.append(
+            {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "BrandBox AI",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web",
+                "url": marketing_base_url().rstrip("/"),
+                "description": (
+                    "AI Store Builder, Product Hunter, BrandBox Coach, and Training "
+                    "for Shopify ecommerce entrepreneurs."
+                ),
+                "featureList": [
+                    "AI Store Builder",
+                    "Product Hunter",
+                    "BrandBox Coach",
+                    "Training",
+                ],
+                "offers": {
+                    "@type": "Offer",
+                    "url": absolute_url("/checkout/"),
+                },
+            }
+        )
+        blocks.append(
+            {
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "name": "BrandBox features",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "AI Store Builder",
+                        "url": absolute_url("/dashboard/builder/"),
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Product Hunter",
+                        "url": absolute_url("/dashboard/product-hunter/"),
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "BrandBox Coach",
+                        "url": absolute_url("/dashboard/coach/"),
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 4,
+                        "name": "Training",
+                        "url": absolute_url("/dashboard/training/"),
+                    },
+                ],
             }
         )
     elif page_key and canonical:
@@ -152,11 +219,107 @@ def _build_json_ld(
     return blocks
 
 
+def seo_for_help_article(article) -> ResolvedSeo:
+    """Per-article Help Center SEO."""
+    base = resolve_seo(page_key="help")
+    title = f"{article.title} | BrandBox Help"
+    if len(title) > 70:
+        title = f"{article.title[:55].rstrip()}… | BrandBox Help"
+    summary = (article.summary or "").strip()
+    description = summary or (
+        f"BrandBox Help: {article.title}. Guides for AI Store Builder, Product Hunter, "
+        "BrandBox Coach, Training, and Shopify store setup."
+    )
+    if len(description) > 320:
+        description = description[:317].rstrip() + "…"
+    canonical = absolute_url(article.get_absolute_url())
+    keywords = (
+        f"{article.title}, BrandBox help, "
+        f"{(article.category.name if article.category_id else 'Shopify')}, "
+        "AI Store Builder, Product Hunter, BrandBox Coach, Training"
+    )
+    return ResolvedSeo(
+        title=title,
+        description=description,
+        keywords=keywords[:255],
+        canonical=canonical,
+        robots="index, follow",
+        og_title=title,
+        og_description=description,
+        og_image=base.og_image,
+        twitter_site=base.twitter_site,
+        site_name=base.site_name,
+        google_verification=base.google_verification,
+        bing_verification=base.bing_verification,
+        json_ld=[
+            {
+                "@context": "https://schema.org",
+                "@type": "Article",
+                "headline": article.title,
+                "description": description,
+                "url": canonical,
+                "dateModified": article.updated_at.date().isoformat()
+                if getattr(article, "updated_at", None)
+                else "",
+                "publisher": {
+                    "@type": "Organization",
+                    "name": base.site_name or "BrandBox",
+                },
+            }
+        ],
+        page_key="help",
+    )
+
+
+def seo_for_help_category(category) -> ResolvedSeo:
+    """Per-category Help Center SEO."""
+    base = resolve_seo(page_key="help")
+    title = f"{category.name} Help Guides | BrandBox"
+    if len(title) > 70:
+        title = f"{category.name[:40].rstrip()}… | BrandBox Help"
+    description = (category.description or "").strip() or (
+        f"Browse BrandBox Help on {category.name} — AI Store Builder, Product Hunter, "
+        "BrandBox Coach, Training, and Shopify growth guides."
+    )
+    if len(description) > 320:
+        description = description[:317].rstrip() + "…"
+    canonical = absolute_url(category.get_absolute_url())
+    return ResolvedSeo(
+        title=title,
+        description=description,
+        keywords=f"{category.name}, BrandBox help, AI Store Builder, Product Hunter, BrandBox Coach, Training",
+        canonical=canonical,
+        robots="index, follow",
+        og_title=title,
+        og_description=description,
+        og_image=base.og_image,
+        twitter_site=base.twitter_site,
+        site_name=base.site_name,
+        google_verification=base.google_verification,
+        bing_verification=base.bing_verification,
+        json_ld=[
+            {
+                "@context": "https://schema.org",
+                "@type": "CollectionPage",
+                "name": title,
+                "description": description,
+                "url": canonical,
+            }
+        ],
+        page_key="help",
+    )
+
+
 def resolve_seo(request: HttpRequest | None = None, *, page_key: str | None = None) -> ResolvedSeo:
     """
     Build SEO tags for the current request (or an explicit page_key).
     Safe if DB rows are missing — falls back to sensible defaults.
+    Pass request.seo_override (ResolvedSeo) from a view for dynamic pages.
     """
+    override = getattr(request, "seo_override", None) if request is not None else None
+    if isinstance(override, ResolvedSeo):
+        return override
+
     try:
         site = SiteSeoSettings.load()
     except Exception:
@@ -164,9 +327,9 @@ def resolve_seo(request: HttpRequest | None = None, *, page_key: str | None = No
             site_name="BrandBox",
             default_title_suffix="BrandBox",
             default_meta_description=(
-                "Build a Shopify store by niche with AI Store Builder, "
-                "import scored products from the Product Vault, "
-                "and get coach chat when you need help."
+                "BrandBox helps you launch niche Shopify stores with AI Store Builder, "
+                "find winners in Product Hunter, get BrandBox Coach support, and learn "
+                "with Training — import, push, and grow in one dashboard."
             ),
         )
 

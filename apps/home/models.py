@@ -149,6 +149,7 @@ class SeoPage(models.Model):
         DISCLAIMER = "disclaimer", "Disclaimer"
         AFFILIATE = "affiliate", "Affiliate"
         AFFILIATE_APPLY = "affiliate_apply", "Affiliate Register"
+        HELP = "help", "Help Center"
 
     class RobotsChoice(models.TextChoices):
         INDEX_FOLLOW = "index, follow", "Index + follow (default)"

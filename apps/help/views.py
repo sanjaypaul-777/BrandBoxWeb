@@ -51,11 +51,14 @@ def help_home(request):
 
 @require_GET
 def help_category(request, category_slug):
+    from apps.home.seo import seo_for_help_category
+
     category = get_object_or_404(
         HelpCategory,
         slug=category_slug,
         is_published=True,
     )
+    request.seo_override = seo_for_help_category(category)
     articles = category.articles.filter(is_published=True)
     return render(
         request,
@@ -69,6 +72,8 @@ def help_category(request, category_slug):
 
 @require_GET
 def help_article(request, category_slug, article_slug):
+    from apps.home.seo import seo_for_help_article
+
     article = get_object_or_404(
         HelpArticle.objects.select_related("category").prefetch_related("attachments"),
         slug=article_slug,
@@ -76,6 +81,7 @@ def help_article(request, category_slug, article_slug):
         category__is_published=True,
         is_published=True,
     )
+    request.seo_override = seo_for_help_article(article)
     related = (
         HelpArticle.objects.filter(
             category=article.category,

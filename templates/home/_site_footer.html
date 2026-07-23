@@ -3,9 +3,13 @@
   <div class="brandbox-footer__grid">
     <div class="brandbox-footer__brand">
       <a href="{% url 'home:index' %}" class="brandbox-brand brandbox-brand--footer" aria-label="BrandBox home">
-        <img src="{% static 'images/home-logo.png' %}?v=1" alt="BrandBox" height="48"/>
+        <img src="{% static 'images/home-logo.png' %}?v=1" alt="BrandBox AI — Shopify store builder logo" height="48"/>
       </a>
-      <p class="brandbox-footer__desc">The intelligent foundation for the next generation of e-commerce entrepreneurs.</p>
+      <p class="brandbox-footer__desc">
+        BrandBox is the intelligent foundation for e-commerce entrepreneurs —
+        AI Store Builder, Product Hunter, BrandBox Coach, and Training in one place.
+        Launch niche Shopify stores, import scored products, and grow with guidance when you need it.
+      </p>
       <div class="brandbox-footer__social">
         <a
           class="brandbox-footer__social-link brandbox-footer__social-link--instagram"
@@ -31,6 +35,15 @@
     </div>
     <div class="brandbox-footer__nav">
       <div class="brandbox-footer__column">
+        <h4 class="brandbox-footer__heading">Features</h4>
+        <ul class="brandbox-footer__list">
+          <li><a href="{% url 'dashboard:builder' %}">AI Store Builder</a></li>
+          <li><a href="{% url 'dashboard:product_hunter' %}">Product Hunter</a></li>
+          <li><a href="{% url 'dashboard:coach' %}">BrandBox Coach</a></li>
+          <li><a href="{% url 'dashboard:training' %}">Training</a></li>
+        </ul>
+      </div>
+      <div class="brandbox-footer__column">
         <h4 class="brandbox-footer__heading">Explore</h4>
         <ul class="brandbox-footer__list">
           <li><a href="{% url 'home:affiliate' %}">Affiliate</a></li>
@@ -50,7 +63,7 @@
       </div>
       <div class="brandbox-footer__column brandbox-footer__newsletter">
         <h4 class="brandbox-footer__heading">Newsletter</h4>
-        <p class="brandbox-footer__newsletter-copy">Get the latest winning products delivered to your inbox.</p>
+        <p class="brandbox-footer__newsletter-copy">Get the latest Product Vault winners and BrandBox tips in your inbox.</p>
         <form method="post" action="{% url 'home:newsletter' %}" class="brandbox-footer__newsletter-form">
           {% csrf_token %}
           <label class="sr-only" for="{{ newsletter_form.email.id_for_label }}">Email</label>

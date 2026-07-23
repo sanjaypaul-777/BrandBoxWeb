@@ -792,12 +792,13 @@
 }
 
 .brandbox-footer__brand {
-  max-width: 320px;
+  max-width: 360px;
 }
 
 .brandbox-footer__desc {
   margin: 24px 0;
-  font-size: 15px;
+  max-width: 360px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--footer-text);
 }
@@ -1023,7 +1024,11 @@
 
   .brandbox-footer__nav {
     flex-wrap: nowrap;
-    gap: 24px;
+    gap: 20px 28px;
+  }
+
+  .brandbox-footer__column {
+    min-width: 120px;
   }
 }
 
@@ -1139,8 +1144,10 @@
   padding: 2px;
   border-radius: 20px;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: clip;
   isolation: isolate;
+  contain: paint;
+  transform-style: flat;
   background: #000000;
   border: 0;
   box-shadow: 0 0 0 1px #000000;
@@ -1149,10 +1156,7 @@
 .brandbox-how__card::before {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 220%;
-  height: 220%;
+  inset: -40%;
   z-index: 0;
   background: conic-gradient(
     from 0deg,
@@ -1170,10 +1174,10 @@
 
 @keyframes brandbox-gb-spin {
   from {
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -2194,12 +2198,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 14px;
+  margin-top: 8px;
   text-align: center;
 }
 
 .brandbox-offer__trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
   margin: 0;
   text-align: center;
   color: var(--offer-muted);
@@ -2208,6 +2217,23 @@
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1.3;
+}
+
+.brandbox-offer__trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brandbox-offer__trust-item .material-symbols-outlined {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: color-mix(in srgb, var(--offer-text) 72%, var(--offer-muted));
+}
+
+.brandbox-offer__trust-sep {
+  color: color-mix(in srgb, var(--offer-muted) 70%, transparent);
 }
 
 .brandbox-offer__cta.btn-primary {
@@ -2228,8 +2254,9 @@
     grid-template-columns: minmax(320px, 380px) minmax(0, 520px);
     grid-template-areas:
       "card visual"
-      "card quote";
-    gap: 24px 60px;
+      "card quote"
+      ". actions";
+    gap: 20px 60px;
     justify-content: center;
     align-items: center;
     min-height: 522px;
@@ -2244,6 +2271,10 @@
 
   .brandbox-offer__quote {
     grid-area: quote;
+    margin: 0;
+    max-width: none;
+    text-align: left;
+    padding: 0;
   }
 
   .brandbox-offer__card {
@@ -2252,7 +2283,20 @@
     max-width: 380px;
     margin: 0;
     padding: 24px 24px 32px;
-    align-self: center;
+    align-self: start;
+  }
+
+  .brandbox-offer__actions {
+    grid-area: actions;
+    align-items: center;
+    justify-self: center;
+    width: 100%;
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .brandbox-offer__trust {
+    justify-content: center;
   }
 }
 
@@ -2301,11 +2345,23 @@
   overflow: visible;
 }
 
+/* How cards: flat motion only — 3D + giant border spin was painting a black overlay */
+.brandbox-how.brandbox-reveal {
+  perspective: none;
+  transform-style: flat;
+  overflow: clip;
+}
+
 .brandbox-reveal [data-brandbox-reveal-child] {
   opacity: 1;
   transform: none;
   transform-style: preserve-3d;
   will-change: transform, opacity;
+}
+
+.brandbox-how [data-brandbox-reveal-child] {
+  transform-style: flat;
+  will-change: opacity, transform;
 }
 
 .brandbox-compare__grid,
@@ -2328,6 +2384,11 @@
       transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  .brandbox-motion .brandbox-how.brandbox-reveal:not(.is-visible),
+  .brandbox-motion .brandbox-how.brandbox-reveal.is-visible {
+    transform: none;
+  }
+
   /* Children reveal on their own is-visible (not gated by section) */
   .brandbox-motion [data-brandbox-reveal-child]:not(.is-visible) {
     opacity: 0;
@@ -2340,6 +2401,16 @@
     transition:
       opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
       transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s);
+  }
+
+  .brandbox-motion .brandbox-how [data-brandbox-reveal-child]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  .brandbox-motion .brandbox-how [data-brandbox-reveal-child].is-visible {
+    opacity: 1;
+    transform: none;
   }
 
   /* Difference: cards swing in from left / right */
