@@ -4,8 +4,8 @@
 
 {% block title %}Sign up · BrandBox{% endblock %}
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/auth.css' %}" />
-<link rel="stylesheet" href="{% static 'css/password-toggle.css' %}" />
+<link rel="stylesheet" href="{% static 'css/auth.css' %}?v=auth-cs5" />
+<link rel="stylesheet" href="{% static 'css/password-toggle.css' %}?v=auth-cs5" />
 {% endblock %}
 
 {% block body %}
@@ -21,11 +21,12 @@
     <div class="auth-card">
       <p class="auth-welcome">Get Started</p>
       {% include "accounts/_social_auth.html" %}
-      <form method="post" class="auth-form" novalidate>
+      <form method="post" class="auth-form" novalidate autocomplete="off">
         {% csrf_token %}
         {% if form.non_field_errors %}
           <p class="error">{{ form.non_field_errors|striptags }}</p>
         {% endif %}
+        {% include "accounts/_auth_decoy.html" %}
 
         <div class="field-row">
           <div>
@@ -77,6 +78,7 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/auth-glow.js' %}" defer></script>
-<script src="{% static 'js/password-toggle.js' %}" defer></script>
+<script src="{% static 'js/auth-glow.js' %}?v=auth-cs5" defer></script>
+<script src="{% static 'js/password-toggle.js' %}?v=auth-cs6" defer></script>
+<script src="{% static 'js/auth-username-suggest.js' %}?v=auth-cs5" defer></script>
 {% endblock %}

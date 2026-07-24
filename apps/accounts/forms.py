@@ -25,11 +25,14 @@ class BrandBoxAuthenticationForm(AuthenticationForm):
         self.fields["username"].widget.attrs.update(
             {
                 "placeholder": "Email or username",
-                "autocomplete": "username",
+                # off + custom list in auth-username-suggest.js (native popup mispositions)
+                "autocomplete": "off",
                 "autocapitalize": "none",
                 "autocorrect": "off",
                 "spellcheck": "false",
                 "inputmode": "email",
+                "data-lpignore": "true",
+                "data-1p-ignore": "true",
             }
         )
         self.fields["password"].widget.attrs.update(
@@ -63,7 +66,7 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Alex",
-                "autocomplete": "given-name",
+                "autocomplete": "off",
             }
         ),
     )
@@ -73,7 +76,7 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Rivera",
-                "autocomplete": "family-name",
+                "autocomplete": "off",
             }
         ),
     )
@@ -82,7 +85,9 @@ class SignupForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "name@company.com",
-                "autocomplete": "email",
+                "autocomplete": "off",
+                "data-lpignore": "true",
+                "data-1p-ignore": "true",
             }
         ),
     )

@@ -1,11 +1,12 @@
 /**
  * Password visibility toggle — wraps input[type=password] with an eye button.
+ * Skips auth decoy / honeypot fields so autofill soak stays intact.
  */
 (function () {
   function enhance(input) {
     if (!input || input.dataset.pwToggle === "1") return;
     if (input.type !== "password" && input.type !== "text") return;
-    if (input.closest(".pw-field")) return;
+    if (input.closest(".pw-field, .auth-decoy, .brandbox-honeypot")) return;
 
     input.dataset.pwToggle = "1";
     var wrap = document.createElement("div");

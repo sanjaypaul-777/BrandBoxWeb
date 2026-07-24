@@ -4,7 +4,7 @@
 
 {% block title %}Forgot password · BrandBox{% endblock %}
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/auth.css' %}" />
+<link rel="stylesheet" href="{% static 'css/auth.css' %}?v=auth-cs5" />
 {% endblock %}
 
 {% block body %}
@@ -31,10 +31,20 @@
         </p>
       {% endif %}
 
-      <form method="post" class="auth-form" aria-disabled="true">
+      <form method="post" class="auth-form" aria-disabled="true" autocomplete="off">
         {% csrf_token %}
+        {% include "accounts/_auth_decoy.html" %}
         <label class="label" for="email">Email Address</label>
-        <input id="email" name="email" type="email" required placeholder="name@company.com" />
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          placeholder="name@company.com"
+          autocomplete="off"
+          data-lpignore="true"
+          data-1p-ignore="true"
+        />
         <button type="submit" class="btn-primary auth-submit">
           Request reset (preview)
           <span class="material-symbols-outlined" aria-hidden="true">lock_reset</span>
@@ -56,5 +66,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/auth-glow.js' %}" defer></script>
+<script src="{% static 'js/auth-glow.js' %}?v=auth-cs5" defer></script>
+<script src="{% static 'js/auth-username-suggest.js' %}?v=auth-cs5" defer></script>
 {% endblock %}

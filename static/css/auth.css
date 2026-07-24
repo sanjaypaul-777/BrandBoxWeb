@@ -64,9 +64,21 @@
   padding: 40px 20px;
   background: var(--auth-black);
   color: var(--auth-text);
-  /* Avoid overflow:hidden — it mispositions browser autofill on mobile */
-  overflow-x: hidden;
-  overflow-y: auto;
+  /* Document scrolls — overflow on this flex shell misplaces Chromium autofill */
+  overflow: visible;
+}
+
+/* Dark page; light inputs so the native suggestion list isn't a black blob */
+body:has(.auth-page) {
+  background: var(--black);
+  color-scheme: dark;
+  overflow-x: clip;
+}
+
+.auth-page input,
+.auth-page textarea,
+.auth-page select {
+  color-scheme: light;
 }
 
 .auth-page--app {
@@ -75,108 +87,25 @@
   padding-bottom: 64px;
 }
 
+/* Soft halo with no filter/transform — those break autofill coordinates */
 .auth-glow {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: min(440px, 88vw);
-  height: min(440px, 88vw);
+  inset: -40px;
   border-radius: 50%;
-  transform: translate(-50%, -50%);
-  filter: blur(90px);
-  opacity: 0.18;
+  opacity: 0.35;
   pointer-events: none;
   z-index: 0;
   background:
     radial-gradient(
       circle at 38% 46%,
-      color-mix(in srgb, var(--auth-primary, var(--midnight)) 80%, transparent) 0%,
-      transparent 52%
+      color-mix(in srgb, var(--auth-primary, var(--midnight)) 55%, transparent) 0%,
+      transparent 58%
     ),
     radial-gradient(
       circle at 62% 54%,
-      color-mix(in srgb, var(--auth-magenta, var(--magenta)) 55%, transparent) 0%,
-      transparent 54%
-    ),
-    radial-gradient(
-      circle,
-      color-mix(in srgb, var(--auth-magenta, var(--magenta)) 35%, var(--midnight)) 0%,
-      transparent 68%
+      color-mix(in srgb, var(--auth-magenta, var(--magenta)) 40%, transparent) 0%,
+      transparent 60%
     );
-  will-change: transform, opacity, filter;
-}
-
-.auth-glow-ripples {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.auth-glow-ripple {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: min(300px, 72vw);
-  height: min(300px, 72vw);
-  border-radius: 50%;
-  border: 1.5px solid transparent;
-  transform: translate(-50%, -50%) scale(0.22);
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-.auth-glow-ripple--magenta {
-  border-color: color-mix(in srgb, var(--auth-magenta) 50%, transparent);
-  box-shadow:
-    0 0 28px color-mix(in srgb, var(--auth-magenta) 26%, transparent),
-    inset 0 0 32px color-mix(in srgb, var(--auth-green) 16%, transparent);
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--auth-magenta) 18%, transparent) 0%,
-    color-mix(in srgb, var(--auth-green) 10%, transparent) 42%,
-    transparent 68%
-  );
-}
-
-.auth-glow-ripple--green {
-  border-color: color-mix(in srgb, var(--auth-green) 50%, transparent);
-  box-shadow:
-    0 0 28px color-mix(in srgb, var(--auth-green) 26%, transparent),
-    inset 0 0 32px color-mix(in srgb, var(--auth-magenta) 14%, transparent);
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--auth-green) 18%, transparent) 0%,
-    color-mix(in srgb, var(--auth-magenta) 10%, transparent) 42%,
-    transparent 68%
-  );
-}
-
-@keyframes auth-glow-ripple-fallback {
-  0% {
-    transform: translate(-50%, -50%) scale(0.22);
-    opacity: 0;
-  }
-  12% {
-    transform: translate(-50%, -50%) scale(0.42);
-    opacity: 0.42;
-  }
-  45% {
-    transform: translate(-50%, -50%) scale(1.05);
-    opacity: 0.28;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(2.05);
-    opacity: 0;
-  }
-}
-
-.auth-glow-ripple--fallback {
-  animation: auth-glow-ripple-fallback 6.2s cubic-bezier(0.33, 0.05, 0.2, 1) forwards;
 }
 
 .auth-logo-wrap {
@@ -286,7 +215,6 @@
 /* Match Limited-time offer card chrome */
 .auth-card {
   position: relative;
-  isolation: isolate;
   text-align: left;
   width: 100%;
   margin: 0 auto;
@@ -298,7 +226,8 @@
     rgba(120, 89, 244, 0) 79.67%,
     var(--magenta) 198.01%
   );
-  overflow: hidden;
+  /* visible so Chromium autofill / password UI isn't clipped into a black box */
+  overflow: visible;
   box-sizing: border-box;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -306,8 +235,7 @@
 }
 
 .auth-card > * {
-  position: relative;
-  z-index: 1;
+  position: static;
 }
 
 .auth-card .subtitle {
@@ -506,6 +434,7 @@
 }
 
 .auth-form {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 5.6px;
@@ -597,6 +526,80 @@
   outline: none;
   border-color: var(--off-white);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--magenta) 35%, transparent);
+}
+
+.auth-form input:-webkit-autofill,
+.auth-form input:-webkit-autofill:hover,
+.auth-form input:-webkit-autofill:focus,
+.auth-card input:-webkit-autofill,
+.auth-card input:-webkit-autofill:hover,
+.auth-card input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--off-white);
+  caret-color: var(--off-white);
+  /* Match field fill — avoid huge inset black shadows that flash as a popup */
+  box-shadow: 0 0 0 100px rgba(0, 0, 0, 0.35) inset;
+  transition: background-color 99999s ease-out;
+}
+
+/* Decoy fields: absorb Chromium credential UI off-screen */
+.auth-decoy {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  pointer-events: none;
+}
+
+/* Custom suggestions — list is position:fixed via JS (body); wrap is layout only */
+.auth-suggest {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.auth-suggest__list {
+  position: fixed;
+  z-index: 10000;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  box-sizing: border-box;
+  background: var(--off-white);
+  color: var(--ink);
+  border: 1px solid var(--fog);
+  border-radius: 12px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+  max-height: 220px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.auth-suggest__item {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.auth-suggest__item:hover,
+.auth-suggest__item.is-active,
+.auth-suggest__item[aria-selected="true"] {
+  background: var(--canvas);
+  color: var(--ink);
 }
 
 /* Full-width primary CTA — same chrome as homepage .btn-primary */

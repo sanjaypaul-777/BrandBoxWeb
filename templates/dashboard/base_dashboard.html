@@ -5,7 +5,7 @@
 {% block title %}{% block dash_title %}Dashboard{% endblock %} · BrandBox{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=palette-3" />
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=menu-close-1" />
 {% block dash_extra_css %}{% endblock %}
 {% endblock %}
 
@@ -169,6 +169,7 @@
         class="dash-menu-btn"
         id="dash-menu"
         aria-label="Open menu"
+        aria-expanded="false"
         aria-controls="dash-sidebar"
       >
         <span class="material-symbols-outlined" aria-hidden="true">menu</span>
@@ -299,8 +300,13 @@
       document.body.classList.toggle("dash-nav-open", open);
       if (backdrop) backdrop.hidden = !open;
       menu.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      menu.setAttribute("aria-expanded", open ? "true" : "false");
+      var menuIcon = menu.querySelector(".material-symbols-outlined");
+      if (menuIcon) {
+        menuIcon.textContent = open ? "close" : "menu";
+      }
       if (isMobile() && collapseIcon) {
-        collapseIcon.textContent = "\u00d7";
+        collapseIcon.textContent = "close";
       }
     }
 

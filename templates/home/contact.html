@@ -4,7 +4,7 @@
 
 {% block title %}Contact · BrandBox{% endblock %}
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/auth.css' %}" />
+<link rel="stylesheet" href="{% static 'css/auth.css' %}?v=auth-cs5" />
 <link rel="stylesheet" href="{% static 'css/contact.css' %}" />
 {% endblock %}
 
@@ -27,8 +27,9 @@
         {% endfor %}
       {% endif %}
 
-      <form method="post" class="auth-form contact-form" novalidate>
+      <form method="post" class="auth-form contact-form" novalidate autocomplete="off">
         {% csrf_token %}
+        {% include "accounts/_auth_decoy.html" %}
         {% if form.non_field_errors %}
           <p class="error">{{ form.non_field_errors|striptags }}</p>
         {% endif %}
@@ -89,5 +90,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/auth-glow.js' %}" defer></script>
+<script src="{% static 'js/auth-glow.js' %}?v=auth-cs5" defer></script>
+<script src="{% static 'js/auth-username-suggest.js' %}?v=auth-cs5" defer></script>
 {% endblock %}

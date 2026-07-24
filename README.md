@@ -722,6 +722,8 @@ Useful public pages after seed:
 
 Change offer / affiliate % later in `config/product.py` (`OFFER_PERCENT`, `AFFILIATE_PERCENT`).
 
+**Deploy:** see [`docs/DEPLOY.md`](docs/DEPLOY.md). Ship design first; leave `SHOPIFY_APP_URL` / `BRANDBOX_INTERNAL_API_SECRET` empty until you confirm the live UI, then link Node.
+
 Set in `.env.local`:
 
 ```env

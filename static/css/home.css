@@ -118,8 +118,8 @@
 .brandbox-top {
   position: relative;
   isolation: isolate;
-  overflow-x: hidden;
-  overflow-y: visible;
+  /* Clip stage layers — overflow-y:visible let the grid paint a black flash into How */
+  overflow: hidden;
   background: var(--black);
   color: #f0f0f1;
 }
@@ -158,14 +158,12 @@
     transparent 86%
   );
   opacity: 0.9;
-  will-change: transform;
 }
 
 /* Soft AI / growth glows (BrandBox primary + accent) */
 .brandbox-top__orb {
   position: absolute;
   filter: blur(80px);
-  will-change: transform;
   pointer-events: none;
 }
 
@@ -216,7 +214,6 @@
     radial-gradient(circle at 12% 52%, rgba(124, 58, 237, 0.35) 0 1.25px, transparent 2.25px);
   mask-image: radial-gradient(ellipse 70% 55% at 50% 35%, #000 20%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 35%, #000 20%, transparent 75%);
-  will-change: transform, opacity;
 }
 
 .brandbox-top__nav,
@@ -1131,9 +1128,8 @@
   gap: 24px;
 }
 
-/* How cards — clockwise border spin (transform) + transparent art */
+/* How cards — static gradient ring only (animated ::before caused black viewport flash) */
 .brandbox-how__card {
-  --gb-speed: 10s;
   --how-media-ratio: 928 / 1152;
   --how-card-bg: #05070a;
   position: relative;
@@ -1144,48 +1140,16 @@
   padding: 2px;
   border-radius: 20px;
   box-sizing: border-box;
-  overflow: clip;
-  isolation: isolate;
-  contain: paint;
+  overflow: hidden;
   transform-style: flat;
-  background: var(--black);
-  border: 0;
-  box-shadow: 0 0 0 1px var(--black);
-}
-
-.brandbox-how__card::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  z-index: 0;
-  background: conic-gradient(
-    from 0deg,
-    var(--black) 0%,
-    var(--black) 58%,
-    var(--magenta) 72%,
-    color-mix(in srgb, var(--green) 45%, var(--canvas)) 82%,
-    var(--magenta) 90%,
-    var(--black) 100%
+  background: linear-gradient(
+    135deg,
+    var(--magenta) 0%,
+    color-mix(in srgb, var(--green) 55%, var(--canvas)) 48%,
+    var(--magenta) 100%
   );
-  animation: brandbox-gb-spin var(--gb-speed) linear infinite;
-  pointer-events: none;
-  will-change: transform;
-}
-
-@keyframes brandbox-gb-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .brandbox-how__card::before {
-    animation: none;
-    background: var(--black);
-  }
+  border: 0;
+  box-shadow: none;
 }
 
 .brandbox-how__card-inner {
@@ -1664,8 +1628,8 @@
   right: 32px;
   padding: 4px 16px;
   border-radius: 9999px;
-  background: var(--compare-accent);
-  color: #f1f3f8;
+  background: var(--midnight);
+  color: var(--off-white);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -1732,6 +1696,23 @@
   --products-muted: var(--home-muted-on-light);
 }
 
+.brandbox-products__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 16px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: var(--midnight);
+  border: 0;
+  color: var(--off-white);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
 .brandbox-products__header {
   display: flex;
   flex-direction: column;
@@ -1750,23 +1731,6 @@
 
 .brandbox-products__intro {
   max-width: 36rem;
-}
-
-.brandbox-products__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  margin: 0 0 16px;
-  padding: 7px 14px;
-  border-radius: 9999px;
-  background: var(--midnight);
-  border: 0;
-  color: var(--off-white);
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  line-height: 1;
 }
 
 .brandbox-products__title {
@@ -1888,8 +1852,8 @@
   --on-surface-variant: var(--offer-muted);
   background: var(--offer-bg);
   color: var(--offer-text);
-  padding-top: var(--section-gap);
-  padding-bottom: var(--section-gap);
+  /* gap before compare comes from compare padding-top — do not double it here */
+  padding-bottom: 0;
   box-sizing: border-box;
 }
 
@@ -1902,11 +1866,20 @@
 }
 
 .brandbox-offer__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.brandbox-offer__aside {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: 0;
+  gap: 20px;
+  width: 100%;
+  min-width: 0;
   box-sizing: border-box;
 }
 
@@ -2042,7 +2015,7 @@
   border-radius: 9999px;
   background: var(--midnight);
   border: 0;
-  color: color-mix(in srgb, var(--green) 45%, var(--canvas));
+  color: var(--magenta);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -2241,45 +2214,45 @@
 
 @media (min-width: 900px) {
   .brandbox-offer__grid {
-    grid-template-columns: minmax(320px, 380px) minmax(0, 520px);
-    grid-template-areas:
-      "card visual"
-      "card quote"
-      ". actions";
-    gap: 20px 60px;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
-    min-height: 522px;
-    height: auto;
+    justify-content: center;
+    gap: 60px;
+  }
+
+  .brandbox-offer__card {
+    flex: 0 0 380px;
+    width: 380px;
+    max-width: 380px;
+    margin: 0;
+    padding: 24px 24px 32px;
+    align-self: center;
+    box-sizing: border-box;
+  }
+
+  .brandbox-offer__aside {
+    flex: 1 1 520px;
+    max-width: 520px;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
   }
 
   .brandbox-offer__visual {
-    grid-area: visual;
     margin: 0;
     width: 100%;
+    flex: 0 0 auto;
   }
 
   .brandbox-offer__quote {
-    grid-area: quote;
     margin: 0;
     max-width: none;
     text-align: left;
     padding: 0;
   }
 
-  .brandbox-offer__card {
-    grid-area: card;
-    width: 380px;
-    max-width: 380px;
-    margin: 0;
-    padding: 24px 24px 32px;
-    align-self: start;
-  }
-
   .brandbox-offer__actions {
-    grid-area: actions;
     align-items: center;
-    justify-self: center;
     width: 100%;
     margin-top: 0;
     text-align: center;
@@ -2291,10 +2264,6 @@
 }
 
 @media (max-width: 899px) {
-  .brandbox-offer__grid {
-    gap: 28px;
-  }
-
   .brandbox-offer__card {
     max-width: 100%;
     padding: 36px 28px 32px;
@@ -2315,23 +2284,22 @@
   overflow: visible;
 }
 
-/* How cards: flat motion only — 3D + giant border spin was painting a black overlay */
+/* How cards: flat motion only — avoid 3D + border spin painting a black overlay */
 .brandbox-how.brandbox-reveal {
   perspective: none;
   transform-style: flat;
-  overflow: clip;
+  overflow: visible;
 }
 
 .brandbox-reveal [data-brandbox-reveal-child] {
   opacity: 1;
   transform: none;
   transform-style: preserve-3d;
-  will-change: transform, opacity;
 }
 
 .brandbox-how [data-brandbox-reveal-child] {
   transform-style: flat;
-  will-change: opacity, transform;
+  will-change: auto;
 }
 
 .brandbox-compare__grid,

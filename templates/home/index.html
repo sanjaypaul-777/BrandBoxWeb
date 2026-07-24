@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet"/>
-<link rel="stylesheet" href="{% static 'css/base.css' %}?v=home-m1"/>
-<link rel="stylesheet" href="{% static 'css/home.css' %}?v=home-m2"/>
+<link rel="stylesheet" href="{% static 'css/base.css' %}?v=home-m11"/>
+<link rel="stylesheet" href="{% static 'css/home.css' %}?v=home-m11"/>
 <link rel="icon" href="{% static 'images/favicon.png' %}?v=5" type="image/png" />
 <link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}?v=5" />
 <script>
@@ -342,21 +342,37 @@
 <section id="brandbox-offer" class="brandbox-offer brandbox-reveal">
   <div class="brandbox-offer__inner">
     <div class="brandbox-offer__grid">
-      <div class="brandbox-offer__visual" data-brandbox-reveal-child>
-        <span class="brandbox-offer__visual-glow" aria-hidden="true"></span>
-        <img
-          class="brandbox-offer__visual-img"
-          src="{% static 'images/offer.png' %}?v=offer-2"
-          alt="BrandBox AI dashboard with Product Vault trending item and coach chat"
-          width="1376"
-          height="768"
-          loading="lazy"
-          decoding="async"
-        />
+      <div class="brandbox-offer__aside">
+        <div class="brandbox-offer__visual" data-brandbox-reveal-child>
+          <span class="brandbox-offer__visual-glow" aria-hidden="true"></span>
+          <img
+            class="brandbox-offer__visual-img"
+            src="{% static 'images/offer.png' %}?v=offer-2"
+            alt="BrandBox AI dashboard with Product Vault trending item and coach chat"
+            width="1376"
+            height="768"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <blockquote class="brandbox-offer__quote" data-brandbox-reveal-child>
+          <p>Build your Shopify store with AI, import scored Product Vault winners, and push live — with BrandBox Coach beside you when you get stuck.</p>
+        </blockquote>
+        <div class="brandbox-offer__actions" data-brandbox-reveal-child>
+          <a href="{% url 'checkout:index' %}" class="btn-primary brandbox-offer__cta">{{ product.offer_cta_lock_in }}</a>
+          <p class="brandbox-offer__trust">
+            <span class="brandbox-offer__trust-item">
+              <span class="material-symbols-outlined" aria-hidden="true">free_cancellation</span>
+              Cancel anytime
+            </span>
+            <span class="brandbox-offer__trust-item">
+              <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
+              Secure checkout
+            </span>
+          </p>
+        </div>
       </div>
-      <blockquote class="brandbox-offer__quote" data-brandbox-reveal-child>
-        <p>Build your Shopify store with AI, import scored Product Vault winners, and push live — with BrandBox Coach beside you when you get stuck.</p>
-      </blockquote>
+
       <article class="brandbox-offer__card" data-brandbox-reveal-child data-brandbox-tilt>
         <span class="brandbox-offer__kicker">Limited-time offer</span>
         <h2 class="brandbox-offer__plan">Plus Plan</h2>
@@ -396,20 +412,6 @@
           {{ product.offer_footnote }}
         </p>
       </article>
-      <div class="brandbox-offer__actions" data-brandbox-reveal-child>
-        <a href="{% url 'checkout:index' %}" class="btn-primary brandbox-offer__cta">{{ product.offer_cta_lock_in }}</a>
-        <p class="brandbox-offer__trust">
-          <span class="brandbox-offer__trust-item">
-            <span class="material-symbols-outlined" aria-hidden="true">free_cancellation</span>
-            Cancel anytime
-          </span>
-          <span class="brandbox-offer__trust-sep" aria-hidden="true">·</span>
-          <span class="brandbox-offer__trust-item">
-            <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
-            Secure checkout
-          </span>
-        </p>
-      </div>
     </div>
   </div>
 </section>

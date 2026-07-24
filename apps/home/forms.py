@@ -33,18 +33,23 @@ class ContactForm(HoneypotMixin, forms.ModelForm):
             "name": forms.TextInput(
                 attrs={
                     "placeholder": "Your name",
-                    "autocomplete": "name",
+                    "autocomplete": "off",
+                    "data-lpignore": "true",
+                    "data-1p-ignore": "true",
                 }
             ),
             "email": forms.EmailInput(
                 attrs={
                     "placeholder": "name@company.com",
-                    "autocomplete": "email",
+                    "autocomplete": "off",
+                    "data-lpignore": "true",
+                    "data-1p-ignore": "true",
                 }
             ),
             "subject": forms.TextInput(
                 attrs={
                     "placeholder": "How can we help?",
+                    "autocomplete": "off",
                 }
             ),
             "message": forms.Textarea(
@@ -146,12 +151,19 @@ class AffiliateApplicationForm(HoneypotMixin, forms.ModelForm):
         )
         widgets = {
             "name": forms.TextInput(
-                attrs={"placeholder": "Your full name", "autocomplete": "name"}
+                attrs={
+                    "placeholder": "Your full name",
+                    "autocomplete": "off",
+                    "data-lpignore": "true",
+                    "data-1p-ignore": "true",
+                }
             ),
             "email": forms.EmailInput(
                 attrs={
                     "placeholder": "name@company.com",
-                    "autocomplete": "email",
+                    "autocomplete": "off",
+                    "data-lpignore": "true",
+                    "data-1p-ignore": "true",
                 }
             ),
             "current_activity": forms.Select(
@@ -160,14 +172,14 @@ class AffiliateApplicationForm(HoneypotMixin, forms.ModelForm):
             "activity_other": forms.TextInput(
                 attrs={
                     "placeholder": "e.g. Podcast host, YouTube editor…",
-                    "autocomplete": "organization-title",
+                    "autocomplete": "off",
                 }
             ),
             "primary_platform": forms.Select(),
             "promo_url": forms.URLInput(
                 attrs={
                     "placeholder": "https://…",
-                    "autocomplete": "url",
+                    "autocomplete": "off",
                 }
             ),
             "audience_size": forms.Select(),
